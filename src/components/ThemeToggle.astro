@@ -1,0 +1,16 @@
+---
+let isDark = false;
+
+function toggleTheme() {
+  isDark = !isDark;
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}
+---
+
+<button onclick="toggleTheme()" class="p-2 rounded border text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
+  🌞 / 🌚 Toggle Theme
+</button>

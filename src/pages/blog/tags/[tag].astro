@@ -1,0 +1,22 @@
+---
+import Layout from '../../../layouts/BlogLayout.astro';
+import { getCollection } from 'astro:content';
+
+const { tag } = Astro.params;
+const posts = await getCollection('blog');
+
+const filteredPosts = posts.filter(post => post.data.tags?.includes(tag));
+---
+
+<Layout title={`Posts tagged: ${tag}`}>
+  <h1 class="text-2xl font-bold mb-4">Posts tagged with: #{tag}</h1>
+  <ul>
+    {filteredPosts.map(post => (
+      <li class="mb-2">
+        <a href={`/blog/${post.slug}/`} class="text-blue-600 dark:text-blue-300 hover:underline">
+          {post.data.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</Layout>
