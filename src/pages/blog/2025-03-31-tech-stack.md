@@ -2,6 +2,7 @@
 title: "Behind the Shell: The Coderturtle Tech Stack"
 pubDate: "2025-03-31"
 layout: "../../layouts/BlogLayout.astro"
+tags: ["astro", "tailwind", "blog", "setup"]
 ---
 
 Welcome to Coderturtle 🐢 — a blog that documents the messy, creative, and insightful journey of an aspiring AI architect.
