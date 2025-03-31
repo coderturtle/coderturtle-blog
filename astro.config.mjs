@@ -3,6 +3,7 @@ import tailwind from "@astrojs/tailwind";
 
 export default defineConfig({
   integrations: [tailwind()],
-  site: "https://coderturtle.io",
+  base: "/coderturtle.io/",
+  site: "https://coderturtle.github.io/coderturtle.io",
   trailingSlash: "always"
 });
