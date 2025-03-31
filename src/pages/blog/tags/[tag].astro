@@ -2,14 +2,15 @@
 import Layout from '../../../layouts/BlogLayout.astro';
 
 export async function getStaticPaths() {
-  const posts = await Astro.glob('../../*.md');
-  const allTags = new Set();
+  const allPostFiles = import.meta.glob('../../*.md', { eager: true });
 
-  posts.forEach(post => {
+  const allTags = new Set();
+  for (const path in allPostFiles) {
+    const post = allPostFiles[path];
     if (Array.isArray(post.frontmatter.tags)) {
       post.frontmatter.tags.forEach(tag => allTags.add(tag));
     }
-  });
+  }
 
   return Array.from(allTags).map(tag => ({
     params: { tag }
@@ -17,10 +18,14 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
-const posts = await Astro.glob('../../*.md');
-const filteredPosts = posts.filter(
-  post => Array.isArray(post.frontmatter.tags) && post.frontmatter.tags.includes(tag)
-);
+const allPostFiles = import.meta.glob('../../*.md', { eager: true });
+
+const filteredPosts = Object.entries(allPostFiles)
+  .filter(([_, post]) => Array.isArray(post.frontmatter.tags) && post.frontmatter.tags.includes(tag))
+  .map(([path, post]) => ({
+    title: post.frontmatter.title,
+    slug: path.split('/').pop().replace('.md', '')
+  }));
 ---
 
 <Layout title={`Posts tagged: ${tag}`}>
@@ -29,7 +34,7 @@ const filteredPosts = posts.filter(
     {filteredPosts.map(post => (
       <li class="mb-2">
         <a href={`/blog/${post.slug}/`} class="text-blue-600 dark:text-blue-300 hover:underline">
-          {post.frontmatter.title}
+          {post.title}
         </a>
       </li>
     ))}
