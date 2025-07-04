@@ -1,14 +1,20 @@
 {
-  "name": "coderturtle-io",
-  "version": "1.0.0",
+  "name": "coderturtle-blog",
   "type": "module",
+  "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.0.0",
-    "@astrojs/tailwind": "^5.0.0"
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/rss": "^4.0.12",
+    "@astrojs/sitemap": "^3.4.1",
+    "@tailwindcss/vite": "^4.1.11",
+    "astro": "^5.11.0",
+    "sharp": "^0.34.2",
+    "tailwindcss": "^4.1.11"
   }
 }
