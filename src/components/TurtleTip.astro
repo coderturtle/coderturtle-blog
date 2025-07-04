@@ -1,0 +1,8 @@
+---
+const { title = "Turtle Tip", children } = Astro.props;
+---
+
+<div class="border-l-4 border-shell bg-shell/10 dark:bg-shell/20 p-4 rounded-md my-6 text-sm text-night dark:text-ivory">
+  <strong class="block text-shell font-semibold mb-1">🐢 {title}</strong>
+  <div>{children}</div>
+</div>

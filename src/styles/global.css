@@ -1,9 +1,9 @@
+/* import Google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* import Google fonts */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap");
 
 html { scroll-behavior: smooth; }
 body { @apply font-sans bg-white text-night dark:bg-night dark:text-ivory; }
