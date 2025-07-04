@@ -1,0 +1,44 @@
+---
+import "../styles/global.css";
+import ThemeToggle from "../components/ThemeToggle.astro";
+const { title = "Coderturtle" } = Astro.props;
+const nav = [
+  { href: "/blog/", label: "Blog" },
+  { href: "/library/", label: "Library" },
+  { href: "/about/", label: "About" },
+];
+---
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} – Coderturtle</title>
+  <link rel="icon" href="/logo.svg" />
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="flex items-center justify-between p-4 border-b dark:border-ivory/20">
+    <a href="/" class="flex items-center gap-2">
+      <img src="/logo.svg" alt="logo" class="w-8 h-8" />
+      <span class="font-mono font-semibold tracking-tight">Coderturtle</span>
+    </a>
+    <nav class="flex gap-6 text-sm font-mono">
+      {nav.map(n => (
+        <a href={n.href} class="hover:text-shell"
+           class:list={[Astro.url.pathname.startsWith(n.href) && "text-shell font-semibold"]}>
+          {n.label}
+        </a>
+      ))}
+    </nav>
+    <ThemeToggle />
+  </header>
+
+  <main class="flex-1 w-full max-w-4xl mx-auto px-4 py-10">
+    <slot />
+  </main>
+
+  <footer class="text-xs text-center py-6 border-t dark:border-ivory/20">
+    Built with 🧠 + ☕ by Coderturtle · <span class="font-mono">Shipping slow, debugging fast.</span>
+  </footer>
+</body>
+</html>

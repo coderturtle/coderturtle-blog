@@ -1,0 +1,12 @@
+---
+let isDark = false;
+function toggle() {
+  isDark = !isDark;
+  document.documentElement.classList.toggle('dark', isDark);
+}
+---
+<button on:click={toggle}
+  class="p-2 rounded border border-night/20 dark:border-ivory/30 
+         hover:bg-shell/10 dark:hover:bg-ivory/10 transition">
+  {isDark ? "🌞" : "🌚"}
+</button>
