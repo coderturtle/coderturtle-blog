@@ -1,21 +1,46 @@
 ---
 import Layout from "../../layouts/BaseLayout.astro";
-import { getEntryBySlug } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
+
+// Generate all paths from the blog collection
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id }, // `post.id` is the filename without extension
+  }));
+}
 
 const { slug } = Astro.params;
-const post = await getEntryBySlug("blog", slug);
+const entry = await getEntry("blog", slug);
 
-if (!post) {
+if (!entry) {
   throw new Error(`Post not found: ${slug}`);
 }
 
-const { Content, data } = await post.render();
+const Content = entry.body; // ✅ This is the MDX component!
+const { title, pubDate, description, tags, readingTime } = entry.data;
 ---
 
-<Layout title={data.title}>
-  <article class="prose dark:prose-invert mx-auto">
-    <h1 class="text-4xl mb-2 text-shell">{data.title}</h1>
-    <p class="text-sm text-night/70 dark:text-ivory/60">{data.description}</p>
-    <Content />
+<Layout title={title}>
+  <article class="prose dark:prose-invert max-w-prose mx-auto">
+    <header class="mb-10 text-center">
+      <h1 class="text-4xl font-bold text-shell font-mono">{title}</h1>
+      <p class="text-sm text-night/70 dark:text-ivory/60 mt-2 italic">{description}</p>
+      <div class="text-xs text-night/50 dark:text-ivory/40 mt-2">
+        { new Date(pubDate).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' }) }
+        {readingTime && (
+          <span class="mx-2">• {readingTime} min read</span>
+        )}
+        {tags && tags.length > 0 && (
+          <span class="ml-2">— {tags.join(", ")}</span>
+        )}
+      </div>
+    </header>
+
+    <Content /> <!-- ✅ Rendered MDX content -->
+
+    <footer class="mt-16 border-t pt-6 border-night/10 dark:border-ivory/20 text-sm text-night/60 dark:text-ivory/60">
+      <p class="italic text-center">Filed under the watchful eye of Coderturtle 🐢 — architecting the unknown one post at a time.</p>
+    </footer>
   </article>
 </Layout>
