@@ -1,46 +1,33 @@
 ---
-import Layout from "../../layouts/BaseLayout.astro";
-import { getCollection, getEntry } from "astro:content";
+// src/pages/blog/[slug].astro
 
-// Generate all paths from the blog collection
+import { getEntry, getCollection } from 'astro:content';
+import Layout from '../../layouts/BaseLayout.astro';
+
+const { slug } = Astro.params;
+
+// This assumes your MDX file is named `vibing.mdx`, so the id is 'vibing'
+const entry = await getEntry({ collection: 'blog', id: slug });
+
+if (!entry) throw new Error(`No blog post found for slug: ${slug}`);
+
+const { data, Component } = entry;
+
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection('blog');
   return posts.map((post) => ({
-    params: { slug: post.id }, // `post.id` is the filename without extension
+    params: { slug: post.id }, // NOT post.slug
   }));
 }
 
-const { slug } = Astro.params;
-const entry = await getEntry("blog", slug);
-
-if (!entry) {
-  throw new Error(`Post not found: ${slug}`);
-}
-
-const Content = entry.body; // ✅ This is the MDX component!
-const { title, pubDate, description, tags, readingTime } = entry.data;
 ---
 
-<Layout title={title}>
+<Layout title={data.title}>
   <article class="prose dark:prose-invert max-w-prose mx-auto">
-    <header class="mb-10 text-center">
-      <h1 class="text-4xl font-bold text-shell font-mono">{title}</h1>
-      <p class="text-sm text-night/70 dark:text-ivory/60 mt-2 italic">{description}</p>
-      <div class="text-xs text-night/50 dark:text-ivory/40 mt-2">
-        { new Date(pubDate).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' }) }
-        {readingTime && (
-          <span class="mx-2">• {readingTime} min read</span>
-        )}
-        {tags && tags.length > 0 && (
-          <span class="ml-2">— {tags.join(", ")}</span>
-        )}
-      </div>
-    </header>
+    <h1 class="text-3xl font-bold text-shell">{data.title}</h1>
+    <p class="italic text-night/70 dark:text-ivory/70 mt-2">{data.description}</p>
+    <hr class="my-6 border-night/10 dark:border-ivory/20" />
 
-    <Content /> <!-- ✅ Rendered MDX content -->
-
-    <footer class="mt-16 border-t pt-6 border-night/10 dark:border-ivory/20 text-sm text-night/60 dark:text-ivory/60">
-      <p class="italic text-center">Filed under the watchful eye of Coderturtle 🐢 — architecting the unknown one post at a time.</p>
-    </footer>
+    {Component ? <Component /> : <p class="text-red-500">MDX component failed to load.</p>}
   </article>
 </Layout>
