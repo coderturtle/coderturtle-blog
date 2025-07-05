@@ -1,33 +1,41 @@
 ---
-// src/pages/blog/[slug].astro
+import Layout from "../../layouts/BaseLayout.astro";
+import { getCollection, getEntry, render } from "astro:content";
 
-import { getEntry, getCollection } from 'astro:content';
-import Layout from '../../layouts/BaseLayout.astro';
-
-const { slug } = Astro.params;
-
-// This assumes your MDX file is named `vibing.mdx`, so the id is 'vibing'
-const entry = await getEntry({ collection: 'blog', id: slug });
-
-if (!entry) throw new Error(`No blog post found for slug: ${slug}`);
-
-const { data, Component } = entry;
-
+/* 1 — build paths */
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.id }, // NOT post.slug
-  }));
+  const posts = await getCollection("blog");            // front-matter only
+  return posts.map((p) => ({ params: { slug: p.id } })); // id = filename
 }
 
+/* 2 — fetch one entry by id (= filename) */
+const { slug } = Astro.params;                          // e.g. "vibing"
+const entry = await getEntry("blog", slug);             // two-arg form
+
+if (!entry) throw new Error(`Post not found: ${slug}`);
+
+/* 3 — compile MDX via the standalone helper */
+const { Content } = await render(entry);                // ✅ THIS is the key
+const { title, description, pubDate, readingTime, tags } = entry.data;
 ---
 
-<Layout title={data.title}>
-  <article class="prose dark:prose-invert max-w-prose mx-auto">
-    <h1 class="text-3xl font-bold text-shell">{data.title}</h1>
-    <p class="italic text-night/70 dark:text-ivory/70 mt-2">{data.description}</p>
-    <hr class="my-6 border-night/10 dark:border-ivory/20" />
+<Layout title={title}>
+  <article class="prose dark:prose-invert mx-auto max-w-prose">
+    <header class="mb-10 text-center">
+      <h1 class="text-4xl font-bold font-mono text-shell">{title}</h1>
+      <p class="italic text-night/70 dark:text-ivory/70">{description}</p>
+      <p class="text-xs text-night/50 dark:text-ivory/50 mt-2">
+        {new Date(pubDate).toLocaleDateString("en-GB",{year:"numeric",month:"short",day:"numeric"})}
+        {readingTime && <> • {readingTime} min</>}
+        {tags?.length && <> • {tags.join(", ")}</>}
+      </p>
+    </header>
 
-    {Component ? <Component /> : <p class="text-red-500">MDX component failed to load.</p>}
+    <!-- ✅ MDX now renders here -->
+    <Content />
+
+    <footer class="mt-16 border-t pt-6 text-center text-sm text-night/60 dark:text-ivory/60">
+      Filed under the watchful eye of Coderturtle 🐢
+    </footer>
   </article>
 </Layout>

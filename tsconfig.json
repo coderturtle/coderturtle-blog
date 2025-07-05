@@ -3,6 +3,22 @@
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"],
   "compilerOptions": {
-    "strictNullChecks": true
-  }
+    "strictNullChecks": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["astro/client"],
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "src",
+    "**/*.astro",
+    "**/*.mdx"
+  ]
 }
