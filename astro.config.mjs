@@ -20,7 +20,7 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: "shiki", // <-- THIS ENABLES SHIKI
     shikiConfig: {
-      theme: "ayu" // other options: 'nord', 'monokai', 'dracula', etc.
+      theme: "github-dark-dimmed" // other options: 'nord', 'monokai', 'dracula', etc.
     }
   }
 });
