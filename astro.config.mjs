@@ -7,8 +7,7 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://coderturtle.github.io/coderturtle-blog/", // 👈 repo URL
-  base: "/coderturtle-blog/",                              // 👈 repo URL
+  site: "https://coderturtle.io/",
   trailingSlash: "always",
 
   integrations: [

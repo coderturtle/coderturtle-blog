@@ -1,9 +1,288 @@
-/* import Google fonts */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap");
+@font-face {
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html { scroll-behavior: smooth; }
-body { @apply font-sans bg-white text-night dark:bg-night dark:text-ivory; }
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-paper text-night antialiased dark:bg-night dark:text-ivory;
+    font-synthesis: none;
+    letter-spacing: 0;
+  }
+
+  a {
+    @apply underline-offset-4;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible {
+    @apply outline outline-2 outline-offset-4 outline-coral;
+  }
+}
+
+@layer components {
+  .site-header {
+    @apply sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-night/10 bg-paper/90 px-4 py-3 backdrop-blur dark:border-ivory/15 dark:bg-night/90 md:px-8;
+  }
+
+  .brand-lockup {
+    @apply flex shrink-0 items-center gap-2 text-sm font-bold no-underline;
+  }
+
+  .brand-lockup img {
+    @apply h-8 w-8;
+  }
+
+  .nav-cluster {
+    @apply flex flex-1 flex-wrap items-center justify-end gap-3;
+  }
+
+  .site-nav {
+    @apply order-3 flex w-full flex-wrap items-center gap-1 rounded-lg border border-night/10 bg-white/65 p-1 text-sm dark:border-ivory/15 dark:bg-ivory/5 sm:order-none sm:w-auto;
+  }
+
+  .site-nav a {
+    @apply rounded-md px-3 py-2 no-underline transition hover:bg-shell/10 hover:text-shell dark:hover:bg-ivory/10 dark:hover:text-ivory;
+  }
+
+  .site-nav a.active {
+    @apply bg-shell text-white dark:bg-ivory dark:text-night;
+  }
+
+  .theme-toggle {
+    @apply inline-flex min-h-10 items-center gap-2 rounded-lg border border-night/15 bg-white/70 px-3 py-2 text-sm font-bold text-night transition hover:border-shell hover:text-shell dark:border-ivory/20 dark:bg-ivory/10 dark:text-ivory dark:hover:border-ivory;
+  }
+
+  .theme-toggle-mark {
+    @apply h-3 w-3 rounded-full bg-coral shadow-[0_0_0_4px_rgba(242,92,84,0.16)];
+  }
+
+  .dark .theme-toggle-mark {
+    @apply bg-mist shadow-[0_0_0_4px_rgba(130,184,186,0.18)];
+  }
+
+  .site-main {
+    @apply mx-auto w-full max-w-6xl px-4 py-8 md:px-8 md:py-12;
+  }
+
+  .site-footer {
+    @apply mx-auto flex w-full max-w-6xl flex-col gap-2 border-t border-night/10 px-4 py-8 text-sm text-night/65 dark:border-ivory/15 dark:text-ivory/65 md:flex-row md:items-center md:justify-between md:px-8;
+  }
+
+  .hero-grid {
+    @apply grid min-h-[calc(100vh-11rem)] items-center gap-8 py-8 md:grid-cols-[1.08fr_0.92fr] md:py-12;
+  }
+
+  .hero-copy {
+    @apply max-w-3xl;
+  }
+
+  .eyebrow {
+    @apply mb-3 font-mono text-xs font-bold uppercase text-coral;
+  }
+
+  .hero-copy h1 {
+    @apply max-w-4xl text-5xl font-bold leading-[1.02] text-night dark:text-ivory md:text-7xl;
+  }
+
+  .lede {
+    @apply mt-6 max-w-2xl text-lg leading-8 text-night/75 dark:text-ivory/75 md:text-xl;
+  }
+
+  .hero-actions {
+    @apply mt-8 flex flex-col gap-3 sm:flex-row;
+  }
+
+  .button-primary,
+  .button-secondary {
+    @apply inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-bold no-underline transition;
+  }
+
+  .button-primary {
+    @apply bg-night text-white hover:bg-shell dark:bg-ivory dark:text-night dark:hover:bg-mist;
+  }
+
+  .button-secondary {
+    @apply border border-night/15 bg-white/70 text-night hover:border-shell hover:text-shell dark:border-ivory/20 dark:bg-ivory/10 dark:text-ivory dark:hover:border-ivory;
+  }
+
+  .signal-list {
+    @apply mt-8 flex flex-wrap gap-2;
+  }
+
+  .signal-list li {
+    @apply rounded-lg border border-shell/25 bg-shell/10 px-3 py-2 text-sm text-night/75 dark:border-mist/25 dark:bg-mist/10 dark:text-ivory/75;
+  }
+
+  .workbench-panel {
+    @apply relative overflow-hidden rounded-lg border border-night/10 bg-white p-5 shadow-[0_24px_60px_rgba(28,28,30,0.14)] dark:border-ivory/15 dark:bg-ivory/5;
+  }
+
+  .workbench-panel::before {
+    content: "";
+    @apply absolute inset-x-0 top-0 h-1 bg-coral;
+  }
+
+  .panel-bar {
+    @apply mb-6 flex gap-2;
+  }
+
+  .panel-bar span {
+    @apply h-3 w-3 rounded-full bg-night/20 dark:bg-ivory/25;
+  }
+
+  .panel-logo {
+    @apply mb-4 h-20 w-20 rounded-lg border border-shell/20 bg-shell/10 p-2;
+  }
+
+  .panel-kicker {
+    @apply mb-4 font-mono text-xs uppercase text-night/50 dark:text-ivory/55;
+  }
+
+  .panel-line {
+    @apply mb-3 grid grid-cols-[7rem_1fr] gap-3 rounded-lg border border-night/10 bg-paper px-3 py-3 text-sm dark:border-ivory/10 dark:bg-night/55;
+  }
+
+  .panel-line.active {
+    @apply border-shell/40 bg-shell/10 dark:border-mist/40 dark:bg-mist/10;
+  }
+
+  .prompt {
+    @apply font-mono font-bold text-shell dark:text-mist;
+  }
+
+  .panel-details {
+    @apply mt-5 rounded-lg border border-night/10 bg-paper p-4 text-sm leading-6 text-night/75 dark:border-ivory/10 dark:bg-night/50 dark:text-ivory/75;
+  }
+
+  .panel-details summary {
+    @apply cursor-pointer font-bold text-night dark:text-ivory;
+  }
+
+  .section-stack {
+    @apply py-14 md:py-20;
+  }
+
+  .section-heading {
+    @apply mb-8 max-w-3xl;
+  }
+
+  .section-heading h2,
+  .closing-band h2 {
+    @apply text-3xl font-bold leading-tight md:text-5xl;
+  }
+
+  .section-heading p:not(.eyebrow),
+  .closing-band p {
+    @apply mt-4 text-lg leading-8 text-night/70 dark:text-ivory/70;
+  }
+
+  .inline-heading {
+    @apply flex max-w-none flex-col gap-4 md:flex-row md:items-end md:justify-between;
+  }
+
+  .text-link {
+    @apply font-bold text-shell no-underline hover:underline dark:text-mist;
+  }
+
+  .lane-grid,
+  .note-grid,
+  .ecosystem-grid {
+    @apply grid gap-4 md:grid-cols-3;
+  }
+
+  .lane-card,
+  .note-card,
+  .ecosystem-card {
+    @apply rounded-lg border border-night/10 bg-white p-5 dark:border-ivory/15 dark:bg-ivory/5;
+  }
+
+  .lane-card {
+    @apply transition hover:-translate-y-1 hover:border-shell/45 hover:shadow-[0_18px_38px_rgba(28,28,30,0.10)] dark:hover:border-mist/45;
+  }
+
+  .lane-card h3,
+  .note-card h3,
+  .ecosystem-card h3 {
+    @apply text-xl font-bold;
+  }
+
+  .lane-card p,
+  .note-card p,
+  .ecosystem-card span {
+    @apply mt-3 block leading-7 text-night/70 dark:text-ivory/70;
+  }
+
+  .lane-card a {
+    @apply mt-5 inline-block font-bold text-shell no-underline hover:underline dark:text-mist;
+  }
+
+  .note-date,
+  .ecosystem-card p {
+    @apply font-mono text-xs uppercase text-coral;
+  }
+
+  .note-card h3 a {
+    @apply no-underline hover:text-shell dark:hover:text-mist;
+  }
+
+  .tag-list {
+    @apply mt-5 flex flex-wrap gap-2;
+  }
+
+  .tag-list li {
+    @apply rounded-md bg-night/5 px-2 py-1 text-xs text-night/65 dark:bg-ivory/10 dark:text-ivory/70;
+  }
+
+  .ecosystem-section {
+    @apply rounded-lg border border-night/10 bg-night p-6 text-ivory dark:border-ivory/15 dark:bg-ivory/5 md:p-8;
+  }
+
+  .ecosystem-section .section-heading p:not(.eyebrow) {
+    @apply text-ivory/70;
+  }
+
+  .ecosystem-grid {
+    @apply md:grid-cols-4;
+  }
+
+  .ecosystem-card {
+    @apply border-ivory/15 bg-ivory/5;
+  }
+
+  .ecosystem-card span {
+    @apply text-ivory/70;
+  }
+
+  .closing-band {
+    @apply my-14 flex flex-col gap-6 rounded-lg border border-shell/20 bg-shell/10 p-6 dark:border-mist/25 dark:bg-mist/10 md:my-20 md:flex-row md:items-center md:justify-between md:p-8;
+  }
+}

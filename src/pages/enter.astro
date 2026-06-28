@@ -1,0 +1,201 @@
+---
+import Layout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const base = import.meta.env.BASE_URL;
+const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
+
+const blog = await getCollection("blog");
+const latest = blog
+  .filter((post) => post.id !== "test")
+  .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
+  .slice(0, 3);
+
+const signals = [
+  "agentic engineering systems",
+  "practical architecture notes",
+  "labs, workshops, and field reports",
+];
+
+const workshopLanes = [
+  {
+    title: "Field notes",
+    text: "Short, useful write-ups from the workbench: decisions, trade-offs, broken builds, and things that finally clicked.",
+    href: url("blog/"),
+  },
+  {
+    title: "Labs",
+    text: "Small experiments that test how agents, tools, docs, and delivery workflows behave when the nice diagrams meet real repos.",
+    href: "#labs",
+  },
+  {
+    title: "Workshops",
+    text: "Reusable patterns, prompts, and implementation walkthroughs for people building agentic systems without ceremony.",
+    href: "#workshops",
+  },
+];
+
+const ecosystem = [
+  {
+    name: "Hekton",
+    role: "The factory",
+    text: "The personal operating system behind the work: scaffolding, validation, project memory, and agent handoffs.",
+  },
+  {
+    name: "Agentic Tekton",
+    role: "The architecture layer",
+    text: "The more formal thinking space for enterprise architecture, operating models, and AI delivery patterns.",
+  },
+  {
+    name: "Coderturtle",
+    role: "The workshop voice",
+    text: "The hands-on narrator: what got built, what broke, what was learned, and what is worth trying next.",
+  },
+  {
+    name: "Gremlins",
+    role: "The product/lab direction",
+    text: "Reusable agentic SDLC helpers that may graduate from experiments into real tools.",
+  },
+];
+---
+
+<Layout
+  title="Workbench"
+  description="Hands-on notes, labs, workshops, and field reports from building agentic engineering systems."
+>
+  <section class="hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Builder notes from the agentic workshop</p>
+      <h1>Field notes from building agentic engineering systems.</h1>
+      <p class="lede">
+        Coderturtle is the practical, curious side of the Hekton ecosystem:
+        hands-on notes, labs, workshops, and experiments from building software
+        with agents in the loop.
+      </p>
+      <div class="hero-actions" aria-label="Primary actions">
+        <a class="button-primary" href={url("blog/")}>Read the notes</a>
+        <a class="button-secondary" href="#ecosystem">Map the ecosystem</a>
+      </div>
+      <ul class="signal-list" aria-label="Current focus areas">
+        {signals.map((signal) => <li>{signal}</li>)}
+      </ul>
+    </div>
+
+    <aside class="workbench-panel" aria-label="Coderturtle workbench snapshot">
+      <div class="panel-bar">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <img src={url("logo-transparent.png")} alt="" class="panel-logo" loading="eager" />
+      <p class="panel-kicker">today in the shell</p>
+      <div class="panel-line">
+        <span class="prompt">hekton</span>
+        <span>scaffold the idea</span>
+      </div>
+      <div class="panel-line">
+        <span class="prompt">tekton</span>
+        <span>shape the architecture</span>
+      </div>
+      <div class="panel-line active">
+        <span class="prompt">coderturtle</span>
+        <span>build, narrate, learn</span>
+      </div>
+      <details class="panel-details">
+        <summary>Current workshop note</summary>
+        <p>
+          Keep the site static, fast, and honest: show the work, preserve the
+          rough edges, and make the next experiment easy to find.
+        </p>
+      </details>
+    </aside>
+  </section>
+
+  <section class="section-stack" id="workbench" aria-labelledby="workbench-title">
+    <div class="section-heading">
+      <p class="eyebrow">What lives here</p>
+      <h2 id="workbench-title">A workbench for useful fragments.</h2>
+      <p>
+        This homepage should make it obvious where to go next, whether the
+        visitor wants a blog post, a lab note, a reusable pattern, or a map of
+        the wider ecosystem.
+      </p>
+    </div>
+    <div class="lane-grid">
+      {workshopLanes.map((lane) => (
+        <article class="lane-card">
+          <h3>{lane.title}</h3>
+          <p>{lane.text}</p>
+          <a href={lane.href}>Open {lane.title.toLowerCase()}</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section-stack" aria-labelledby="notes-title">
+    <div class="section-heading inline-heading">
+      <div>
+        <p class="eyebrow">Latest field notes</p>
+        <h2 id="notes-title">Recent writing from the shell.</h2>
+      </div>
+      <a href={url("blog/")} class="text-link">All notes</a>
+    </div>
+    <div class="note-grid">
+      {latest.length > 0 ? latest.map((post) => (
+        <article class="note-card">
+          <p class="note-date">
+            {new Date(post.data.pubDate).toLocaleDateString("en-GB", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
+          <h3>
+            <a href={url(`blog/${post.id}/`)}>{post.data.title}</a>
+          </h3>
+          <p>{post.data.description}</p>
+          {post.data.tags?.length && (
+            <ul class="tag-list" aria-label={`Tags for ${post.data.title}`}>
+              {post.data.tags.slice(0, 3).map((tag) => <li>{tag}</li>)}
+            </ul>
+          )}
+        </article>
+      )) : (
+        <article class="note-card">
+          <p class="note-date">Now</p>
+          <h3>Notes are being gathered.</h3>
+          <p>The workbench is open; the first useful field notes will land here.</p>
+        </article>
+      )}
+    </div>
+  </section>
+
+  <section class="ecosystem-section" id="ecosystem" aria-labelledby="ecosystem-title">
+    <div class="section-heading">
+      <p class="eyebrow">Where Coderturtle fits</p>
+      <h2 id="ecosystem-title">One ecosystem, different voices.</h2>
+    </div>
+    <div class="ecosystem-grid">
+      {ecosystem.map((item) => (
+        <article class="ecosystem-card">
+          <p>{item.role}</p>
+          <h3>{item.name}</h3>
+          <span>{item.text}</span>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="closing-band" id="labs" aria-labelledby="closing-title">
+    <div>
+      <p class="eyebrow">MVP direction</p>
+      <h2 id="closing-title">Practical, curious, and close to the work.</h2>
+      <p>
+        The site should grow into a simple map of notes, labs, workshops, and
+        project pages. Start with a memorable homepage, then let the real work
+        fill in the rooms.
+      </p>
+    </div>
+    <a class="button-primary" href={url("about/")}>Meet the builder</a>
+  </section>
+</Layout>
