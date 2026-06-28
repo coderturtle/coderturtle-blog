@@ -1,0 +1,77 @@
+project_name: coderturtle.io
+project_title: "Coderturtle.io"
+classification: factory-output
+status: active
+lifecycle_stage: active
+adoption_status: adopted
+local_repo_path: /Users/hekton/Development/hekton/factory-output/coderturtle.io
+mind_palace_path: 20-projects/factory-output/coderturtle.io
+owner: hekton
+created_date: 2026-06-28
+source_repo_url: "https://github.com/coderturtle/coderturtle-blog"
+source_repo_note: "User requested coderturtle.io; GitHub resolves coderturtle/coderturtle.io to coderturtle/coderturtle-blog."
+promotion_target: none
+privacy_boundary: public
+github_account: coderturtle
+github_remote_url: "git@github.com-coderturtle:coderturtle/coderturtle-blog.git"
+vault_mutation_allowed: false
+version: ""
+
+default_agents:
+  - claude
+  - codex
+
+related_projects:
+  - hekton
+
+reproducibility:
+  target: "blank Hekton machine"
+  setup_mode: "scripted"
+  bootstrap_script: "scripts/bootstrap-project.sh"
+  prereq_script: "scripts/check-prereqs.sh"
+  verify_script: "scripts/verify-project.sh"
+  dry_run_supported: true
+  destructive_actions_allowed: false
+  env_file: ".env.example"
+  local_assumptions_doc: "docs/local-assumptions.md"
+  setup_doc: "docs/setup.md"
+  reproducibility_doc: "docs/reproducibility.md"
+  install_policy:
+    prefer_homebrew: true
+    prefer_documented_cli_commands: true
+    avoid_opaque_installers: true
+    require_manual_confirmation_for_unknown_installers: true
+
+architecture:
+  domain: output
+  capability_area: public-website
+  component_type: factory-output
+  maturity_level: 2
+  maturity_label: working
+  maturity_set_by: agent
+  maturity_basis: "Existing public Astro site with deploy workflow and recent commit history."
+  maturity_date: 2026-06-28
+  target_state_relevance: useful
+  depends_on:
+    - hekton
+  enables:
+    - public-presence
+    - writing
+    - portfolio-signal
+  consumes: []
+  promotion_candidate: false
+  promotion_target: none
+  next_architecture_step: "Review GitHub Pages base URL/domain configuration and decide whether coderturtle.io should deploy from the custom domain or GitHub Pages project path."
+  last_validated: 2026-06-28
+  evidence_links:
+    - README.md
+    - package.json
+    - .github/workflows/deploy.yml
+    - docs/adoption-audit.md
+  risks:
+    - "Tracked .DS_Store files should be removed in a follow-up hygiene commit."
+    - "Deployment config currently targets coderturtle.github.io/coderturtle-blog rather than the coderturtle.io custom domain named by the project."
+  owner: hekton
+
+notes:
+  - "Public Astro/Tailwind website and blog for coderturtle.io."
