@@ -13,4 +13,4 @@ Coderturtle.io is a public Astro/Tailwind website and blog adopted into the Hekt
 
 ## Current Focus
 
-Finish adoption review, confirm deployment domain settings, remove tracked macOS metadata in a dedicated follow-up commit, and review npm audit findings separately from adoption.
+Finish AWS static-site provisioning for coderturtle.io: confirm Route 53 and bucket values, plan the Terraform stack through the Infrastructure Gremlin workflow, configure OIDC deployment, retire the legacy GitHub Pages path after verification, remove tracked macOS metadata in a dedicated follow-up commit, and review npm audit findings separately.

@@ -61,16 +61,19 @@ architecture:
   consumes: []
   promotion_candidate: false
   promotion_target: none
-  next_architecture_step: "Review GitHub Pages base URL/domain configuration and decide whether coderturtle.io should deploy from the custom domain or GitHub Pages project path."
+  next_architecture_step: "Plan and human-apply the AWS static-site Terraform stack, then cut deployment over from GitHub Pages to coderturtle.io on CloudFront."
   last_validated: 2026-06-28
   evidence_links:
     - README.md
     - package.json
     - .github/workflows/deploy.yml
+    - .github/workflows/deploy-aws-static-site.yml
+    - infra/aws-static-site/deploy-manifest.yaml
+    - infra/aws-static-site/terraform
     - docs/adoption-audit.md
   risks:
     - "Tracked .DS_Store files should be removed in a follow-up hygiene commit."
-    - "Deployment config currently targets coderturtle.github.io/coderturtle-blog rather than the coderturtle.io custom domain named by the project."
+    - "Legacy GitHub Pages workflow remains until the AWS static-site cutover is complete."
   owner: hekton
 
 notes:

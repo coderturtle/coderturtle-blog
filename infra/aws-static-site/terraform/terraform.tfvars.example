@@ -1,0 +1,16 @@
+project_name   = "coderturtle-io"
+aws_region     = "eu-west-2"
+bucket_name    = "coderturtle-io-static-prod-REPLACE_WITH_ACCOUNT_OR_SUFFIX"
+domain_name    = "coderturtle.io"
+aliases        = ["www.coderturtle.io"]
+hosted_zone_id = "REPLACE_WITH_ROUTE53_HOSTED_ZONE_ID"
+
+create_acm_certificate = true
+create_dns_records     = true
+price_class            = "PriceClass_100"
+
+tags = {
+  Project     = "coderturtle.io"
+  Environment = "production"
+  Owner       = "hekton"
+}
