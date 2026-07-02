@@ -32,7 +32,7 @@
   }
 
   body {
-    @apply min-h-screen bg-paper text-night antialiased dark:bg-night dark:text-ivory;
+    @apply min-h-screen bg-paper text-night antialiased dark:bg-void dark:bg-[radial-gradient(ellipse_80%_45%_at_50%_-8%,rgba(111,221,160,0.10),transparent_60%)] dark:text-ivory;
     font-synthesis: none;
     letter-spacing: 0;
   }
@@ -44,13 +44,13 @@
   a:focus-visible,
   button:focus-visible,
   summary:focus-visible {
-    @apply outline outline-2 outline-offset-4 outline-coral;
+    @apply outline outline-2 outline-offset-4 outline-coral dark:outline-glow;
   }
 }
 
 @layer components {
   .site-header {
-    @apply sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-night/10 bg-paper/90 px-4 py-3 backdrop-blur dark:border-ivory/15 dark:bg-night/90 md:px-8;
+    @apply sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-kraft/25 bg-parchment/90 px-4 py-3 backdrop-blur dark:border-glow/15 dark:bg-void/85 md:px-8;
   }
 
   .brand-lockup {
@@ -58,7 +58,7 @@
   }
 
   .brand-lockup img {
-    @apply h-8 w-8;
+    @apply h-8 w-8 dark:drop-shadow-[0_0_10px_rgba(111,221,160,0.35)];
   }
 
   .nav-cluster {
@@ -66,19 +66,19 @@
   }
 
   .site-nav {
-    @apply order-3 flex w-full flex-wrap items-center gap-1 rounded-lg border border-night/10 bg-white/65 p-1 text-sm dark:border-ivory/15 dark:bg-ivory/5 sm:order-none sm:w-auto;
+    @apply order-3 flex w-full flex-wrap items-center gap-1 rounded-lg border border-kraft/20 bg-white/70 p-1 text-sm dark:border-glow/15 dark:bg-night/60 sm:order-none sm:w-auto;
   }
 
   .site-nav a {
-    @apply rounded-md px-3 py-2 no-underline transition hover:bg-shell/10 hover:text-shell dark:hover:bg-ivory/10 dark:hover:text-ivory;
+    @apply rounded-md px-3 py-2 no-underline transition hover:bg-shell/10 hover:text-shell dark:hover:bg-glow/10 dark:hover:text-glow;
   }
 
   .site-nav a.active {
-    @apply bg-shell text-white dark:bg-ivory dark:text-night;
+    @apply bg-shell text-white dark:bg-glow dark:text-void dark:shadow-[0_0_16px_rgba(111,221,160,0.45)];
   }
 
   .theme-toggle {
-    @apply inline-flex min-h-10 items-center gap-2 rounded-lg border border-night/15 bg-white/70 px-3 py-2 text-sm font-bold text-night transition hover:border-shell hover:text-shell dark:border-ivory/20 dark:bg-ivory/10 dark:text-ivory dark:hover:border-ivory;
+    @apply inline-flex min-h-10 items-center gap-2 rounded-lg border border-night/15 bg-white/70 px-3 py-2 text-sm font-bold text-night transition hover:border-shell hover:text-shell dark:border-glow/20 dark:bg-night/60 dark:text-ivory dark:hover:border-glow dark:hover:shadow-[0_0_14px_rgba(111,221,160,0.3)];
   }
 
   .theme-toggle-mark {
@@ -86,7 +86,7 @@
   }
 
   .dark .theme-toggle-mark {
-    @apply bg-mist shadow-[0_0_0_4px_rgba(130,184,186,0.18)];
+    @apply bg-glow shadow-[0_0_10px_rgba(111,221,160,0.6),0_0_0_4px_rgba(111,221,160,0.16)];
   }
 
   .site-main {
@@ -94,7 +94,7 @@
   }
 
   .site-footer {
-    @apply mx-auto flex w-full max-w-6xl flex-col gap-2 border-t border-night/10 px-4 py-8 text-sm text-night/65 dark:border-ivory/15 dark:text-ivory/65 md:flex-row md:items-center md:justify-between md:px-8;
+    @apply mx-auto flex w-full max-w-6xl flex-col gap-2 border-t border-night/10 px-4 py-8 text-sm text-night/65 dark:border-glow/10 dark:text-ivory/55 md:flex-row md:items-center md:justify-between md:px-8;
   }
 
   .hero-grid {
@@ -106,7 +106,7 @@
   }
 
   .eyebrow {
-    @apply mb-3 font-mono text-xs font-bold uppercase text-coral;
+    @apply mb-3 font-mono text-xs font-bold uppercase text-coral dark:text-glow;
   }
 
   .hero-copy h1 {
@@ -127,11 +127,11 @@
   }
 
   .button-primary {
-    @apply bg-night text-white hover:bg-shell dark:bg-ivory dark:text-night dark:hover:bg-mist;
+    @apply bg-night text-white hover:bg-shell dark:bg-glow dark:text-void dark:shadow-[0_0_20px_rgba(111,221,160,0.35)] dark:hover:bg-mist dark:hover:shadow-[0_0_28px_rgba(130,184,186,0.4)];
   }
 
   .button-secondary {
-    @apply border border-night/15 bg-white/70 text-night hover:border-shell hover:text-shell dark:border-ivory/20 dark:bg-ivory/10 dark:text-ivory dark:hover:border-ivory;
+    @apply border border-night/15 bg-white/70 text-night hover:border-shell hover:text-shell dark:border-glow/25 dark:bg-night/50 dark:text-ivory dark:hover:border-glow dark:hover:shadow-[0_0_16px_rgba(111,221,160,0.25)];
   }
 
   .signal-list {
@@ -139,16 +139,16 @@
   }
 
   .signal-list li {
-    @apply rounded-lg border border-shell/25 bg-shell/10 px-3 py-2 text-sm text-night/75 dark:border-mist/25 dark:bg-mist/10 dark:text-ivory/75;
+    @apply rounded-lg border border-shell/25 bg-shell/10 px-3 py-2 text-sm text-night/75 dark:border-glow/20 dark:bg-glow/5 dark:text-ivory/75;
   }
 
   .workbench-panel {
-    @apply relative overflow-hidden rounded-lg border border-night/10 bg-white p-5 shadow-[0_24px_60px_rgba(28,28,30,0.14)] dark:border-ivory/15 dark:bg-ivory/5;
+    @apply relative overflow-hidden rounded-lg border border-kraft/25 bg-parchment p-5 shadow-[0_24px_60px_rgba(107,78,46,0.12)] dark:border-glow/20 dark:bg-night/60 dark:shadow-[0_0_60px_rgba(111,221,160,0.10),0_24px_60px_rgba(0,0,0,0.5)];
   }
 
   .workbench-panel::before {
     content: "";
-    @apply absolute inset-x-0 top-0 h-1 bg-coral;
+    @apply absolute inset-x-0 top-0 h-1 bg-coral dark:bg-glow dark:shadow-[0_0_12px_rgba(111,221,160,0.6)];
   }
 
   .panel-bar {
@@ -156,31 +156,41 @@
   }
 
   .panel-bar span {
-    @apply h-3 w-3 rounded-full bg-night/20 dark:bg-ivory/25;
+    @apply h-3 w-3 rounded-full bg-kraft/30 dark:bg-glow/25;
   }
 
   .panel-logo {
-    @apply mb-4 h-20 w-20 rounded-lg border border-shell/20 bg-shell/10 p-2;
+    @apply mb-4 h-24 w-24 rounded-lg border border-kraft/30 bg-white p-2 dark:border-glow/25 dark:bg-void/60;
   }
 
   .panel-kicker {
-    @apply mb-4 font-mono text-xs uppercase text-night/50 dark:text-ivory/55;
+    @apply mb-4 font-mono text-xs uppercase text-night/50 dark:text-mist;
+  }
+
+  .panel-kicker::before {
+    content: "[ ";
+    @apply text-kraft/70 dark:text-glow/70;
+  }
+
+  .panel-kicker::after {
+    content: " ]";
+    @apply text-kraft/70 dark:text-glow/70;
   }
 
   .panel-line {
-    @apply mb-3 grid grid-cols-[7rem_1fr] gap-3 rounded-lg border border-night/10 bg-paper px-3 py-3 text-sm dark:border-ivory/10 dark:bg-night/55;
+    @apply mb-3 grid grid-cols-[7rem_1fr] gap-3 rounded-lg border border-kraft/20 bg-white px-3 py-3 text-sm dark:border-glow/10 dark:bg-void/50;
   }
 
   .panel-line.active {
-    @apply border-shell/40 bg-shell/10 dark:border-mist/40 dark:bg-mist/10;
+    @apply border-shell/40 bg-shell/10 dark:border-glow/40 dark:bg-glow/10;
   }
 
   .prompt {
-    @apply font-mono font-bold text-shell dark:text-mist;
+    @apply font-mono font-bold text-shell dark:text-glow;
   }
 
   .panel-details {
-    @apply mt-5 rounded-lg border border-night/10 bg-paper p-4 text-sm leading-6 text-night/75 dark:border-ivory/10 dark:bg-night/50 dark:text-ivory/75;
+    @apply mt-5 rounded-lg border border-kraft/20 bg-paper p-4 text-sm leading-6 text-night/75 dark:border-glow/10 dark:bg-void/40 dark:text-ivory/75;
   }
 
   .panel-details summary {
@@ -210,7 +220,7 @@
   }
 
   .text-link {
-    @apply font-bold text-shell no-underline hover:underline dark:text-mist;
+    @apply font-bold text-shell no-underline hover:underline dark:text-glow;
   }
 
   .lane-grid,
@@ -222,11 +232,15 @@
   .lane-card,
   .note-card,
   .ecosystem-card {
-    @apply rounded-lg border border-night/10 bg-white p-5 dark:border-ivory/15 dark:bg-ivory/5;
+    @apply rounded-lg border border-kraft/20 bg-parchment p-5 dark:border-glow/15 dark:bg-night/50;
   }
 
   .lane-card {
-    @apply transition hover:-translate-y-1 hover:border-shell/45 hover:shadow-[0_18px_38px_rgba(28,28,30,0.10)] dark:hover:border-mist/45;
+    @apply transition hover:-translate-y-1 hover:border-shell/45 hover:shadow-[0_18px_38px_rgba(28,28,30,0.10)] dark:hover:border-glow/50 dark:hover:shadow-[0_0_30px_rgba(111,221,160,0.18)];
+  }
+
+  .lane-card-icon {
+    @apply h-9 w-9 text-shell dark:text-glow;
   }
 
   .lane-card h3,
@@ -242,16 +256,16 @@
   }
 
   .lane-card a {
-    @apply mt-5 inline-block font-bold text-shell no-underline hover:underline dark:text-mist;
+    @apply mt-5 inline-block font-bold text-shell no-underline hover:underline dark:text-glow;
   }
 
   .note-date,
   .ecosystem-card p {
-    @apply font-mono text-xs uppercase text-coral;
+    @apply font-mono text-xs uppercase text-coral dark:text-glow;
   }
 
   .note-card h3 a {
-    @apply no-underline hover:text-shell dark:hover:text-mist;
+    @apply no-underline hover:text-shell dark:hover:text-glow;
   }
 
   .tag-list {
@@ -259,11 +273,11 @@
   }
 
   .tag-list li {
-    @apply rounded-md bg-night/5 px-2 py-1 text-xs text-night/65 dark:bg-ivory/10 dark:text-ivory/70;
+    @apply rounded-md bg-kraft/10 px-2 py-1 text-xs text-bark dark:bg-glow/10 dark:text-mist;
   }
 
   .ecosystem-section {
-    @apply rounded-lg border border-night/10 bg-night p-6 text-ivory dark:border-ivory/15 dark:bg-ivory/5 md:p-8;
+    @apply rounded-lg border border-night/10 bg-night p-6 text-ivory dark:border-glow/15 dark:bg-black/40 md:p-8;
   }
 
   .ecosystem-section .section-heading p:not(.eyebrow) {
@@ -283,6 +297,322 @@
   }
 
   .closing-band {
-    @apply my-14 flex flex-col gap-6 rounded-lg border border-shell/20 bg-shell/10 p-6 dark:border-mist/25 dark:bg-mist/10 md:my-20 md:flex-row md:items-center md:justify-between md:p-8;
+    @apply my-14 flex flex-col gap-6 rounded-lg border border-shell/20 bg-shell/10 p-6 dark:border-glow/25 dark:bg-glow/5 md:my-20 md:flex-row md:items-center md:justify-between md:p-8;
+  }
+
+  .log-hero {
+    @apply mb-12 flex flex-col items-center gap-6 text-center md:mb-16 md:flex-row md:items-center md:gap-8 md:text-left;
+  }
+
+  .log-hero-image {
+    @apply h-32 w-32 shrink-0 rounded-lg border border-kraft/30 bg-parchment p-2 shadow-[0_20px_40px_rgba(107,78,46,0.16)] dark:border-glow/25 dark:bg-night/60 dark:shadow-[0_0_40px_rgba(111,221,160,0.18)] md:h-40 md:w-40;
+  }
+
+  .log-hero h1 {
+    @apply text-4xl font-bold leading-tight md:text-6xl;
+  }
+
+  .log-section-heading {
+    @apply mb-6 text-sm font-bold uppercase tracking-wide text-night/50 dark:text-ivory/50;
+  }
+
+  .log-grid {
+    @apply lg:grid-cols-3;
+  }
+
+  .status-pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-xs font-bold uppercase tracking-wide;
+  }
+
+  .status-building {
+    @apply border-shell/40 bg-shell/10 text-shell dark:border-glow/50 dark:bg-glow/10 dark:text-glow dark:shadow-[0_0_12px_rgba(111,221,160,0.25)];
+  }
+
+  .status-shipped {
+    @apply border-night/20 bg-night/5 text-night dark:border-ivory/25 dark:bg-ivory/10 dark:text-ivory;
+  }
+
+  .status-paused,
+  .status-experiment {
+    @apply border-kraft/40 bg-kraft/10 text-bark dark:border-kraft/40 dark:bg-kraft/10 dark:text-kraft;
+  }
+
+  .status-archived {
+    @apply border-night/10 bg-night/5 text-night/50 dark:border-ivory/10 dark:bg-ivory/5 dark:text-ivory/50;
+  }
+
+  .project-meta {
+    @apply mt-4 flex flex-wrap items-center gap-2;
+  }
+
+  .log-timeline {
+    @apply relative mt-6 flex flex-col gap-4 border-l border-kraft/25 pl-6 dark:border-glow/20;
+  }
+
+  .log-timeline-item {
+    @apply relative rounded-lg border border-kraft/20 bg-parchment p-4 dark:border-glow/15 dark:bg-night/50;
+  }
+
+  .log-timeline-item::before {
+    content: "";
+    @apply absolute -left-[1.65rem] top-5 h-2.5 w-2.5 rounded-full bg-shell dark:bg-glow dark:shadow-[0_0_10px_rgba(111,221,160,0.7)];
+  }
+
+  .log-timeline-item h3 {
+    @apply text-lg font-bold;
+  }
+
+  .log-timeline-item h3 a {
+    @apply no-underline hover:text-shell dark:hover:text-glow;
+  }
+
+  .log-timeline-meta {
+    @apply mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs uppercase text-night/50 dark:text-ivory/50;
+  }
+
+  .log-timeline-meta span::before {
+    content: "[";
+    @apply text-kraft/70 dark:text-glow/60;
+  }
+
+  .log-timeline-meta span::after {
+    content: "]";
+    @apply text-kraft/70 dark:text-glow/60;
+  }
+
+  .log-timeline-item p {
+    @apply mt-2 leading-6 text-night/70 dark:text-ivory/70;
+  }
+
+  .log-entry-prose {
+    @apply prose dark:prose-invert mx-auto mt-10 max-w-prose;
+  }
+
+  /* Mermaid's C4 diagram type doesn't fully honor the dark theme (renders
+     light node fills regardless), so instead of fighting it, frame diagrams
+     as an intentional light panel — a blueprint pinned to the workshop
+     wall — rather than an accidental light-on-dark clash. */
+  .log-entry-prose pre.mermaid[data-processed] {
+    @apply !bg-parchment rounded-lg border border-kraft/40 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.35)] dark:border-glow/25;
+  }
+
+  /* Instrument-panel chrome: corner brackets, telemetry labels. Chrome and
+     metadata only — project/log titles and body prose are never touched by
+     this treatment, so real content stays the visual focus. */
+  .corner-brackets {
+    @apply pointer-events-none absolute inset-0;
+  }
+
+  .corner-bracket {
+    @apply absolute h-3 w-3 border-kraft/60 dark:border-glow/60 dark:drop-shadow-[0_0_4px_rgba(111,221,160,0.5)];
+  }
+
+  .corner-tl {
+    top: var(--bracket-inset, 0.5rem);
+    left: var(--bracket-inset, 0.5rem);
+    @apply border-l-2 border-t-2;
+  }
+
+  .corner-tr {
+    top: var(--bracket-inset, 0.5rem);
+    right: var(--bracket-inset, 0.5rem);
+    @apply border-r-2 border-t-2;
+  }
+
+  .corner-bl {
+    bottom: var(--bracket-inset, 0.5rem);
+    left: var(--bracket-inset, 0.5rem);
+    @apply border-b-2 border-l-2;
+  }
+
+  .corner-br {
+    bottom: var(--bracket-inset, 0.5rem);
+    right: var(--bracket-inset, 0.5rem);
+    @apply border-b-2 border-r-2;
+  }
+
+  .telemetry-label {
+    @apply inline-flex items-center gap-1 font-mono text-[0.7rem] uppercase tracking-wide text-night/50 dark:text-mist;
+  }
+
+  .telemetry-label::before {
+    content: "[";
+  }
+
+  .telemetry-label::after {
+    content: "]";
+  }
+
+  .telemetry-row {
+    @apply flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs uppercase tracking-wide text-night/50 dark:text-ivory/50;
+  }
+
+  .telemetry-row span {
+    @apply inline-flex items-center gap-1;
+  }
+
+  .telemetry-row span::before {
+    content: "[";
+    @apply text-kraft/70 dark:text-glow/60;
+  }
+
+  .telemetry-row span::after {
+    content: "]";
+    @apply text-kraft/70 dark:text-glow/60;
+  }
+
+  /* Badge icon on a workshop-floor worker station (src/pages/enter.astro).
+     Must live here, not in that page's scoped <style>: the badge is the
+     root <svg> of an imported mark component, and Astro's per-file style
+     scoping does not reach into a child component's own root element even
+     when a class is passed as a prop. */
+  .worker-badge {
+    @apply absolute -bottom-1.5 -right-1.5 h-6 w-6 rounded-full border border-kraft/40 bg-parchment p-1 text-shell dark:border-glow/40 dark:bg-night dark:text-glow;
+  }
+
+  /* Cog icons on src/pages/ecosystem.astro — same reason as .worker-badge
+     above: these are an imported mark component's own root <svg>. */
+  .cog-icon {
+    @apply h-[4.5rem] w-[4.5rem] text-shell motion-safe:animate-[cog-spin_22s_linear_infinite] dark:text-glow dark:drop-shadow-[0_0_10px_rgba(111,221,160,0.35)];
+  }
+
+  .cog-icon-hub {
+    @apply h-[6.5rem] w-[6.5rem];
+    animation-direction: reverse;
+  }
+
+  @keyframes cog-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Build-log content components (src/components/log/*), embedded in MDX
+     entries. `not-prose` is applied on each root element in the components
+     themselves so Tailwind Typography's `.prose pre/code/img` defaults
+     don't fight this custom styling. */
+  .terminal-block {
+    @apply my-6 overflow-hidden rounded-lg border border-kraft/25 bg-parchment dark:border-glow/20 dark:bg-void/70 dark:shadow-[0_0_30px_rgba(111,221,160,0.08)];
+  }
+
+  .terminal-block-bar {
+    @apply flex items-center gap-2 border-b border-kraft/20 bg-white/60 px-3 py-2 dark:border-glow/15 dark:bg-night/60;
+  }
+
+  .terminal-dot {
+    @apply h-2.5 w-2.5 rounded-full;
+  }
+
+  .terminal-dot-red {
+    @apply bg-coral/70;
+  }
+
+  .terminal-dot-amber {
+    @apply bg-kraft/70;
+  }
+
+  .terminal-dot-green {
+    @apply bg-shell/70 dark:bg-glow/70;
+  }
+
+  .terminal-block-title {
+    @apply ml-2 font-mono text-xs uppercase tracking-wide text-night/50 dark:text-ivory/50;
+  }
+
+  .terminal-block-body {
+    @apply m-0 overflow-x-auto p-4 font-mono text-sm leading-6 text-night/85 dark:text-ivory/85;
+  }
+
+  .diff-block {
+    @apply my-6 overflow-hidden rounded-lg border border-kraft/25 dark:border-glow/20;
+  }
+
+  .diff-block-title {
+    @apply m-0 border-b border-kraft/20 bg-white/60 px-3 py-2 font-mono text-xs uppercase tracking-wide text-night/50 dark:border-glow/15 dark:bg-night/60 dark:text-ivory/50;
+  }
+
+  .diff-block-body {
+    @apply m-0 overflow-x-auto bg-parchment py-2 font-mono text-sm leading-6 dark:bg-void/70;
+  }
+
+  .diff-line {
+    @apply block whitespace-pre px-4 py-0.5 text-night/80 dark:text-ivory/80;
+  }
+
+  .diff-line-add {
+    @apply bg-shell/10 text-shell dark:bg-glow/10 dark:text-glow;
+  }
+
+  .diff-line-del {
+    @apply bg-coral/10 text-coral;
+  }
+
+  .diff-line-ctx {
+    @apply text-night/50 dark:text-ivory/50;
+  }
+
+  .log-figure {
+    @apply my-6;
+  }
+
+  .log-figure-trigger {
+    @apply block w-full cursor-zoom-in appearance-none overflow-hidden rounded-lg border border-kraft/30 bg-parchment p-1 transition dark:border-glow/25 dark:bg-night/40 dark:shadow-[0_0_24px_rgba(111,221,160,0.12)];
+  }
+
+  .log-figure-trigger:hover,
+  .log-figure-trigger:focus-visible {
+    @apply border-shell dark:border-glow;
+  }
+
+  .log-figure-img {
+    @apply w-full rounded-md;
+  }
+
+  .log-figure-caption {
+    @apply mt-2 text-center font-mono text-xs text-night/50 dark:text-ivory/50;
+  }
+
+  .log-figure-dialog {
+    @apply relative m-auto max-w-3xl rounded-lg border border-kraft/30 bg-parchment p-2 backdrop:bg-night/70 dark:border-glow/30 dark:bg-night dark:backdrop:bg-void/85;
+  }
+
+  .log-figure-dialog-img {
+    @apply w-full rounded-md;
+  }
+
+  .log-figure-close {
+    @apply absolute right-3 top-3 flex h-8 w-8 appearance-none items-center justify-center rounded-full border border-kraft/40 bg-parchment text-lg leading-none text-night dark:border-glow/40 dark:bg-night dark:text-ivory;
+  }
+
+  .before-after {
+    @apply my-6;
+  }
+
+  .before-after-frame {
+    @apply relative overflow-hidden rounded-lg border border-kraft/30 bg-parchment dark:border-glow/25 dark:bg-night/40;
+  }
+
+  .before-after-img {
+    @apply block w-full;
+  }
+
+  .before-after-clip {
+    @apply absolute inset-0 overflow-hidden;
+  }
+
+  .before-after-tag {
+    @apply absolute top-2 rounded-full border border-kraft/40 bg-parchment/90 px-2 py-1 font-mono text-[0.65rem] uppercase tracking-wide text-night/70 dark:border-glow/30 dark:bg-night/80 dark:text-ivory/70;
+  }
+
+  .before-after-tag-before {
+    @apply left-2;
+  }
+
+  .before-after-tag-after {
+    @apply right-2;
+  }
+
+  .before-after-range {
+    @apply mt-3 w-full accent-shell dark:accent-glow;
   }
 }

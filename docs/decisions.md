@@ -37,3 +37,113 @@ GitHub Pages is appropriate for lightweight previews, docs, examples, and low-ri
 ## 2026-06-28 - Emphasize scarred-shell gateway personality
 
 The root gateway should make Coderturtle feel like the hands-on, battle-scarred engineer voice of the ecosystem rather than a generic brand portal. The turtle/shell mark, scar lines, cranky workbench copy, and Hekton / Agentic Tekton / Gremlins / Field notes labels now live on the intertwined trace field to show they are connected parts of one ecosystem.
+
+## 2026-06-28 - Make the central turtle interactive
+
+The root gateway turtle should behave like a small resident expert rather than a static badge. The central turtle is now an accessible button that can produce dry engineering quotes, be dragged briefly with pointer input, and be nudged with keyboard arrows. The interaction remains progressive-enhancement only, dependency-free, and respectful of reduced-motion settings.
+
+## 2026-06-29 - Keep root gateway Coderturtle-only
+
+The root gateway should be all about the Coderturtle brand and character: shell, workbench, field notes, labs, dry quotes, and practical engineering scars. Named references to Hekton, Agentic Tekton, Gremlins, and the wider ecosystem belong on `/enter/` and deeper pages after the visitor chooses to enter the site.
+
+## 2026-06-29 - Simplify gateway into a workshop doorway
+
+The root gateway should not feel like a technical map or control panel. The turtle/logo is the strongest brand asset, so the surrounding page should support it with a quieter scarred-shell atmosphere, the `Coderturtle.` brand headline, and a compact workshop-path rail rather than floating orbit labels.
+
+## 2026-06-29 - Keep the main turtle clean and alive
+
+The central turtle/logo should remain visually intact without extra white scar overlays. Motion now comes from the turtle itself: a slow idle wander, pointer drag, keyboard nudging, and dry quote clicks. Smaller background turtles can denote work happening across Field notes, Workbench, and Labs, but they should stay subtle so the main Coderturtle mark remains the focal point.
+
+## 2026-06-29 - Use lightweight work-state turtle variants
+
+The background turtles should feel like Coderturtle is working on different things without requiring new bitmap assets. Field notes, Workbench, and Labs now use the same turtle image with small CSS-drawn props and distinct dry status readouts. This keeps the page fast, static-site friendly, and easy to tune before commissioning or generating custom image variants.
+
+## 2026-07-02 - Give Coderturtle a light-first, illustration-led brand distinct from Agentic Tekton
+
+A full design review found that Coderturtle's dark, mono-chrome, radial-gradient gateway was structurally and visually converging with Agentic Tekton's own dark gateway (same full-viewport layout, pill "Enter" button, pulsing status pip, terminal-mono chrome), undermining the intended "builder workshop" vs. "architecture/thought-leadership" split. It also badly underused Coderturtle's strongest asset: the hand-drawn cranky inventor-turtle illustration and the leather "Turtle Log" grimoire art, both of which were shrunk into small blobs behind generic CSS gradients.
+
+Coderturtle now leads with a warm, **light-first** palette (paper/parchment/kraft, driven by the existing Tailwind tokens plus new `kraft`, `bark`, and `parchment` colors), an **illustration-forward** hero that shows the turtle portrait at real size, and a small reusable hand-drawn SVG mark kit (gear, lightbulb, compass, hex-bolt) derived from the shell's tattoo motif, replacing the old ring/trace/scar gradient field. Dark mode remains available via the existing theme toggle, which the gateway now honors (previously it was hardcoded dark-only and bypassed the toggle). The gateway → `/enter/` structural pattern is kept for ecosystem consistency; only the skin changed.
+
+## 2026-07-02 - Drop the CSS-prop background work turtles
+
+The three background "work turtle" elements (tiny duplicated logo images with CSS-drawn notebook/terminal/goggles props) were removed. They were a weak imitation of the actual illustration; the new mark kit and the full-size hero portrait carry that job better.
+
+## 2026-07-02 - Write a real About page in the established voice
+
+Replaced the placeholder Lorem ipsum About page with first-person content in Coderturtle's dry, practical voice: what the site is, a few build principles, and links into the log/workbench. Moved `/about/` off the legacy `BlogPost` layout onto the shared `BaseLayout` so it matches the rest of the site's design system.
+
+## 2026-07-02 - Replace the blog with a projects + build-logs content model
+
+Coderturtle should speak through real projects and their honest build logs rather than a generic blog, because a blog format-overlaps with Agentic Tekton's editorial/thought-leadership site. `projects` and `logs` are now separate content collections (`src/content.config.ts`), linked by a validated `reference('projects')` field. Projects are the primary navigational unit at `/projects/`; each project's build log is a timeline of entries at `/projects/<slug>/log/<entry>/`. `/blog/` is retired to redirects (`/blog/` → `/projects/`, and the one real post's URL to its new entry URL) rather than repurposed, to keep the two sibling sites unambiguously distinct.
+
+## 2026-07-02 - Migrate real content instead of leaving it as legacy
+
+The one existing real post (`vibing.mdx`, "Vibing with ChatGPT") was migrated into the new model as the first build-log entry of a new "Coderturtle.io" project, rather than left behind under the old collection. It already uses `TurtleTip` callouts and `astro-mermaid` diagrams, so migrating it validated the new component/rendering path with real content on day one instead of a placeholder.
+
+## 2026-07-02 - Default the human-agent narrative to documentary, not fiction
+
+The planned "cranky engineer learning to work with hybrid human-agent teams" narrative thread will proceed as a documentary account of this project's own real build logs, kept deliberately separate from the similar-sounding "gremlin coworkers" fiction already developing in `hekton-field-journal`/`tekton-chronicle`. This default was not confirmed by the user (a direct question went unanswered); flagged in `next-actions.md` for override before the narrative content pass (Phase 4) begins.
+
+## 2026-07-02 - Replace the reused-portrait placeholders with real worker-turtle art
+
+User supplied three real illustrations (`lab-turtle.png`, `project-turtle.png`, `workshop-turtle.png`) purpose-built for the three workshop-floor roles, resolving the placeholder flagged since the interactive-workshop pass. They're in a different illustration style from Coderturtle's own portrait — clean flat-vector "mascot" art with solid white backgrounds, versus the master turtle's textured hand-drawn look — and no attempt was made to paper over that: the existing card framing (already used for the master turtle and, before this, the reused-placeholder workers) reads the white-background photos as intentional "ID badge" portraits rather than a mismatch, and the style contrast between a weathered master turtle and three shinier junior specialists actually reinforces the "master supervises the floor" premise already built into the scene, rather than undermining it. No CSS changes were needed.
+
+Routed the new images through `astro:assets`/sharp (`src/assets/turtles/`) rather than dropping them in `public/` — real win here, not just following convention: each source PNG was 1.7–1.9MB, optimized down to a handful of responsive WebP variants topping out around 130KB.
+
+## 2026-07-02 - Ship Phase 4: the about/manifesto tie-in
+
+User confirmed the earlier default: the narrative stays documentary and fully separate from `hekton-field-journal`/`tekton-chronicle`'s gremlin fiction. With that settled, and with `.hekton/change-log.yaml` containing only the original adoption entry (nothing yet worth curating into `changeRefs`), the concrete, well-scoped remainder of Phase 4 was the "about/manifesto tie-in" named in the original plan: a new section on `/about/` ("An agent does some of the typing. The turtle still owns it.") that states the human-agent collaboration and the log's honesty commitment directly, in the new voice, rather than leaving it implied by the build-log entries alone. This closes out the original four-phase content-architecture plan in full.
+
+## 2026-07-02 - Adopt Coding Horror + cranky-engineer as the durable Coderturtle voice
+
+User asked to set the style globally for Coderturtle content: dry Coding-Horror-style humor (blunt, self-deprecating, anecdote-driven, allergic to hype language) paired with the already-established cranky battle-scarred expert engineer persona. Recorded as `docs/voice-guide.md`, following this ecosystem's existing precedent of a dedicated voice/style-brief doc per project (Agentic Tekton has `docs/design-brief.md`; hekton-field-journal has its own style guide). Worth noting: Agentic Tekton's own voice guide *also* cites Coding Horror, alongside a Phoenix Project narrative register — this isn't accidental convergence or copying, the guide explicitly addresses it: both sites share the Coding Horror reference but not the job (Agentic Tekton writes for architects, Coderturtle narrates as the engineer who was in the room).
+
+Deliberately did **not** retroactively rewrite `0001-vibing-with-chatgpt.mdx` to match — that entry predates the guide and is left as an accurate record of the voice at the time, consistent with the project's own stated promise that the build log isn't staged after the fact. The guide governs new content going forward; demonstrated immediately in `0003-cogs-tilt-and-a-terminal-that-talks-to-agents.mdx`.
+
+## 2026-07-02 - Ship Phase 3: the agent-facing interface
+
+Built the last piece of the earlier-approved content-architecture plan that wasn't yet done: `/llms.txt` (`src/pages/llms.txt.ts`), `/projects/index.json` (`src/pages/projects/index.json.ts`), and `/projects/<slug>.json` (`src/pages/projects/[slug].json.ts`), all build-time generated from the `projects`/`logs` collections so they can't drift from what the site shows. `llms.txt` follows the emerging convention: a plain-text index with a positioning paragraph, a project list, recent build-log entries, links to the JSON/RSS/sitemap mirrors, and an explicit provenance note that `.hekton/` internal data is intentionally not served.
+
+Verification surfaced a real routing quirk worth recording: `npm run dev` 404s on `/projects/<slug>.json` (no trailing slash) despite `trailingSlash: "always"` correctly exempting the *static* `index.json.ts` endpoint the same way it exempts the existing `rss.xml.js`. Before treating this as a bug to fix, checked it against `npm run preview` (which serves the actual static `dist/` output, closer to how the eventual S3/CloudFront production target will serve it) — the no-slash URL returns 200 with the correct `Content-Type` there. The dev server's SSR-style route rewriting applies trailing-slash redirect logic to dynamic endpoint routes that the static build output itself doesn't need. No code change made; documented here so it isn't "fixed" again by someone testing only against `astro dev`.
+
+## 2026-07-02 - Ship Phase 2: visual build-log components
+
+User confirmed the design work so far as "phase 1" and picked "visual build-log components" (Phase 2 of the earlier-approved content-architecture plan) as the next focus. Built four MDX-embeddable components in `src/components/log/`: `TerminalBlock` (macOS-style transcript block), `DiffBlock` (+/- line rendering), `Screenshot` (astro:assets `Image` in a framed card with native-`<dialog>` zoom-on-click), and `BeforeAfter` (range-slider comparison via `clip-path`). All four accept content as string/image props rather than slotted MDX children, specifically to avoid MDX's markdown-reflow collapsing whitespace in terminal/diff content — and all four carry a `not-prose` class on their root element so Tailwind Typography's `.prose pre/code/img` defaults (backtick pseudo-content on inline code, default pre styling, etc.) don't fight the custom styling once nested inside `.log-entry-prose`.
+
+Demonstrated all four with genuine content rather than placeholders: captured real light/dark and workshop-floor screenshots via Playwright (optimized automatically by `astro:assets`/sharp, e.g. 468KB→41KB), and wrote a second build-log entry ("The dark reset: rejecting the schematic pass") that documents today's actual design pivot using a real terminal transcript from the reference-validation test, the real `astro.config.mjs` diff that fixed the Mermaid theming bug, and a real before/after of the gateway's light/dark toggle states. Verified interactions directly (dialog open/close, slider `clip-path` update, diff line counts matching source) rather than trusting a static screenshot.
+
+## 2026-07-02 - Make the workshop floor genuinely dimensional and interactive
+
+User confirmed Hekton's real URL (`https://hekton.theagentictekton.com`) — now a real outbound link on `/ecosystem/` alongside Agentic Tekton, leaving only Gremlins as "coming soon." Separately, the user said `/enter/` "still feels very 2 dimensional" and asked for more visual/interactive quality. Rather than another guess-and-show pass, invested in concrete, well-understood techniques that directly answer "2D": each worker station now tilts in real 3D (`perspective`/`rotateX`/`rotateY` following the pointer within the card, reset on leave) instead of just a flat hover color change; the single static connecting line was replaced with a real bus-and-drop-line diagram from the master turtle to all three workers, with the specific line to whichever worker is hovered/focused glowing and animating a traveling pulse; each worker got its own idle pulsing status pip (staggered timing) so the scene reads as "alive" independent of interaction; the master turtle gained the same drag/keyboard-nudge interaction the gateway turtle has, for tactile parity between the two pages' hero characters.
+
+Hit the same Astro scoping bug a third time and generalized the lesson: any CSS that styles the *root element of an imported component* (an SVG mark, in this and the two prior cases) must live in `global.css`, never in the consuming page's scoped `<style>` block, because Astro's per-file style scoping doesn't propagate into a child component's own render output.
+
+## 2026-07-02 - Interactive workshop scene + dedicated /ecosystem/ page
+
+The user's follow-up feedback on `/enter/` was concrete: make it a genuinely interactive workshop with a labs turtle, a projects turtle, and a workshops turtle, all supervised by the master turtle (Coderturtle); keep Projects and Ecosystem content off the main page entirely; and give Ecosystem its own page showing the workshop floor as one cog in the wider machine, clicking out to the real Hekton/Agentic Tekton/Gremlins sites.
+
+Implemented: the old static "workshop floor" placeholders and the plain Projects/Labs/Workshops lane-card grid were both replaced by one interactive scene on `/enter/` — a master station (Coderturtle, click for a supervisor-themed quote, distinct from the gateway's engineering quotes) with three worker stations below it (Projects/Labs/Workshops, each reusing the single portrait image with a category badge from the existing mark kit). Projects links to the real `/projects/`; Labs and Workshops have no page yet, so they're buttons with an honest "still being built" readout rather than dead links. The ecosystem-section (Hekton/Agentic Tekton/Coderturtle/Gremlins cards) was moved off `/enter/` entirely onto a new `/ecosystem/` page, which frames the same four entities as interlocking cogs: a central Coderturtle hub cog with three outer cogs. **Checked the repo/docs for real external URLs before linking out** rather than guessing: Agentic Tekton is confirmed live at `https://theagentictekton.com` (explicit "Live at" statement in its own session-log) and is a real clickable outbound link; Hekton's only documented URL was an unconfirmed "intended" target and Gremlins (`veilgremlin`) has no site at all and is marked internal-only, so both are shown as "coming soon" rather than risking wrong or dead links. A clarifying question about this went unanswered; proceeded with this evidence-based default.
+
+Along the way, hit and fixed the same Astro scoping bug twice: styling passed as a `class` prop to an imported mark component (`<Gear class="..." />` etc.) does not receive the parent page's scoped-style attribute, because Astro's per-file CSS scoping only reaches elements written directly in that file, not a child component's own root element. Both `.worker-badge` (workshop stations) and `.cog-icon`/`.cog-icon-hub` (ecosystem page) had to move to `global.css` instead of the page's local `<style>` block to actually apply. Worth remembering for any future page that styles a mark component directly rather than through an already-global class.
+
+## 2026-07-02 - Remove the cross-project build-log feed from /enter/
+
+The user confirmed the gateway direction but said `/enter/` "still doesn't land," and gave one concrete fix: remove the "Latest from the build logs" section entirely, since build logs belong embedded in each project/lab/workshop, not surfaced as a separate homepage feed. Removed the section, its `logs` collection query, and the now-unused `entrySlug`/`getCollection` imports from `src/pages/enter.astro`. The rest of `/enter/`'s dissatisfaction is not yet diagnosed — this was one specific, actionable piece of broader feedback, not a full fix.
+
+## 2026-07-02 - Reset to a dark-first "gateway to the future" / workshop direction
+
+**Supersedes the retro-futurist/schematic pass below.** The user rejected that direction outright ("I don't really like it, let's start over") for three reasons: it read as retro-blueprint rather than futuristic, it was too subtle a change, and — the real gap — it never introduced the actual concept the user wanted: "the gateway should be a gateway to the future led by Coderturtle; the main site should be a futuristic workshop where turtles and agent turtles build together." Clarified before rebuilding: the user has no new illustrated "agent turtle" character art yet and will supply/commission it separately, so the workshop concept had to be built *structurally* now (reserved station slots) without fabricating fake character art. A follow-up palette question went unanswered; proceeded with the recommended option (dark, glowing workshop-at-night) since it best fits "gateway to the future" and was already flagged with an explicit mitigation for the Agentic Tekton convergence risk (glow/bloom + illustration-forward staging, not their flat minimal-ink editorial style).
+
+Changes: dark is now the default theme sitewide (new `void`/`glow` Tailwind tokens, `ThemeToggle` defaults to dark, a blocking pre-paint script avoids a light flash); the gateway is rebuilt as a "portal" — glowing concentric rings, a star field, a glowing portrait frame, copy reframed around "the gateway to what's next" / "Enter the future"; `/enter/` gains a new "workshop floor" section with Coderturtle's active station plus two explicitly-labeled `[ agent turtle · reserved ]` placeholder stations (dashed glow frames, not fake art) ready to receive supplied artwork later. Light mode is kept fully functional as the secondary/toggle option, reusing the earlier warm-palette work rather than being redesigned.
+
+## 2026-07-02 - Add a retro-futurist/schematic chrome layer (superseded)
+
+The user asked for a "next-generation, futuristic" feel but explicitly did not want the site to get busy, since projects should be what pops. Generic "futuristic" (dark, neon, glassmorphic) would have re-converged Coderturtle with Agentic Tekton's existing dark editorial aesthetic, so the direction chosen is retro-futurist/schematic instead: a fine blueprint grid backdrop with edge tick marks, corner-bracket/reticle framing on key panels (`src/components/CornerBrackets.astro`, reused on the gateway portrait and both workbench panels), and bracketed telemetry-style labels (`[ ]`) for chrome/metadata only — panel kickers, timeline meta rows, status pips. Project titles, descriptions, taglines, and build-log prose are explicitly untouched by this treatment so the content stays the visual focus. Hover/interaction transitions were also tightened to a snappier easing curve (`cubic-bezier(0.16, 1, 0.3, 1)`, set as the Tailwind `transition` default) for a more precise, instrument-panel feel; ambient/idle animations (turtle wander, status pip pulse) were left with their original easing since those are meant to feel organic, not snappy.
+
+## 2026-07-02 - Fix gateway quote bubble overlapping the headline
+
+User-reported bug: the dry-quote bubble triggered by clicking the gateway turtle was rendering on top of/colliding with the "Coderturtle." headline, making both illegible. Root cause: the bubble was positioned `left: calc(100% + 1rem)` relative to a portrait frame that had become much narrower after the illustration-forward redesign, pushing it into the adjacent headline column. Fixed by repositioning the bubble below the portrait frame instead of beside it, entirely within the portrait's own column; the existing mobile override (already bottom-anchored above the portrait) was unaffected.
+
+## 2026-07-02 - Fix silent Shiki/Mermaid conflict and dead-code accumulation found during verification
+
+Verifying the migrated build-log entry surfaced two real, pre-existing bugs, both fixed in this session: (1) `astro.config.mjs` had `markdown.syntaxHighlight: "shiki"` as a bare string, which syntax-highlights every fenced code block — including ` ```mermaid ` — before `astro-mermaid`'s rehype plugin can transform it into a diagram, so Mermaid diagrams had likely never actually rendered in this repo; fixed by switching to the object form of `syntaxHighlight` with `excludeLangs: ["mermaid"]`, which only takes effect in that form. (2) The migration exposed a stack of dead legacy scaffold from the original Astro blog-starter template (`Header.astro`, `Footer.astro`, `BaseHead.astro`, `HeaderLink.astro`, `FormattedDate.astro`, five unused placeholder JPGs) whose only consumer, `BlogPost.astro`, was already deleted in the prior session; all confirmed zero-reference and removed.

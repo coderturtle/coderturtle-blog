@@ -1,0 +1,19 @@
+---
+// A +/- diff block for build-log entries. `diff` is a plain string prop
+// (lines prefixed with "+", "-", or a space for context) parsed server-side,
+// so it never goes through MDX's markdown reflow either.
+interface Props {
+  title?: string;
+  diff: string;
+}
+const { title, diff } = Astro.props;
+const lines = diff.replace(/^\n/, "").replace(/\n+$/, "").split("\n");
+const kindOf = (line: string) => (line.startsWith("+") ? "add" : line.startsWith("-") ? "del" : "ctx");
+---
+
+<div class="diff-block not-prose">
+  {title && <p class="diff-block-title">{title}</p>}
+  <pre class="diff-block-body"><code>{lines.map((line) => (
+    <span class={`diff-line diff-line-${kindOf(line)}`} set:text={line || " "} />
+  ))}</code></pre>
+</div>

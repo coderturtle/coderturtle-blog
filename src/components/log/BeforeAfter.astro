@@ -1,0 +1,44 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  before: ImageMetadata;
+  after: ImageMetadata;
+  beforeLabel?: string;
+  afterLabel?: string;
+}
+const { before, after, beforeLabel = "before", afterLabel = "after" } = Astro.props;
+const id = `ba-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="before-after not-prose" id={id}>
+  <div class="before-after-frame">
+    <Image src={after} alt={afterLabel} class="before-after-img" widths={[480, 800, 1200]} sizes="(min-width: 60rem) 40rem, 90vw" />
+    <div class="before-after-clip">
+      <Image src={before} alt={beforeLabel} class="before-after-img" widths={[480, 800, 1200]} sizes="(min-width: 60rem) 40rem, 90vw" />
+    </div>
+    <span class="before-after-tag before-after-tag-before">{beforeLabel}</span>
+    <span class="before-after-tag before-after-tag-after">{afterLabel}</span>
+  </div>
+  <input
+    type="range"
+    class="before-after-range"
+    min="0"
+    max="100"
+    value="50"
+    aria-label={`Slide to compare ${beforeLabel} and ${afterLabel}`}
+  />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".before-after").forEach((el) => {
+    const range = el.querySelector<HTMLInputElement>(".before-after-range");
+    const clip = el.querySelector<HTMLElement>(".before-after-clip");
+    if (!range || !clip) return;
+    const update = () => {
+      clip.style.clipPath = `inset(0 ${100 - Number(range.value)}% 0 0)`;
+    };
+    range.addEventListener("input", update);
+    update();
+  });
+</script>

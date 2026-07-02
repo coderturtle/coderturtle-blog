@@ -1,0 +1,81 @@
+---
+import Layout from "../../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import { entrySlug } from "../../../lib/logs";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+const base = import.meta.env.BASE_URL;
+const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const entries = (await getCollection("logs", (entry) => entry.data.project.id === project.id))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => {
+    const byDate = b.data.date.getTime() - a.data.date.getTime();
+    if (byDate !== 0) return byDate;
+    return (b.data.order ?? 0) - (a.data.order ?? 0);
+  });
+---
+
+<Layout title={project.data.title} description={project.data.summary}>
+  <section class="log-hero">
+    <img src={url("logo.png")} alt="" class="log-hero-image" />
+    <div>
+      <span class={`status-pill status-${project.data.status}`}>{project.data.status}</span>
+      <h1 class="mt-3">{project.data.title}</h1>
+      <p class="lede mt-3">{project.data.tagline}</p>
+      <div class="project-meta">
+        {project.data.stack.map((tech) => <span class="status-pill status-shipped">{tech}</span>)}
+      </div>
+      <div class="hero-actions">
+        {project.data.liveUrl && (
+          <a class="button-primary" href={project.data.liveUrl}>Visit live</a>
+        )}
+        {project.data.repo && (
+          <a class="button-secondary" href={project.data.repo}>View repo</a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-stack">
+    <div class="section-heading">
+      <p class="eyebrow">About this project</p>
+      <div class="prose dark:prose-invert max-w-none"><Content /></div>
+    </div>
+  </section>
+
+  <section class="section-stack" aria-labelledby="log-title">
+    <div class="section-heading">
+      <p class="eyebrow">Build log</p>
+      <h2 id="log-title">The honest timeline.</h2>
+      <p>Every entry below is real: what happened, in the order it happened.</p>
+    </div>
+    <ol class="log-timeline">
+      {entries.length > 0 ? entries.map((entry) => (
+        <li class="log-timeline-item">
+          <div class="log-timeline-meta">
+            <span>{entry.data.date.toLocaleDateString("en-GB", { year: "numeric", month: "short", day: "numeric" })}</span>
+            <span>{entry.data.kind}</span>
+            {entry.data.phase && <span>{entry.data.phase}</span>}
+          </div>
+          <h3>
+            <a href={url(`projects/${project.id}/log/${entrySlug(entry.id)}/`)}>{entry.data.title}</a>
+          </h3>
+          <p>{entry.data.summary}</p>
+        </li>
+      )) : (
+        <li class="log-timeline-item">
+          <h3>The log is empty.</h3>
+          <p>No entries yet — the first one is still being written.</p>
+        </li>
+      )}
+    </ol>
+  </section>
+</Layout>

@@ -1,0 +1,21 @@
+---
+// A terminal transcript block for build-log entries. `code` is a plain
+// string prop (not slotted children) so exact whitespace/newlines survive
+// without going through MDX's markdown reflow.
+interface Props {
+  title?: string;
+  code: string;
+}
+const { title = "shell", code } = Astro.props;
+const body = code.replace(/^\n/, "").replace(/\n+$/, "");
+---
+
+<div class="terminal-block not-prose">
+  <div class="terminal-block-bar">
+    <span class="terminal-dot terminal-dot-red"></span>
+    <span class="terminal-dot terminal-dot-amber"></span>
+    <span class="terminal-dot terminal-dot-green"></span>
+    <span class="terminal-block-title">{title}</span>
+  </div>
+  <pre class="terminal-block-body"><code set:text={body} /></pre>
+</div>

@@ -1,0 +1,48 @@
+---
+import Layout from "../../../../../layouts/BaseLayout.astro";
+import { getCollection, getEntry, render } from "astro:content";
+import { entrySlug } from "../../../../../lib/logs";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("logs", (entry) => !entry.data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.data.project.id, entry: entrySlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const base = import.meta.env.BASE_URL;
+const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
+
+const { entry } = Astro.props;
+const project = await getEntry(entry.data.project);
+const { Content } = await render(entry);
+---
+
+<Layout title={`${entry.data.title} — ${project.data.title}`} description={entry.data.summary}>
+  <article>
+    <p class="eyebrow">
+      <a href={url(`projects/${project.id}/`)} class="text-link">{project.data.title}</a> · build log
+    </p>
+    <h1 class="max-w-3xl text-4xl font-bold leading-tight md:text-6xl">{entry.data.title}</h1>
+    <div class="log-timeline-meta mt-4">
+      <span>{entry.data.date.toLocaleDateString("en-GB", { year: "numeric", month: "short", day: "numeric" })}</span>
+      <span>{entry.data.kind}</span>
+      {entry.data.phase && <span>{entry.data.phase}</span>}
+      {entry.data.changeRefs.map((ref) => <span>{ref}</span>)}
+    </div>
+    {entry.data.tags.length > 0 && (
+      <ul class="tag-list" aria-label={`Tags for ${entry.data.title}`}>
+        {entry.data.tags.map((tag) => <li>{tag}</li>)}
+      </ul>
+    )}
+
+    <div class="log-entry-prose">
+      <Content />
+    </div>
+
+    <footer class="mt-16 border-t border-kraft/20 pt-6 text-center text-sm text-night/60 dark:border-ivory/15 dark:text-ivory/60">
+      Filed under <a href={url(`projects/${project.id}/`)} class="text-link">{project.data.title}</a>, watched over by Coderturtle 🐢
+    </footer>
+  </article>
+</Layout>

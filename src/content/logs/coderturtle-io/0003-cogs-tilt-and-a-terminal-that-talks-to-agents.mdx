@@ -1,0 +1,115 @@
+---
+project: coderturtle-io
+title: "Cogs, tilt, and a terminal that talks back to agents"
+date: 2026-07-02
+order: 3
+phase: "closing out the plan"
+summary: "The ecosystem got its own page shaped like actual gears, the workshop floor stopped being flat, and the site learned to describe itself in a format agents can parse instead of just humans."
+kind: build
+changeRefs: []
+tags: ["design", "interaction", "llms-txt", "astro"]
+---
+
+import TerminalBlock from "@/components/log/TerminalBlock.astro";
+import Screenshot from "@/components/log/Screenshot.astro";
+import ecosystemCogs from "@/assets/logs/coderturtle-io/ecosystem-cogs.png";
+
+Three asks landed back to back: get the ecosystem off the homepage and
+make it click out to the real sites, stop the workshop floor from looking
+like a PowerPoint slide with turtles glued to it, and build the
+machine-readable interface everyone promises and nobody keeps in sync
+with the actual site. All three got done today. None of them were as
+simple as that sentence makes them sound, which is normal, because
+sentences like that are where the work goes to hide.
+
+## The ecosystem, drawn as the thing it actually is
+
+"Show the workshop as a cog in the wider ecosystem" is the kind of brief
+that's either a five-minute CSS job or a small essay on what a cog
+metaphor is even supposed to mean. It turned out to be the second one,
+briefly, until it turned back into the first one: a hub gear for
+Coderturtle, three orbit gears for Hekton, Agentic Tekton, and Gremlins,
+spinning on a plain CSS animation because nobody needed a physics engine
+for this.
+
+<Screenshot
+  src={ecosystemCogs}
+  alt="The /ecosystem/ page: a central Coderturtle gear connected to three outer gears for Agentic Tekton, Hekton, and Gremlins, two marked 'visit site' and one marked 'coming soon'."
+  caption="/ecosystem/, as shipped. Two real links, one honest placeholder."
+/>
+
+The two "real" links took longer than the gears did, because "real"
+meant actually checking, not assuming. Agentic Tekton's URL was easy —
+its own session log says "Live at https://theagentictekton.com" in plain
+English. Hekton and Gremlins were not easy. The only Hekton URL in the
+repo was described as an "intended" target in a doc that never said it
+shipped, and Gremlins (`veilgremlin`, locally) doesn't have a site at
+all — it's marked internal-only. So both went out as "coming soon" cogs,
+not links, on the theory that a wrong link is worse than an honest gap.
+The user confirmed Hekton's real URL a few messages later. Gremlins is
+still a gap. That's fine — a gap you know about is a Tuesday; a gap you
+guessed your way past is an incident report.
+
+## Making the floor stop being flat
+
+"This still feels very 2 dimensional" is not a request you can satisfy
+with a bigger drop shadow, and credit where it's due, the feedback didn't
+try to be. It asked for more visual, more interactive — vague enough to
+require actually deciding something instead of tweaking a number.
+
+What shipped: the three worker turtles tilt in real 3D perspective
+tracking the pointer, not just a hover-darken; the single static line
+from the master turtle became an actual bus-and-drop-line diagram that
+lights up and pulses toward whichever station you're looking at; each
+worker got its own idle pulse so the floor reads as alive even when
+nobody's touching it; and the master turtle finally got the same drag
+interaction the gateway turtle has had this whole time, because there
+was no good reason for the supervisor to be the one thing on the page
+that couldn't be picked up and shaken a little.
+
+None of that required a library. `perspective()` and `rotateX/rotateY`
+on pointermove, a few absolutely positioned divs for the connector lines,
+and the same drag math already sitting in the gateway's script, copied
+and retuned. The lesson, if there has to be one: "more interactive"
+doesn't always mean "add a dependency." Sometimes it means finally using
+the CSS properties that were sitting there unused the whole time.
+
+## Two build-time interfaces, one for readers with eyes, one without
+
+The visual build-log components — terminal blocks, diffs, screenshots,
+before/afters — are the ones a human notices. `/llms.txt` and the
+`/projects/*.json` endpoints are the ones a human never will, which is
+sort of the point. Both got built the same afternoon, and both got
+verified the same way: not by reading the code and nodding, but by
+actually hitting the endpoints and looking at what came back.
+
+That's how a small, dumb-looking bug got caught before it became a
+support ticket six months from now:
+
+<TerminalBlock
+  title="shell"
+  code={`$ curl -s -o /dev/null -w "%{http_code}\\n" \\
+    http://localhost:4321/projects/coderturtle-io.json
+404
+$ npm run preview -- --port 4322
+$ curl -s -o /dev/null -w "%{http_code}\\n" \\
+    http://localhost:4322/projects/coderturtle-io.json
+200`}
+/>
+
+\`astro dev\` 404s that URL without a trailing slash. The actual static
+build, served the way S3 will eventually serve it, returns it fine. If
+that first curl had been the only test run, the fix would have been to
+"correct" a bug that doesn't exist in production — which is its own kind
+of incident, the kind where you spend an afternoon debugging your test
+environment instead of your software. Checked the real output before
+touching the code. The code didn't need touching.
+
+## What's still just a cog with no wire attached
+
+Gremlins still has nowhere to send anyone. The palette question from
+earlier in the day never got an answer, so this whole direction is
+running on the recommended default, not a confirmed one. And the Labs
+and Workshops turtles are still buttons that admit they lead nowhere yet,
+which is a better look than a link that 404s, but it's still a promise
+with a due date nobody's set.

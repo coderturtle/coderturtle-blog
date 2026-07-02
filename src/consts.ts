@@ -3,4 +3,4 @@
 
 export const SITE_TITLE = "Coderturtle";
 export const SITE_DESCRIPTION =
-  "Hands-on notes, labs, workshops, and field reports from building agentic engineering systems.";
+  "Practical field notes, lab scars, and workshop patterns from a cranky, hands-on engineering shell.";

@@ -1,0 +1,53 @@
+---
+import Layout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const base = import.meta.env.BASE_URL;
+const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
+
+const projects = (await getCollection("projects")).sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  if (a.data.order !== b.data.order) return a.data.order - b.data.order;
+  const aDate = a.data.updatedDate ?? a.data.startDate;
+  const bDate = b.data.updatedDate ?? b.data.startDate;
+  return bDate.getTime() - aDate.getTime();
+});
+---
+
+<Layout
+  title="Projects"
+  description="Real projects, built in the open, with an honest build log for each one."
+>
+  <section class="flex flex-col items-center gap-4 pb-12 pt-8 text-center md:pb-16">
+    <p class="eyebrow">What Coderturtle is actually building</p>
+    <h1 class="max-w-3xl text-4xl font-bold leading-tight md:text-6xl">Projects, not posts.</h1>
+    <p class="lede max-w-2xl">
+      Everything here is a real build with a real log: what shipped, what
+      broke, and what changed along the way. Notes belong to a project, not
+      the other way around.
+    </p>
+  </section>
+
+  <div class="note-grid log-grid">
+    {projects.length > 0 ? projects.map((project) => (
+      <article class="note-card">
+        <span class={`status-pill status-${project.data.status}`}>{project.data.status}</span>
+        <h3 class="mt-3">
+          <a href={url(`projects/${project.id}/`)}>{project.data.title}</a>
+        </h3>
+        <p>{project.data.tagline}</p>
+        {project.data.tags.length > 0 && (
+          <ul class="tag-list" aria-label={`Tags for ${project.data.title}`}>
+            {project.data.tags.slice(0, 4).map((tag) => <li>{tag}</li>)}
+          </ul>
+        )}
+      </article>
+    )) : (
+      <article class="note-card">
+        <p class="note-date">Now</p>
+        <h3>Nothing filed yet.</h3>
+        <p>The first project is still in the shell. Check back soon.</p>
+      </article>
+    )}
+  </div>
+</Layout>

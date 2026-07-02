@@ -1,80 +1,68 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import Compass from "../components/marks/Compass.astro";
+import Lightbulb from "../components/marks/Lightbulb.astro";
+import Gear from "../components/marks/Gear.astro";
+import CornerBrackets from "../components/CornerBrackets.astro";
+import projectTurtle from "../assets/turtles/project-turtle.png";
+import labTurtle from "../assets/turtles/lab-turtle.png";
+import workshopTurtle from "../assets/turtles/workshop-turtle.png";
 
 const base = import.meta.env.BASE_URL;
 const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
 
-const blog = await getCollection("blog");
-const latest = blog
-  .filter((post) => post.id !== "test")
-  .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
-  .slice(0, 3);
-
 const signals = [
-  "agentic engineering systems",
-  "practical architecture notes",
-  "labs, workshops, and field reports",
+  "real projects, not posts",
+  "practical workshop patterns",
+  "labs, workshops, and build logs",
 ];
 
-const workshopLanes = [
+const workers = [
   {
-    title: "Field notes",
-    text: "Short, useful write-ups from the workbench: decisions, trade-offs, broken builds, and things that finally clicked.",
-    href: url("blog/"),
+    key: "projects",
+    label: "projects turtle",
+    Mark: Compass,
+    portrait: projectTurtle,
+    href: url("projects/"),
+    detail: "Filing build logs, tracking status, keeping receipts. Click through to the real projects.",
   },
   {
-    title: "Labs",
-    text: "Small experiments that test how agents, tools, docs, and delivery workflows behave when the nice diagrams meet real repos.",
-    href: "#labs",
+    key: "labs",
+    label: "labs turtle",
+    Mark: Lightbulb,
+    portrait: labTurtle,
+    href: null,
+    detail: "Running an experiment. Suspicion level: healthy. The Labs page is still being built.",
   },
   {
-    title: "Workshops",
-    text: "Reusable patterns, prompts, and implementation walkthroughs for people building agentic systems without ceremony.",
-    href: "#workshops",
-  },
-];
-
-const ecosystem = [
-  {
-    name: "Hekton",
-    role: "The factory",
-    text: "The personal operating system behind the work: scaffolding, validation, project memory, and agent handoffs.",
-  },
-  {
-    name: "Agentic Tekton",
-    role: "The architecture layer",
-    text: "The more formal thinking space for enterprise architecture, operating models, and AI delivery patterns.",
-  },
-  {
-    name: "Coderturtle",
-    role: "The workshop voice",
-    text: "The hands-on narrator: what got built, what broke, what was learned, and what is worth trying next.",
-  },
-  {
-    name: "Gremlins",
-    role: "The product/lab direction",
-    text: "Reusable agentic SDLC helpers that may graduate from experiments into real tools.",
+    key: "workshops",
+    label: "workshops turtle",
+    Mark: Gear,
+    portrait: workshopTurtle,
+    href: null,
+    detail: "Drafting reusable patterns and prompts. The Workshops page is still being built.",
   },
 ];
 ---
 
 <Layout
   title="Workbench"
-  description="Hands-on notes, labs, workshops, and field reports from building agentic engineering systems."
+  description="Real projects, honest build logs, labs, and workshops from a hands-on engineering shell."
 >
   <section class="hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">Builder notes from the agentic workshop</p>
-      <h1>Field notes from building agentic engineering systems.</h1>
+      <p class="eyebrow">Builder notes from the future workshop</p>
+      <h1>Real projects, with an honest build log for each one.</h1>
       <p class="lede">
-        Coderturtle is the practical, curious side of the Hekton ecosystem:
-        hands-on notes, labs, workshops, and experiments from building software
-        with agents in the loop.
+        Coderturtle runs a futuristic workshop where a stubborn old
+        engineering turtle and its agent collaborators build real things in
+        the open &mdash; real builds, real decisions, and the build logs
+        that show the work instead of just the highlight reel.
       </p>
       <div class="hero-actions" aria-label="Primary actions">
-        <a class="button-primary" href={url("blog/")}>Read the notes</a>
-        <a class="button-secondary" href="#ecosystem">Map the ecosystem</a>
+        <a class="button-primary" href={url("projects/")}>See the projects</a>
+        <a class="button-secondary" href={url("ecosystem/")}>Map the ecosystem</a>
       </div>
       <ul class="signal-list" aria-label="Current focus areas">
         {signals.map((signal) => <li>{signal}</li>)}
@@ -82,6 +70,7 @@ const ecosystem = [
     </div>
 
     <aside class="workbench-panel" aria-label="Coderturtle workbench snapshot">
+      <CornerBrackets inset="0.65rem" />
       <div class="panel-bar">
         <span></span>
         <span></span>
@@ -101,6 +90,10 @@ const ecosystem = [
         <span class="prompt">coderturtle</span>
         <span>build, narrate, learn</span>
       </div>
+      <div class="panel-line">
+        <span class="prompt">agent turtle</span>
+        <span>build alongside, log the diff</span>
+      </div>
       <details class="panel-details">
         <summary>Current workshop note</summary>
         <p>
@@ -111,82 +104,66 @@ const ecosystem = [
     </aside>
   </section>
 
-  <section class="section-stack" id="workbench" aria-labelledby="workbench-title">
+  <section class="section-stack" id="workbench" aria-labelledby="floor-title">
     <div class="section-heading">
-      <p class="eyebrow">What lives here</p>
-      <h2 id="workbench-title">A workbench for useful fragments.</h2>
+      <p class="eyebrow">The workshop floor</p>
+      <h2 id="floor-title">One shell, three turtles, all watched by the master.</h2>
       <p>
-        This homepage should make it obvious where to go next, whether the
-        visitor wants a blog post, a lab note, a reusable pattern, or a map of
-        the wider ecosystem.
+        Labs, Projects, and Workshops each get their own turtle at the bench.
+        Coderturtle runs the floor and keeps an eye on all three.
       </p>
     </div>
-    <div class="lane-grid">
-      {workshopLanes.map((lane) => (
-        <article class="lane-card">
-          <h3>{lane.title}</h3>
-          <p>{lane.text}</p>
-          <a href={lane.href}>Open {lane.title.toLowerCase()}</a>
-        </article>
-      ))}
-    </div>
-  </section>
 
-  <section class="section-stack" aria-labelledby="notes-title">
-    <div class="section-heading inline-heading">
-      <div>
-        <p class="eyebrow">Latest field notes</p>
-        <h2 id="notes-title">Recent writing from the shell.</h2>
+    <div class="workshop-scene">
+      <div class="master-station-wrap">
+        <button
+          class="master-station"
+          type="button"
+          aria-label="Ask the master turtle for a supervisor's note"
+          aria-describedby="master-quote"
+        >
+          <img src={url("logo-transparent.png")} alt="Coderturtle, the master turtle supervising the workshop floor." class="master-portrait" />
+          <CornerBrackets inset="0.4rem" />
+        </button>
+        <p class="master-label telemetry-label">coderturtle · master</p>
+        <p class="master-quote" id="master-quote" aria-live="polite"></p>
       </div>
-      <a href={url("blog/")} class="text-link">All notes</a>
-    </div>
-    <div class="note-grid">
-      {latest.length > 0 ? latest.map((post) => (
-        <article class="note-card">
-          <p class="note-date">
-            {new Date(post.data.pubDate).toLocaleDateString("en-GB", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
-          </p>
-          <h3>
-            <a href={url(`blog/${post.id}/`)}>{post.data.title}</a>
-          </h3>
-          <p>{post.data.description}</p>
-          {post.data.tags?.length && (
-            <ul class="tag-list" aria-label={`Tags for ${post.data.title}`}>
-              {post.data.tags.slice(0, 3).map((tag) => <li>{tag}</li>)}
-            </ul>
-          )}
-        </article>
-      )) : (
-        <article class="note-card">
-          <p class="note-date">Now</p>
-          <h3>Notes are being gathered.</h3>
-          <p>The workbench is open; the first useful field notes will land here.</p>
-        </article>
-      )}
+
+      <div class="worker-row">
+        <span class="connector-bus" aria-hidden="true"></span>
+        {workers.map((worker) => (
+          <span class={`connector-drop connector-${worker.key}`} data-connector={worker.key} aria-hidden="true"></span>
+        ))}
+        {workers.map((worker, i) => {
+          const Mark = worker.Mark;
+          const Tag = worker.href ? "a" : "button";
+          return (
+            <Tag
+              class="worker-station"
+              type={worker.href ? undefined : "button"}
+              href={worker.href ?? undefined}
+              data-key={worker.key}
+              data-detail={worker.detail}
+              aria-label={`${worker.label}: ${worker.detail}`}
+            >
+              <span class="worker-portrait-wrap">
+                <span class={`worker-pip`} style={`animation-delay: ${i * 0.6}s`} aria-hidden="true"></span>
+                <Image src={worker.portrait} alt="" class="worker-portrait" widths={[96, 160, 240]} sizes="6rem" />
+                <Mark class="worker-badge" />
+              </span>
+              <span class="worker-label telemetry-label">{worker.label}</span>
+            </Tag>
+          );
+        })}
+      </div>
+
+      <p class="workshop-readout" id="workshop-readout" aria-live="polite">
+        Hover or focus a turtle to see what it's doing.
+      </p>
     </div>
   </section>
 
-  <section class="ecosystem-section" id="ecosystem" aria-labelledby="ecosystem-title">
-    <div class="section-heading">
-      <p class="eyebrow">Where Coderturtle fits</p>
-      <h2 id="ecosystem-title">One ecosystem, different voices.</h2>
-    </div>
-    <div class="ecosystem-grid">
-      {ecosystem.map((item) => (
-        <article class="ecosystem-card">
-          <p>{item.role}</p>
-          <h3>{item.name}</h3>
-          <span>{item.text}</span>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="closing-band" id="labs" aria-labelledby="closing-title">
+  <section class="closing-band" aria-labelledby="closing-title">
     <div>
       <p class="eyebrow">MVP direction</p>
       <h2 id="closing-title">Practical, curious, and close to the work.</h2>
@@ -199,3 +176,449 @@ const ecosystem = [
     <a class="button-primary" href={url("about/")}>Meet the builder</a>
   </section>
 </Layout>
+
+<script>
+  const readout = document.querySelector("#workshop-readout");
+  const stations = document.querySelectorAll(".worker-station");
+  const master = document.querySelector(".master-station");
+  const masterQuote = document.querySelector("#master-quote");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const defaultReadout = "Hover or focus a turtle to see what it's doing.";
+  const supervisorQuotes = [
+    "Nobody touches main without me reading the diff first.",
+    "I don't need to watch the whole floor. I just need to see whose build broke.",
+    "Agents draft. I still sign off on the blast radius.",
+    "The bench stays tidy. The commit history does not have to.",
+    "Slow shell, fast reviews. That is the whole management style.",
+  ];
+  let quoteIndex = 0;
+
+  function setReadout(value: string) {
+    if (readout) readout.textContent = value;
+  }
+
+  function setActiveConnector(key: string | null) {
+    document.querySelectorAll(".connector-drop").forEach((drop) => {
+      drop.classList.toggle("is-active", (drop as HTMLElement).dataset.connector === key);
+    });
+  }
+
+  stations.forEach((station) => {
+    const el = station as HTMLElement;
+    const detail = el.dataset.detail || "";
+    const key = el.dataset.key || null;
+    el.addEventListener("pointerenter", () => { setReadout(detail); setActiveConnector(key); });
+    el.addEventListener("pointerleave", () => { setReadout(defaultReadout); setActiveConnector(null); });
+    el.addEventListener("focus", () => { setReadout(detail); setActiveConnector(key); });
+    el.addEventListener("blur", () => { setReadout(defaultReadout); setActiveConnector(null); });
+
+    if (reduceMotion.matches) return;
+    const wrap = el.querySelector(".worker-portrait-wrap") as HTMLElement | null;
+    if (!wrap) return;
+    el.addEventListener("pointermove", (event: PointerEvent) => {
+      const rect = wrap.getBoundingClientRect();
+      const px = (event.clientX - rect.left) / rect.width - 0.5;
+      const py = (event.clientY - rect.top) / rect.height - 0.5;
+      wrap.style.setProperty("--tilt-x", `${(px * 16).toFixed(2)}deg`);
+      wrap.style.setProperty("--tilt-y", `${(py * -16).toFixed(2)}deg`);
+    });
+    el.addEventListener("pointerleave", () => {
+      wrap.style.setProperty("--tilt-x", "0deg");
+      wrap.style.setProperty("--tilt-y", "0deg");
+    });
+  });
+
+  function setQuote() {
+    if (!masterQuote) return;
+    masterQuote.textContent = supervisorQuotes[quoteIndex % supervisorQuotes.length];
+    masterQuote.classList.add("has-quote");
+    quoteIndex += 1;
+  }
+
+  if (master) {
+    let dragStart: { pointerId: number; startX: number; startY: number; originX: number; originY: number; moved: boolean } | null = null;
+    let masterOffset = { x: 0, y: 0 };
+    let suppressClick = false;
+
+    function setMasterTransform(x: number, y: number) {
+      masterOffset = { x, y };
+      (master as HTMLElement).style.setProperty("--turtle-x", `${x}px`);
+      (master as HTMLElement).style.setProperty("--turtle-y", `${y}px`);
+      (master as HTMLElement).style.setProperty("--turtle-tilt", `${Math.max(-6, Math.min(6, x / 10))}deg`);
+    }
+
+    master.addEventListener("click", () => {
+      if (suppressClick) {
+        suppressClick = false;
+        return;
+      }
+      setQuote();
+    });
+
+    master.addEventListener("pointerdown", (event: Event) => {
+      const e = event as PointerEvent;
+      if (reduceMotion.matches || e.button !== 0) return;
+      dragStart = {
+        pointerId: e.pointerId,
+        startX: e.clientX,
+        startY: e.clientY,
+        originX: masterOffset.x,
+        originY: masterOffset.y,
+        moved: false,
+      };
+      master.classList.add("is-dragging");
+      (master as HTMLElement).setPointerCapture(e.pointerId);
+    });
+
+    master.addEventListener("pointermove", (event: Event) => {
+      const e = event as PointerEvent;
+      if (!dragStart || dragStart.pointerId !== e.pointerId) return;
+      const nextX = Math.max(-44, Math.min(44, dragStart.originX + e.clientX - dragStart.startX));
+      const nextY = Math.max(-32, Math.min(32, dragStart.originY + e.clientY - dragStart.startY));
+      dragStart.moved = dragStart.moved || Math.abs(nextX - dragStart.originX) > 4 || Math.abs(nextY - dragStart.originY) > 4;
+      setMasterTransform(nextX, nextY);
+    });
+
+    master.addEventListener("pointerup", (event: Event) => {
+      const e = event as PointerEvent;
+      if (!dragStart || dragStart.pointerId !== e.pointerId) return;
+      suppressClick = dragStart.moved;
+      dragStart = null;
+      master.classList.remove("is-dragging");
+      setMasterTransform(0, 0);
+    });
+
+    master.addEventListener("pointercancel", () => {
+      dragStart = null;
+      suppressClick = false;
+      master.classList.remove("is-dragging");
+      setMasterTransform(0, 0);
+    });
+
+    master.addEventListener("keydown", (event: Event) => {
+      const e = event as KeyboardEvent;
+      const nudge = ({
+        ArrowLeft: [-12, 0],
+        ArrowRight: [12, 0],
+        ArrowUp: [0, -12],
+        ArrowDown: [0, 12],
+      } as Record<string, [number, number]>)[e.key];
+      if (!nudge) return;
+      e.preventDefault();
+      const nextX = Math.max(-44, Math.min(44, masterOffset.x + nudge[0]));
+      const nextY = Math.max(-32, Math.min(32, masterOffset.y + nudge[1]));
+      setMasterTransform(nextX, nextY);
+    });
+
+    master.addEventListener("blur", () => setMasterTransform(0, 0));
+  }
+</script>
+
+<style>
+  .workshop-scene {
+    margin-top: 2rem;
+  }
+
+  .master-station-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 auto 2.5rem;
+    width: fit-content;
+  }
+
+  .master-station {
+    --turtle-x: 0px;
+    --turtle-y: 0px;
+    --turtle-tilt: 0deg;
+    position: relative;
+    display: block;
+    width: clamp(6.5rem, 14vw, 9rem);
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    border: 1px solid theme("colors.kraft / 30%");
+    background: theme("colors.parchment");
+    padding: 0.6rem;
+    appearance: none;
+    cursor: grab;
+    touch-action: none;
+    transform: translate(var(--turtle-x), var(--turtle-y)) rotate(var(--turtle-tilt));
+    transition:
+      box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  :global(.dark) .master-station {
+    border-color: theme("colors.glow / 30%");
+    background: theme("colors.night / 60%");
+    box-shadow: 0 0 30px rgb(111 221 160 / 0.14);
+  }
+
+  .master-station:hover,
+  .master-station:focus-visible,
+  .master-station.is-dragging {
+    box-shadow: 0 0 26px rgb(76 149 108 / 0.28);
+  }
+
+  :global(.dark) .master-station:hover,
+  :global(.dark) .master-station:focus-visible,
+  :global(.dark) .master-station.is-dragging {
+    box-shadow: 0 0 40px rgb(111 221 160 / 0.35);
+  }
+
+  .master-station.is-dragging {
+    cursor: grabbing;
+    transition: box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .master-portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .master-quote {
+    max-width: 22rem;
+    min-height: 1.2rem;
+    margin: 0;
+    text-align: center;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+
+  .master-quote.has-quote {
+    opacity: 1;
+  }
+
+  .worker-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+
+  .connector-bus {
+    position: absolute;
+    left: 16.666%;
+    right: 16.666%;
+    top: -1.6rem;
+    height: 1px;
+    background: theme("colors.kraft / 40%");
+  }
+
+  :global(.dark) .connector-bus {
+    background: theme("colors.glow / 25%");
+  }
+
+  .connector-drop {
+    position: absolute;
+    top: -1.6rem;
+    width: 1px;
+    height: 1.6rem;
+    background: theme("colors.kraft / 40%");
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  :global(.dark) .connector-drop {
+    background: theme("colors.glow / 25%");
+  }
+
+  .connector-drop.connector-projects {
+    left: 16.666%;
+  }
+
+  .connector-drop.connector-labs {
+    left: 50%;
+  }
+
+  .connector-drop.connector-workshops {
+    left: 83.333%;
+  }
+
+  .connector-drop.is-active {
+    background: theme("colors.shell");
+    box-shadow: 0 0 8px rgb(76 149 108 / 0.55);
+  }
+
+  :global(.dark) .connector-drop.is-active {
+    background: theme("colors.glow");
+    box-shadow: 0 0 10px rgb(111 221 160 / 0.75);
+  }
+
+  .connector-drop::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: theme("colors.shell");
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  :global(.dark) .connector-drop::after {
+    background: theme("colors.glow");
+    box-shadow: 0 0 6px rgb(111 221 160 / 0.8);
+  }
+
+  .connector-drop.is-active::after {
+    opacity: 1;
+    animation: connector-pulse 0.9s ease-in-out infinite;
+  }
+
+  @keyframes connector-pulse {
+    0% {
+      top: 0;
+      opacity: 0;
+    }
+
+    15% {
+      opacity: 1;
+    }
+
+    85% {
+      opacity: 1;
+    }
+
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
+  }
+
+  .worker-station {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    border: none;
+    background: none;
+    padding: 0;
+    appearance: none;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .worker-portrait-wrap {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    --lift: 0px;
+    position: relative;
+    display: block;
+    width: clamp(4.5rem, 9vw, 6rem);
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    border: 1px solid theme("colors.kraft / 25%");
+    background: theme("colors.parchment");
+    padding: 0.45rem;
+    transform: perspective(600px) rotateX(var(--tilt-y)) rotateY(var(--tilt-x)) translateY(var(--lift));
+    transition:
+      border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.12s ease-out;
+  }
+
+  :global(.dark) .worker-portrait-wrap {
+    border-color: theme("colors.glow / 20%");
+    background: theme("colors.night / 50%");
+  }
+
+  .worker-portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.9;
+  }
+
+  .worker-pip {
+    position: absolute;
+    top: 0.3rem;
+    left: 0.3rem;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: theme("colors.shell");
+    box-shadow: 0 0 6px rgb(76 149 108 / 0.6), 0 0 0 0 rgb(76 149 108 / 0.5);
+    animation: worker-pulse 2.4s ease-in-out infinite;
+  }
+
+  :global(.dark) .worker-pip {
+    background: theme("colors.glow");
+    box-shadow: 0 0 6px rgb(111 221 160 / 0.7), 0 0 0 0 rgb(111 221 160 / 0.5);
+  }
+
+  @keyframes worker-pulse {
+    50% {
+      box-shadow: 0 0 6px rgb(76 149 108 / 0.6), 0 0 0 5px transparent;
+    }
+  }
+
+  .worker-station:hover .worker-portrait-wrap,
+  .worker-station:focus-visible .worker-portrait-wrap {
+    border-color: theme("colors.shell");
+    --lift: -2px;
+  }
+
+  :global(.dark) .worker-station:hover .worker-portrait-wrap,
+  :global(.dark) .worker-station:focus-visible .worker-portrait-wrap {
+    border-color: theme("colors.glow");
+    box-shadow: 0 0 22px rgb(111 221 160 / 0.3);
+  }
+
+  .worker-label {
+    color: theme("colors.night / 55%");
+  }
+
+  :global(.dark) .worker-label {
+    color: theme("colors.ivory / 55%");
+  }
+
+  .workshop-readout {
+    min-height: 1.4rem;
+    max-width: 32rem;
+    margin: 1.75rem auto 0;
+    text-align: center;
+    color: theme("colors.night / 55%");
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  :global(.dark) .workshop-readout {
+    color: theme("colors.ivory / 55%");
+  }
+
+  @media (max-width: 560px) {
+    .worker-row {
+      grid-template-columns: 1fr;
+      max-width: 14rem;
+      gap: 1.5rem;
+    }
+
+    .connector-bus,
+    .connector-drop {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .master-station,
+    .worker-portrait-wrap {
+      transition: none;
+    }
+
+    .worker-pip,
+    .connector-drop.is-active::after {
+      animation: none;
+    }
+  }
+</style>

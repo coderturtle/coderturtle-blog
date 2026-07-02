@@ -1,33 +1,39 @@
 ---
 import "../styles/global.css";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import Gear from "../components/marks/Gear.astro";
+import Lightbulb from "../components/marks/Lightbulb.astro";
+import Compass from "../components/marks/Compass.astro";
+import HexBolt from "../components/marks/HexBolt.astro";
+import CornerBrackets from "../components/CornerBrackets.astro";
 
 const base = import.meta.env.BASE_URL;
 const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
 
 const nodes = [
   {
-    className: "node-hekton",
-    label: "Hekton",
-    href: url("enter/#ecosystem"),
-    detail: "Factory line: scaffolds the job, keeps receipts, and stops clever agents from wandering into load-bearing walls.",
+    label: "Projects",
+    href: url("projects/"),
+    Mark: Compass,
+    detail: "Real builds with an honest log: scars, fixes, and ideas that survived contact with the repo.",
   },
   {
-    className: "node-tekton",
-    label: "Agentic Tekton",
-    href: url("enter/#ecosystem"),
-    detail: "Architecture ridge: patterns, operating models, and the grown-up map for agentic systems.",
-  },
-  {
-    className: "node-gremlins",
-    label: "Gremlins",
+    label: "Workbench",
     href: url("enter/#workbench"),
-    detail: "Lab spur: reusable product experiments and sharp little tools for the agentic SDLC.",
+    Mark: Gear,
+    detail: "The workshop where Coderturtle and its agent collaborators build in the open.",
   },
   {
-    className: "node-notes",
-    label: "Field notes",
-    href: url("blog/"),
-    detail: "Workshop trail: the scars, fixes, diagrams, and hard-won notes from the shell.",
+    label: "Labs",
+    href: url("enter/#labs"),
+    Mark: Lightbulb,
+    detail: "Small tests from the workshop, kept honest by logs, screenshots, and a healthy suspicion of demos.",
+  },
+  {
+    label: "The builder",
+    href: url("about/"),
+    Mark: HexBolt,
+    detail: "The cranky turtle at the keyboard: slow shell, sharp questions, and too many production memories.",
   },
 ];
 ---
@@ -39,34 +45,33 @@ const nodes = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Coderturtle is the practical workshop voice of the Hekton ecosystem: notes, labs, experiments, and field reports from building agentic engineering systems."
+      content="Coderturtle: the gateway to what's next. A futuristic workshop where a cranky engineering turtle and its agent collaborators build in the open."
     />
     <title>Coderturtle</title>
     <link rel="icon" type="image/x-icon" href={url("favicon.ico")} />
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem("coderturtle-theme");
+        const theme = stored ?? "dark";
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
   </head>
   <body class="gateway-body">
     <section class="turtle-gate" aria-labelledby="gate-title">
-      <div class="gate-shell-field" aria-label="Coderturtle ecosystem map">
-        <span class="shell-ring ring-one" aria-hidden="true"></span>
-        <span class="shell-ring ring-two" aria-hidden="true"></span>
-        <span class="shell-ring ring-three" aria-hidden="true"></span>
-        <span class="shell-trace trace-one" aria-hidden="true"></span>
-        <span class="shell-trace trace-two" aria-hidden="true"></span>
-        <span class="shell-trace trace-three" aria-hidden="true"></span>
-        <span class="shell-trace trace-four" aria-hidden="true"></span>
-        <span class="shell-scar scar-one" aria-hidden="true"></span>
-        <span class="shell-scar scar-two" aria-hidden="true"></span>
-        <span class="shell-scar scar-three" aria-hidden="true"></span>
-        {nodes.map((node) => (
-          <a
-            class={`shell-node ${node.className}`}
-            href={node.href}
-            data-detail={node.detail}
-            aria-label={`${node.label}: ${node.detail}`}
-          >
-            {node.label}
-          </a>
-        ))}
+      <span class="gate-stars" aria-hidden="true"></span>
+      <span class="gate-texture" aria-hidden="true"></span>
+      <div class="gate-portal-rings" aria-hidden="true">
+        <span class="portal-ring ring-1"></span>
+        <span class="portal-ring ring-2"></span>
+        <span class="portal-ring ring-3"></span>
+      </div>
+      <div class="gate-marks-field" aria-hidden="true">
+        <Gear class="field-mark mark-gear" />
+        <Lightbulb class="field-mark mark-bulb" />
+        <Compass class="field-mark mark-compass" />
+        <HexBolt class="field-mark mark-hex" />
       </div>
 
       <header class="gate-top">
@@ -74,71 +79,179 @@ const nodes = [
           <img src={url("logo.png")} alt="" width="36" height="36" />
           <span>Coderturtle</span>
         </a>
-        <a class="gate-top-link" href={url("blog/")}>Notes</a>
+        <div class="gate-top-actions">
+          <a class="gate-top-link" href={url("projects/")}>Projects</a>
+          <ThemeToggle />
+        </div>
       </header>
 
       <main class="gate-core">
-        <div class="gate-emblem" aria-hidden="true">
-          <img src={url("logo-transparent.png")} alt="" class="gate-logo" />
-          <span class="emblem-eye"></span>
-          <span class="emblem-scar emblem-scar-one"></span>
-          <span class="emblem-scar emblem-scar-two"></span>
+        <div class="gate-portrait-stage">
+          <button
+            class="gate-portrait"
+            type="button"
+            aria-label="Ask the Coderturtle for a dry engineering note"
+            aria-describedby="gate-turtle-quote"
+          >
+            <img src={url("logo-transparent.png")} alt="A hand-drawn cranky old turtle inventor, arms crossed, wearing round glasses, with a shell tattooed with a lightbulb, a blueprint castle, and a gear." class="gate-portrait-img" />
+            <CornerBrackets />
+          </button>
+          <span class="gate-portrait-id telemetry-label">unit 01 · online</span>
+          <p class="gate-turtle-quote" id="gate-turtle-quote" aria-live="polite"></p>
         </div>
-        <p class="gate-eyebrow">battle-scarred notes from the shell</p>
-        <h1 id="gate-title">Enter the scarred shell.</h1>
-        <p class="gate-tagline">
-          Practical notes, lab scars, workshop patterns, and field reports from
-          building agentic engineering systems inside the Hekton factory.
-        </p>
-        <a class="gate-enter" href={url("enter/")}>
-          <span>Enter</span>
-          <span class="gate-arrow" aria-hidden="true">-&gt;</span>
-        </a>
-        <p class="gate-hint">
-          Hekton is the factory. Agentic Tekton is the architecture layer.
-          Coderturtle is the cranky shell at the bench, muttering until the system works.
-        </p>
-        <p class="gate-readout" id="gate-readout" aria-live="polite">
-          Hover the traced ecosystem lines, or just enter the workshop.
-        </p>
+
+        <div class="gate-copy">
+          <p class="gate-eyebrow">the gateway to what's next</p>
+          <h1 id="gate-title">Coderturtle.</h1>
+          <p class="gate-tagline">
+            Leading the way into a workshop where a stubborn old engineer and
+            its agent collaborators build in the open &mdash; real projects,
+            real progress, no highlight reel.
+          </p>
+          <a class="gate-enter" href={url("enter/")}>
+            <span>Enter the future</span>
+            <span class="gate-arrow" aria-hidden="true">-&gt;</span>
+          </a>
+          <nav class="gate-mark-nav" aria-label="Coderturtle workshop paths">
+            {nodes.map((node) => {
+              const Mark = node.Mark;
+              return (
+                <a
+                  class="gate-mark"
+                  href={node.href}
+                  data-detail={node.detail}
+                  aria-label={`${node.label}: ${node.detail}`}
+                >
+                  <Mark class="gate-mark-icon" />
+                  <span>{node.label}</span>
+                </a>
+              );
+            })}
+          </nav>
+          <p class="gate-readout" id="gate-readout" aria-live="polite">
+            Poke the turtle, or step through a workshop path.
+          </p>
+        </div>
       </main>
 
       <footer class="gate-foot">
-        <span>Static files, scar tissue, useful experiments.</span>
-        <span class="gate-status"><span class="pip"></span> Workshop open</span>
+        <span>Human turtle + agent turtles, building in the open.</span>
+        <span class="gate-status"><span class="pip"></span> Systems online</span>
       </footer>
     </section>
     <script>
-      const gate = document.querySelector(".turtle-gate");
       const readout = document.querySelector("#gate-readout");
       const nodes = document.querySelectorAll("[data-detail]");
+      const portrait = document.querySelector(".gate-portrait");
+      const turtleQuote = document.querySelector("#gate-turtle-quote");
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-      const defaultReadout = "Hover the traced ecosystem lines, or just enter the workshop.";
+      const defaultReadout = "Poke the turtle, or step through a workshop path.";
+      const turtleQuotes = [
+        "It worked in staging because staging has never met a real customer.",
+        "The rollback plan is not decorative. Ask me how I know.",
+        "If the diagram has no failure path, it is fan fiction.",
+        "YAML is just indentation with consequences.",
+        "Ship the boring path first. Make it clever after it survives Tuesday.",
+        "A shell is just armor with a changelog.",
+        "The tool can draft it. The engineer still owns the blast radius.",
+      ];
+      let quoteIndex = 0;
+      let dragStart: { pointerId: number; startX: number; startY: number; originX: number; originY: number; moved: boolean } | null = null;
+      let turtleOffset = { x: 0, y: 0 };
+      let suppressQuoteClick = false;
 
-      function setReadout(value) {
+      function setReadout(value: string) {
         if (readout) readout.textContent = value;
       }
 
-      if (gate && !reduceMotion.matches) {
-        gate.addEventListener("pointermove", (event) => {
-          const rect = gate.getBoundingClientRect();
-          const x = ((event.clientX - rect.left) / rect.width - 0.5).toFixed(3);
-          const y = ((event.clientY - rect.top) / rect.height - 0.5).toFixed(3);
-          gate.style.setProperty("--mx", x);
-          gate.style.setProperty("--my", y);
+      function setTurtleTransform(x: number, y: number) {
+        turtleOffset = { x, y };
+        if (!portrait) return;
+        (portrait as HTMLElement).style.setProperty("--turtle-x", `${x}px`);
+        (portrait as HTMLElement).style.setProperty("--turtle-y", `${y}px`);
+        (portrait as HTMLElement).style.setProperty("--turtle-tilt", `${Math.max(-6, Math.min(6, x / 12))}deg`);
+      }
 
-          const hovered = document
-            .elementFromPoint(event.clientX, event.clientY)
-            ?.closest("[data-detail]");
-          setReadout(hovered?.dataset.detail || defaultReadout);
+      function setQuote() {
+        if (!turtleQuote) return;
+        turtleQuote.textContent = turtleQuotes[quoteIndex % turtleQuotes.length];
+        turtleQuote.classList.add("has-quote");
+        quoteIndex += 1;
+      }
+
+      if (portrait) {
+        portrait.addEventListener("click", () => {
+          if (suppressQuoteClick) {
+            suppressQuoteClick = false;
+            return;
+          }
+
+          setQuote();
         });
+
+        portrait.addEventListener("pointerdown", (event: PointerEvent) => {
+          if (reduceMotion.matches || event.button !== 0) return;
+
+          dragStart = {
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
+            originX: turtleOffset.x,
+            originY: turtleOffset.y,
+            moved: false,
+          };
+          portrait.classList.add("is-dragging");
+          (portrait as HTMLElement).setPointerCapture(event.pointerId);
+        });
+
+        portrait.addEventListener("pointermove", (event: PointerEvent) => {
+          if (!dragStart || dragStart.pointerId !== event.pointerId) return;
+
+          const nextX = Math.max(-56, Math.min(56, dragStart.originX + event.clientX - dragStart.startX));
+          const nextY = Math.max(-40, Math.min(40, dragStart.originY + event.clientY - dragStart.startY));
+          dragStart.moved = dragStart.moved || Math.abs(nextX - dragStart.originX) > 4 || Math.abs(nextY - dragStart.originY) > 4;
+          setTurtleTransform(nextX, nextY);
+        });
+
+        portrait.addEventListener("pointerup", (event: PointerEvent) => {
+          if (!dragStart || dragStart.pointerId !== event.pointerId) return;
+
+          suppressQuoteClick = dragStart.moved;
+          dragStart = null;
+          portrait.classList.remove("is-dragging");
+          setTurtleTransform(0, 0);
+        });
+
+        portrait.addEventListener("pointercancel", () => {
+          dragStart = null;
+          suppressQuoteClick = false;
+          portrait.classList.remove("is-dragging");
+          setTurtleTransform(0, 0);
+        });
+
+        portrait.addEventListener("keydown", (event: KeyboardEvent) => {
+          const nudge = ({
+            ArrowLeft: [-12, 0],
+            ArrowRight: [12, 0],
+            ArrowUp: [0, -12],
+            ArrowDown: [0, 12],
+          } as Record<string, [number, number]>)[event.key];
+
+          if (!nudge) return;
+          event.preventDefault();
+          const nextX = Math.max(-56, Math.min(56, turtleOffset.x + nudge[0]));
+          const nextY = Math.max(-40, Math.min(40, turtleOffset.y + nudge[1]));
+          setTurtleTransform(nextX, nextY);
+        });
+
+        portrait.addEventListener("blur", () => setTurtleTransform(0, 0));
       }
 
       nodes.forEach((node) => {
-        node.addEventListener("pointerenter", () => setReadout(node.dataset.detail || ""));
+        node.addEventListener("pointerenter", () => setReadout((node as HTMLElement).dataset.detail || ""));
         node.addEventListener("pointerleave", () => setReadout(defaultReadout));
-        node.addEventListener("mouseenter", () => setReadout(node.dataset.detail || ""));
-        node.addEventListener("focus", () => setReadout(node.dataset.detail || ""));
+        node.addEventListener("mouseenter", () => setReadout((node as HTMLElement).dataset.detail || ""));
+        node.addEventListener("focus", () => setReadout((node as HTMLElement).dataset.detail || ""));
         node.addEventListener("mouseleave", () => setReadout(defaultReadout));
         node.addEventListener("blur", () => setReadout(defaultReadout));
       });
@@ -150,15 +263,24 @@ const nodes = [
   :global(body.gateway-body) {
     margin: 0;
     min-height: 100svh;
-    background: #1c1c1e;
-    color: #f1ecce;
+    background: #0a0f0d;
     font-family: Atkinson, Inter, ui-sans-serif, system-ui, sans-serif;
     letter-spacing: 0;
   }
 
   .turtle-gate {
-    --mx: 0;
-    --my: 0;
+    /* Dark "gateway to the future" is the default, designed experience. */
+    --bg: #0a0f0d;
+    --bg-soft: #121815;
+    --ink: #f1ecce;
+    --ink-soft: rgb(241 236 206 / 0.78);
+    --ink-faint: rgb(241 236 206 / 0.55);
+    --line: rgb(111 221 160 / 0.18);
+    --card-bg: rgb(18 24 21 / 0.82);
+    --accent: #6fdda0;
+    --accent-warm: #c9a56a;
+    --accent-loud: #f25c54;
+    --mist: #82b8ba;
     position: relative;
     width: 100%;
     max-width: 100vw;
@@ -168,212 +290,140 @@ const nodes = [
     grid-template-rows: auto 1fr auto;
     isolation: isolate;
     background:
-      radial-gradient(circle at calc(50% + (var(--mx) * 7rem)) calc(46% + (var(--my) * 5rem)), rgb(76 149 108 / 0.25), transparent 28rem),
-      radial-gradient(circle at calc(74% - (var(--mx) * 5rem)) calc(22% - (var(--my) * 4rem)), rgb(242 92 84 / 0.2), transparent 18rem),
-      radial-gradient(circle at calc(30% + (var(--mx) * 4rem)) calc(72% + (var(--my) * 5rem)), rgb(130 184 186 / 0.16), transparent 18rem),
-      radial-gradient(circle at 50% 52%, rgb(241 236 206 / 0.08), transparent 19rem),
-      linear-gradient(145deg, #171719 0%, #202421 54%, #151616 100%);
+      radial-gradient(ellipse 70% 50% at 50% 38%, rgb(111 221 160 / 0.12), transparent 62%),
+      var(--bg);
+    color: var(--ink);
   }
 
-  .turtle-gate::before {
-    content: "";
+  :global(html:not(.dark)) .turtle-gate {
+    --bg: #f7f4ea;
+    --bg-soft: #fbf7ec;
+    --ink: #1c1c1e;
+    --ink-soft: rgb(28 28 30 / 0.7);
+    --ink-faint: rgb(28 28 30 / 0.5);
+    --line: rgb(28 28 30 / 0.12);
+    --card-bg: #ffffff;
+    --accent: #4c956c;
+    background: var(--bg);
+  }
+
+  .gate-stars {
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background:
-      linear-gradient(rgb(241 236 206 / 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(241 236 206 / 0.04) 1px, transparent 1px);
-    background-size: 72px 72px;
-    mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+    background-image: radial-gradient(rgb(241 236 206 / 0.5) 1px, transparent 1px);
+    background-size: 140px 140px;
+    background-position: 20px 30px;
+    opacity: 0.35;
   }
 
-  .gate-shell-field {
+  :global(html:not(.dark)) .gate-stars {
+    display: none;
+  }
+
+  .gate-texture {
     position: absolute;
     inset: 0;
-    z-index: 1;
-    overflow: hidden;
-    transform: translate(calc(var(--mx) * -12px), calc(var(--my) * -10px));
-    transition: transform 0.12s ease-out;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, black 30%, transparent 90%);
   }
 
-  .gate-shell-field::before {
-    content: "";
+  .gate-portal-rings {
     position: absolute;
     left: 50%;
-    top: 50%;
-    width: min(42rem, 70vw);
-    height: min(29rem, 58vh);
-    border-radius: 50% 48% 46% 52% / 52% 46% 54% 48%;
-    transform: translate(-50%, -50%) rotate(-10deg);
-    background:
-      linear-gradient(120deg, transparent 0 46%, rgb(241 236 206 / 0.11) 47% 48%, transparent 49%),
-      linear-gradient(62deg, transparent 0 44%, rgb(130 184 186 / 0.13) 45% 46%, transparent 47%),
-      radial-gradient(circle at 48% 50%, rgb(76 149 108 / 0.2), transparent 60%);
-    border: 1px solid rgb(241 236 206 / 0.12);
-    box-shadow:
-      inset 0 0 60px rgb(76 149 108 / 0.08),
-      0 0 90px rgb(130 184 186 / 0.08);
+    top: 42%;
+    z-index: 0;
     pointer-events: none;
-  }
-
-  .shell-ring {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    border: 1px solid rgb(130 184 186 / 0.22);
-    border-radius: 999px;
-    transform: translate(-50%, -50%) rotate(-8deg);
-    box-shadow: inset 0 0 44px rgb(130 184 186 / 0.04);
-    pointer-events: none;
-  }
-
-  .ring-one {
-    width: min(66rem, 94vw);
-    height: min(28rem, 54vh);
-    animation: shell-drift 18s ease-in-out infinite;
-  }
-
-  .ring-two {
-    width: min(48rem, 78vw);
-    height: min(20rem, 40vh);
-    border-color: rgb(76 149 108 / 0.3);
-    transform: translate(-50%, -50%) rotate(9deg);
-    animation: shell-drift-alt 22s ease-in-out infinite;
-  }
-
-  .ring-three {
-    width: min(28rem, 58vw);
-    height: min(12rem, 28vh);
-    border-color: rgb(242 92 84 / 0.24);
-    transform: translate(-50%, -50%) rotate(-18deg);
-    animation: shell-drift 16s ease-in-out infinite reverse;
-  }
-
-  .shell-trace {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 1px;
-    height: min(70rem, 122vh);
-    background:
-      linear-gradient(to bottom, transparent 0 13%, rgb(130 184 186 / 0.26) 28%, rgb(241 236 206 / 0.2) 50%, rgb(242 92 84 / 0.18) 70%, transparent 87%),
-      repeating-linear-gradient(to bottom, transparent 0 18px, rgb(241 236 206 / 0.22) 18px 20px, transparent 20px 34px);
-    transform-origin: center;
-    pointer-events: none;
-    filter: drop-shadow(0 0 12px rgb(130 184 186 / 0.14));
-  }
-
-  .trace-one {
-    transform: translate(-50%, -50%) rotate(53deg);
-  }
-
-  .trace-two {
-    transform: translate(-50%, -50%) rotate(116deg);
-  }
-
-  .trace-three {
-    transform: translate(-50%, -50%) rotate(-24deg);
-  }
-
-  .trace-four {
-    transform: translate(-50%, -50%) rotate(154deg);
-  }
-
-  .shell-scar {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    height: 2px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, transparent, rgb(242 92 84 / 0.65), rgb(241 236 206 / 0.7), transparent);
-    box-shadow: 0 0 16px rgb(242 92 84 / 0.22);
-    transform-origin: center;
-    pointer-events: none;
-  }
-
-  .scar-one {
-    width: min(18rem, 34vw);
-    transform: translate(-62%, -290%) rotate(-21deg);
-  }
-
-  .scar-two {
-    width: min(12rem, 24vw);
-    transform: translate(10%, 310%) rotate(26deg);
-  }
-
-  .scar-three {
-    width: min(9rem, 18vw);
-    transform: translate(-150%, 140%) rotate(65deg);
-  }
-
-  .shell-node {
-    position: absolute;
-    border: 1px solid rgb(241 236 206 / 0.16);
-    border-radius: 8px;
-    background: rgb(28 28 30 / 0.72);
-    color: rgb(241 236 206 / 0.72);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
-    padding: 0.55rem 0.7rem;
-    text-transform: uppercase;
-    text-decoration: none;
-    box-shadow: 0 16px 42px rgb(0 0 0 / 0.18);
-    backdrop-filter: blur(10px);
-    transition:
-      border-color 0.2s ease,
-      background 0.2s ease,
-      box-shadow 0.2s ease,
-      color 0.2s ease,
-      transform 0.2s ease;
-  }
-
-  .shell-node::before {
-    content: "";
-    display: inline-block;
-    width: 0.48rem;
-    height: 0.48rem;
-    margin-right: 0.5rem;
-    border-radius: 50%;
-    background: #82b8ba;
-    box-shadow: 0 0 0 4px rgb(130 184 186 / 0.12);
-  }
-
-  .shell-node:hover,
-  .shell-node:focus-visible {
-    border-color: #82b8ba;
-    background: rgb(130 184 186 / 0.12);
-    color: #f1ecce;
-    box-shadow: 0 0 42px rgb(130 184 186 / 0.16);
-    transform: translate(-50%, -50%) scale(1.05);
-  }
-
-  .node-hekton {
-    left: calc(50% - min(29rem, 40vw));
-    top: calc(50% + min(17rem, 27vh));
-  }
-
-  .node-tekton {
-    left: calc(50% + min(25rem, 35vw));
-    top: calc(50% - min(14rem, 23vh));
-  }
-
-  .node-gremlins {
-    left: calc(50% + min(27rem, 38vw));
-    top: calc(50% + min(17rem, 27vh));
-  }
-
-  .node-notes {
-    left: calc(50% - min(18rem, 30vw));
-    top: calc(50% - min(15rem, 24vh));
-  }
-
-  .node-hekton,
-  .node-tekton,
-  .node-gremlins,
-  .node-notes {
     transform: translate(-50%, -50%);
+  }
+
+  .portal-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 999px;
+    border: 1px solid rgb(111 221 160 / 0.22);
+    transform: translate(-50%, -50%);
+    box-shadow: inset 0 0 60px rgb(111 221 160 / 0.05);
+  }
+
+  :global(html:not(.dark)) .portal-ring {
+    border-color: rgb(76 149 108 / 0.16);
+  }
+
+  .ring-1 {
+    width: min(30rem, 78vw);
+    height: min(30rem, 78vw);
+    animation: portal-pulse 9s ease-in-out infinite;
+  }
+
+  .ring-2 {
+    width: min(42rem, 96vw);
+    height: min(42rem, 96vw);
+    animation: portal-pulse 9s ease-in-out infinite 1.4s;
+  }
+
+  .ring-3 {
+    width: min(54rem, 112vw);
+    height: min(54rem, 112vw);
+    animation: portal-pulse 9s ease-in-out infinite 2.8s;
+  }
+
+  .gate-marks-field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    color: var(--accent-warm);
+    opacity: 0.12;
+  }
+
+  :global(html.dark) .gate-marks-field {
+    color: var(--accent);
+    opacity: 0.08;
+  }
+
+  .field-mark {
+    position: absolute;
+    width: 6.5rem;
+    height: 6.5rem;
+  }
+
+  .mark-gear {
+    left: 6%;
+    top: 14%;
+    transform: rotate(-8deg);
+  }
+
+  .mark-bulb {
+    right: 8%;
+    top: 10%;
+    width: 5.25rem;
+    height: 5.25rem;
+    transform: rotate(6deg);
+  }
+
+  .mark-compass {
+    left: 10%;
+    bottom: 12%;
+    width: 5.75rem;
+    height: 5.75rem;
+    transform: rotate(4deg);
+  }
+
+  .mark-hex {
+    right: 7%;
+    bottom: 16%;
+    width: 5rem;
+    height: 5rem;
+    transform: rotate(-5deg);
   }
 
   .gate-top,
@@ -407,181 +457,292 @@ const nodes = [
   .gate-brand img {
     width: 2.25rem;
     height: 2.25rem;
+    border-radius: 999px;
+  }
+
+  :global(html.dark) .gate-brand img {
+    filter: drop-shadow(0 0 8px rgb(111 221 160 / 0.4));
+  }
+
+  .gate-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
   }
 
   .gate-top-link {
-    border: 1px solid rgb(241 236 206 / 0.18);
+    border: 1px solid var(--line);
     border-radius: 8px;
     padding: 0.65rem 0.85rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.75rem;
-    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 700;
   }
 
   .gate-top-link:hover,
-  .gate-top-link:focus-visible,
-  .gate-enter:hover,
-  .gate-enter:focus-visible {
-    border-color: #82b8ba;
-    box-shadow: 0 0 32px rgb(130 184 186 / 0.2);
+  .gate-top-link:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   .gate-core {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 1.25rem 1rem;
-    pointer-events: none;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1rem clamp(1rem, 4vw, 3rem) 2rem;
   }
 
-  .gate-emblem {
+  .gate-portrait-stage {
     position: relative;
-    width: clamp(5.8rem, 13vw, 8.4rem);
-    height: clamp(5.8rem, 13vw, 8.4rem);
-    border: 1px solid rgb(130 184 186 / 0.28);
-    border-radius: 50% 47% 45% 51% / 50% 45% 55% 48%;
-    background:
-      radial-gradient(circle at 34% 26%, rgb(241 236 206 / 0.2), transparent 28%),
-      linear-gradient(135deg, rgb(76 149 108 / 0.24), rgb(241 236 206 / 0.08));
-    padding: 0.8rem;
-    box-shadow:
-      0 28px 80px rgb(0 0 0 / 0.28),
-      inset 0 0 30px rgb(0 0 0 / 0.18);
-    transform: translate(calc(var(--mx) * 12px), calc(var(--my) * 10px));
+    justify-self: center;
+    width: 100%;
+    max-width: clamp(15rem, 26vw, 21rem);
+    animation: turtle-wander 16s ease-in-out infinite;
+  }
+
+  .gate-portrait-stage:hover,
+  .gate-portrait-stage:focus-within {
+    animation-play-state: paused;
+  }
+
+  .gate-portrait {
+    --turtle-x: 0px;
+    --turtle-y: 0px;
+    --turtle-tilt: 0deg;
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    background: var(--card-bg);
+    padding: 0.75rem;
+    appearance: none;
+    cursor: grab;
+    box-shadow: 0 24px 48px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(111 221 160 / 0.08);
+    transform: translate(var(--turtle-x), var(--turtle-y)) rotate(var(--turtle-tilt));
     transition:
       box-shadow 0.2s ease,
-      transform 0.12s ease-out;
-    pointer-events: auto;
+      transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+    touch-action: none;
   }
 
-  .gate-emblem:hover {
-    box-shadow:
-      0 28px 80px rgb(0 0 0 / 0.28),
-      0 0 46px rgb(130 184 186 / 0.22),
-      inset 0 0 30px rgb(0 0 0 / 0.18);
+  :global(html:not(.dark)) .gate-portrait {
+    box-shadow: 0 24px 48px rgb(28 28 30 / 0.12);
   }
 
-  .gate-logo {
+  .gate-portrait-id {
+    display: block;
+    margin-top: 0.6rem;
+    text-align: center;
+  }
+
+  .gate-portrait:hover,
+  .gate-portrait:focus-visible,
+  .gate-portrait.is-dragging {
+    box-shadow: 0 28px 60px rgb(0 0 0 / 0.5), 0 0 44px rgb(111 221 160 / 0.35);
+  }
+
+  :global(html:not(.dark)) .gate-portrait:hover,
+  :global(html:not(.dark)) .gate-portrait:focus-visible,
+  :global(html:not(.dark)) .gate-portrait.is-dragging {
+    box-shadow: 0 28px 56px rgb(28 28 30 / 0.16), 0 0 0 4px rgb(76 149 108 / 0.14);
+  }
+
+  .gate-portrait:focus-visible {
+    outline: 2px solid var(--accent-loud);
+    outline-offset: 6px;
+  }
+
+  .gate-portrait.is-dragging {
+    cursor: grabbing;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .gate-portrait-img {
     position: relative;
     z-index: 1;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 8px 16px rgb(0 0 0 / 0.3));
   }
 
-  .emblem-eye {
+  .gate-turtle-quote {
     position: absolute;
-    right: 22%;
-    top: 28%;
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 50%;
-    background: #f25c54;
-    box-shadow: 0 0 18px rgb(242 92 84 / 0.65);
-    z-index: 2;
+    left: 50%;
+    top: 100%;
+    z-index: 4;
+    width: min(18rem, 92%);
+    margin: 0;
+    border: 1px solid rgb(242 92 84 / 0.3);
+    border-radius: 10px;
+    background: var(--card-bg);
+    color: var(--ink);
+    box-shadow: 0 16px 32px rgb(0 0 0 / 0.4);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    opacity: 0;
+    padding: 0.75rem 0.9rem;
+    pointer-events: none;
+    text-align: left;
+    transform: translate(-50%, 0.15rem) rotate(-1deg);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
   }
 
-  .emblem-scar {
+  .gate-turtle-quote::before {
+    content: "";
     position: absolute;
-    height: 2px;
-    border-radius: 999px;
-    background: #f1ecce;
-    opacity: 0.85;
-    z-index: 3;
+    left: 50%;
+    top: -0.32rem;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-left: 1px solid rgb(242 92 84 / 0.3);
+    border-top: 1px solid rgb(242 92 84 / 0.3);
+    background: var(--card-bg);
+    transform: translateX(-50%) rotate(45deg);
   }
 
-  .emblem-scar-one {
-    left: 18%;
-    top: 34%;
-    width: 42%;
-    transform: rotate(-22deg);
+  .gate-turtle-quote.has-quote {
+    opacity: 1;
+    transform: translate(-50%, 0.65rem) rotate(-1deg);
   }
 
-  .emblem-scar-two {
-    right: 16%;
-    bottom: 28%;
-    width: 32%;
-    transform: rotate(27deg);
+  .gate-copy {
+    max-width: 34rem;
   }
 
   .gate-eyebrow {
-    margin: 1rem 0 0;
-    color: #f25c54;
+    margin: 0;
+    color: var(--accent);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
-  .gate-core h1 {
-    max-width: 12ch;
-    margin: 0.5rem 0 0;
-    font-size: clamp(2.8rem, 1.35rem + 6vw, 6.5rem);
+  .gate-copy h1 {
+    margin: 0.45rem 0 0;
+    font-size: clamp(2.75rem, 1.9rem + 4vw, 5rem);
     font-weight: 700;
-    line-height: 0.94;
+    line-height: 0.98;
+  }
+
+  :global(html.dark) .gate-copy h1 {
+    text-shadow: 0 0 40px rgb(111 221 160 / 0.25);
   }
 
   .gate-tagline {
-    max-width: 42rem;
+    max-width: 32rem;
     margin: 1rem 0 0;
-    color: rgb(241 236 206 / 0.78);
-    font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.3rem);
-    line-height: 1.6;
+    color: var(--ink-soft);
+    font-size: clamp(1rem, 0.95rem + 0.32vw, 1.15rem);
+    line-height: 1.55;
   }
 
   .gate-enter {
     display: inline-flex;
     align-items: center;
     gap: 0.65rem;
-    min-height: 3.25rem;
-    margin-top: 1.35rem;
-    border: 1px solid #f1ecce;
+    min-height: 3.1rem;
+    margin-top: 1.4rem;
+    border: 1px solid var(--accent);
     border-radius: 999px;
-    background: #f1ecce;
-    color: #1c1c1e;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background: var(--accent);
+    color: #0a0f0d;
     font-weight: 700;
     padding: 0 1.5rem;
     text-decoration: none;
+    box-shadow: 0 0 0 rgb(111 221 160 / 0);
     transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.2s ease;
-    pointer-events: auto;
+      border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :global(html:not(.dark)) .gate-enter {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--bg);
   }
 
   .gate-enter:hover,
   .gate-enter:focus-visible {
     transform: translateY(-2px);
+    box-shadow: 0 0 32px rgb(111 221 160 / 0.5);
+  }
+
+  :global(html:not(.dark)) .gate-enter:hover,
+  :global(html:not(.dark)) .gate-enter:focus-visible {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: none;
   }
 
   .gate-arrow {
-    transition: transform 0.2s ease;
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .gate-enter:hover .gate-arrow {
     transform: translateX(4px);
   }
 
-  .gate-hint {
+  .gate-mark-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
     max-width: 34rem;
-    margin: 1rem 0 0;
-    color: rgb(241 236 206 / 0.6);
-    font-size: 0.92rem;
-    line-height: 1.55;
+    margin-top: 1.4rem;
+  }
+
+  .gate-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card-bg);
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0 0.9rem 0 0.6rem;
+    text-decoration: none;
+    transition:
+      border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .gate-mark-icon {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: var(--accent);
+  }
+
+  .gate-mark:hover,
+  .gate-mark:focus-visible {
+    border-color: var(--accent);
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
+
+  :global(html.dark) .gate-mark:hover,
+  :global(html.dark) .gate-mark:focus-visible {
+    box-shadow: 0 0 18px rgb(111 221 160 / 0.25);
   }
 
   .gate-readout {
-    min-height: 1.5rem;
-    max-width: 34rem;
-    margin: 0.7rem 0 0;
-    color: rgb(130 184 186 / 0.82);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.78rem;
+    min-height: 1.4rem;
+    max-width: 32rem;
+    margin: 0.9rem 0 0;
+    color: var(--ink-faint);
+    font-size: 0.85rem;
     line-height: 1.5;
   }
 
@@ -591,11 +752,8 @@ const nodes = [
     justify-content: space-between;
     gap: 0.8rem;
     padding: 1.2rem clamp(1rem, 4vw, 3rem);
-    color: rgb(241 236 206 / 0.58);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-size: 0.78rem;
   }
 
   .gate-status {
@@ -608,41 +766,96 @@ const nodes = [
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #82b8ba;
-    box-shadow: 0 0 0 0 rgb(130 184 186 / 0.55);
+    background: var(--accent);
+    box-shadow: 0 0 8px rgb(111 221 160 / 0.6), 0 0 0 0 rgb(111 221 160 / 0.5);
     animation: pulse 2.6s ease-in-out infinite;
   }
 
   @keyframes pulse {
     50% {
-      box-shadow: 0 0 0 7px transparent;
+      box-shadow: 0 0 8px rgb(111 221 160 / 0.6), 0 0 0 7px transparent;
     }
   }
 
-  @keyframes shell-drift {
+  @keyframes portal-pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: translate(-50%, -50%) scale(0.97);
+    }
+
     50% {
-      transform: translate(-50%, -50%) rotate(-3deg) scale(1.025);
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.02);
     }
   }
 
-  @keyframes shell-drift-alt {
-    50% {
-      transform: translate(-50%, -50%) rotate(14deg) scale(0.985);
+  @keyframes turtle-wander {
+    0%,
+    100% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+
+    28% {
+      transform: translate(0.5rem, -0.3rem) rotate(1deg);
+    }
+
+    58% {
+      transform: translate(-0.4rem, 0.25rem) rotate(-0.8deg);
+    }
+
+    82% {
+      transform: translate(0.2rem, 0.4rem) rotate(0.6deg);
     }
   }
 
-  @media (max-width: 720px) {
-    .gate-shell-field {
-      opacity: 0.42;
+  @media (max-width: 900px) {
+    .gate-core {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+      padding-top: 0.5rem;
     }
 
-    .shell-node,
-    .shell-scar {
+    .gate-portrait-stage {
+      max-width: 13.5rem;
+    }
+
+    .gate-copy {
+      max-width: 30rem;
+    }
+
+    .gate-mark-nav {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .field-mark {
       display: none;
     }
 
-    .gate-core h1 {
-      max-width: 8ch;
+    .gate-copy h1 {
+      font-size: clamp(2.4rem, 12vw, 3.4rem);
+    }
+
+    .gate-turtle-quote {
+      left: 50%;
+      top: auto;
+      bottom: calc(100% + 0.65rem);
+      width: min(17rem, 82vw);
+      transform: translate(-50%, -0.2rem) rotate(-1deg);
+    }
+
+    .gate-turtle-quote::before {
+      left: 50%;
+      top: auto;
+      bottom: -0.36rem;
+      transform: translateX(-50%) rotate(-45deg);
+    }
+
+    .gate-turtle-quote.has-quote {
+      transform: translate(-50%, 0) rotate(-1deg);
     }
 
     .gate-foot {
@@ -651,31 +864,21 @@ const nodes = [
     }
   }
 
-  @media (max-height: 760px) and (min-width: 721px) {
-    .gate-hint {
-      display: none;
-    }
-
-    .gate-readout {
-      margin-top: 0.8rem;
-    }
-
-    .gate-foot {
-      padding-top: 0.55rem;
-      padding-bottom: 0.55rem;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .pip,
     .gate-enter,
     .gate-arrow,
-    .shell-ring,
-    .gate-shell-field,
-    .gate-emblem {
+    .gate-portrait-stage,
+    .gate-portrait {
       animation: none;
       transition: none;
       transform: none;
+    }
+
+    .portal-ring {
+      /* Keep the centering transform — only drop the pulse animation. */
+      animation: none;
+      opacity: 0.7;
     }
   }
 </style>

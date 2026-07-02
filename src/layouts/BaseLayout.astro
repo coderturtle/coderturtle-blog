@@ -4,15 +4,15 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 
 const {
   title = "Coderturtle",
-  description = "Hands-on notes from building agentic engineering systems.",
+  description = "Practical field notes, lab scars, and workshop patterns from a cranky, hands-on engineering shell.",
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL;
 const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
 const nav = [
-  { href: url("blog/"), label: "Notes" },
+  { href: url("projects/"), label: "Projects" },
   { href: `${url("enter/")}#workbench`, label: "Workbench" },
-  { href: `${url("enter/")}#ecosystem`, label: "Ecosystem" },
+  { href: url("ecosystem/"), label: "Ecosystem" },
   { href: url("about/"), label: "About" },
 ];
 const pageTitle = title === "Coderturtle" ? "Coderturtle" : `${title} - Coderturtle`;
@@ -26,6 +26,18 @@ const pageTitle = title === "Coderturtle" ? "Coderturtle" : `${title} - Codertur
     <meta name="description" content={description} />
     <title>{pageTitle}</title>
     <link rel="icon" type="image/x-icon" href={url("favicon.ico")} />
+    <script is:inline>
+      (() => {
+        // Blocking, pre-paint: avoids a light-mode flash before the dark
+        // "gateway to the future" theme (the flagship experience) applies.
+        const stored = localStorage.getItem("coderturtle-theme");
+        const theme = stored ?? "dark";
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        // astro-mermaid reads this attribute (not our .dark class) to pick
+        // the diagram color scheme.
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
   </head>
   <body>
     <header class="site-header">
