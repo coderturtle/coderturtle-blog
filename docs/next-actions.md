@@ -1,8 +1,8 @@
 # Next Actions
 
-- [ ] Fill local Terraform tfvars for `infra/aws-static-site/terraform/` after confirming Route 53 hosted zone ID and bucket name.
-- [ ] Run Infrastructure Gremlin preflight and Terraform plan for the AWS static-site stack.
-- [ ] Human-review and apply the AWS static-site Terraform plan.
+- [x] Fill local Terraform tfvars for `infra/aws-static-site/terraform/` after confirming Route 53 hosted zone ID and bucket name — hosted zone `Z3DLQAZ6G5LV63` and bucket `coderturtle-io-static-prod-600059206606` both resolved via read-only AWS calls (2026-07-02), no human input needed; recorded in `infra/aws-static-site/deploy-manifest.yaml` and `docs/architecture.md`.
+- [x] Run Infrastructure Gremlin preflight and Terraform plan for the AWS static-site stack — done on `infra/aws-static-site-cutover` branch (2026-07-02): 17 to add, 0 to change, 0 to destroy, classifies GREEN, Well-Architected advisory WARN (same profile as the sibling `hekton.theagentictekton.com` site's first plan). Full summary in `docs/decisions.md`.
+- [ ] Human-review and apply the AWS static-site Terraform plan — plan saved at `infra/aws-static-site/terraform/tfplan` on `infra/aws-static-site-cutover`; apply command is `terraform apply "tfplan"`. Human-only per governance; not run by any agent.
 - [ ] Configure GitHub OIDC role and repository variables for `.github/workflows/deploy-aws-static-site.yml`.
 - [ ] Run the AWS deploy workflow in dry-run mode from `main`.
 - [ ] Review `astro.config.mjs` site/base settings against the intended `coderturtle.io` production domain.
