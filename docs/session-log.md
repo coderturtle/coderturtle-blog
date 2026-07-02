@@ -2,6 +2,94 @@
 
 Append-only session history for Coderturtle.io.
 
+## 2026-07-02 - Phase A housekeeping: .DS_Store, npm audit
+
+### Changed Files
+
+- `.DS_Store`, `.github/.DS_Store`: untracked (`09ff31f`).
+- `package-lock.json`: updated via non-breaking `npm audit fix` on a dedicated `chore/npm-audit-fixes` branch (`bb99d1f`), then fast-forward merged into the product branch.
+- `docs/next-actions.md`, `docs/decisions.md`: recorded both closures.
+
+### What Changed
+
+Worked the roadmap's Phase A housekeeping list one item at a time, per user request: (1) stopped tracking `.DS_Store` files, already `.gitignore`d but tracked from before that rule existed; (2) ran `npm audit`, applied the non-breaking fix, verified the build, and merged.
+
+### Why It Changed
+
+User: "For phase A lets do the housekeeping now 1 by 1 to close them off."
+
+### Decisions Made
+
+See `docs/decisions.md` 2026-07-02 "Close out Phase A housekeeping."
+
+### Assumptions Made
+
+- The npm audit fix was safe to merge immediately (not left as a standing branch) because it was lockfile-only, required no `package.json` change, and `npm run build` stayed green.
+- The remaining 5 audit findings (all gated on a breaking astro@5->7 bump) are out of scope for a housekeeping pass and were left as a new backlog item rather than forced with `--force`.
+
+### Risks
+
+- Did not run the Playwright verification sweep after the audit fix — relied on `npm run build` passing plus the fact that no runtime dependency version actually changed (only transitive sub-dependencies moved). Worth a full browser check if anything looks off after this.
+
+### Next Actions
+
+- Plan a dedicated astro@5->7 upgrade effort for the remaining 5 findings.
+- Continue Phase A: Gremlins URL decision and the outstanding human-review gates (palette/mood, `/enter/` interactivity, worker-turtle art contrast, component library/voice/About tie-in, live agent endpoints).
+
+### Validation Status
+
+- `npm run build`: passed after the audit fix (9 pages, no errors).
+- `git diff package.json` after audit fix: empty (lockfile-only change).
+
+### Mind-Palace Updated
+
+No. Live vault mutation is not approved; repo-local docs only.
+
+## 2026-07-02 - Commit the full rebuild; write docs/roadmap.md
+
+### Changed Files
+
+- Committed all outstanding work from the content-architecture rebuild + design reset + turtle-art session in one commit (`d1f67f8`, 62 files) — this closes out everything that had been accumulating uncommitted on `agent/codex/coderturtle-homepage-mvp`.
+- `docs/roadmap.md` (new): target end-state architecture, gap analysis by workstream, dependency-sequenced phased implementation plan (`[agent]`/`[human]` tagged), and a list of open decisions requiring the user.
+- `docs/decisions.md`: recorded the roadmap-writing decision and the doc-staleness findings it surfaced.
+
+### What Changed
+
+Two things: (1) staged and committed the entire session's work explicitly by path (not `git add -A`) rather than leaving it uncommitted across turns; (2) delegated to an Opus-backed agent to research the full current repo state and produce a single forward-looking planning document distinct from the raw `docs/next-actions.md` backlog.
+
+### Why It Changed
+
+User request: "lets commit everything to date and then use Opus to do a detailed architecture and implementation plan for the remaining phases and to document a target state and how to get there." The four-phase content-architecture plan was already complete; what remained was an unsequenced backlog (`docs/next-actions.md`) with no dependency structure or explicit human-gate calling-out — `docs/roadmap.md` fills that gap.
+
+### Decisions Made
+
+See `docs/decisions.md` 2026-07-02 "Write docs/roadmap.md as the forward-looking plan of record."
+
+### Assumptions Made
+
+- `docs/roadmap.md` supplements rather than replaces `docs/next-actions.md`; the backlog stays the raw item list, the roadmap is the synthesized plan.
+- The AWS cutover (Phase B in the roadmap) is framed as blocked at its start on human DNS/bucket/IAM decisions, not as agent-executable end to end — matches this repo's existing infra-lane separation rule.
+- Did not act on the three doc-staleness findings the roadmap agent surfaced (stale `.hekton/project.yaml` maturity fields, stale `/blog/` route references in `architecture.md`/`deployment.md`, a `startDate` a year before its own build logs) — flagged in both the roadmap and decisions.md for a later pass rather than fixed opportunistically mid-task.
+
+### Risks
+
+- `docs/roadmap.md` was written by an agent that did not itself run `git log`/`git diff` against the working tree at commit time — it read docs and source, not history — so any drift between what the docs claim and actual code state would carry through. Spot-checked three of its factual claims (tracked `.DS_Store` files, the `coderturtle-io.mdx` `startDate` value, `ecosystem.astro`'s Gremlins `href`) against the real repo; all confirmed accurate.
+- `docs/roadmap.md` is not yet committed as of this entry — pending user review.
+
+### Next Actions
+
+- User to review `docs/roadmap.md`, particularly the nine open decisions in §5.
+- Commit `docs/roadmap.md` once reviewed (not yet done).
+
+### Validation Status
+
+- `git status`: clean working tree after the `d1f67f8` commit (prior to `docs/roadmap.md` being written).
+- Spot-checked three factual claims in `docs/roadmap.md` against the live repo (`.DS_Store` tracking, `startDate` field, Gremlins `href`) — all accurate.
+
+### Mind-Palace Updated
+
+No. Live vault mutation is not approved; repo-local docs only.
+
 ## 2026-07-02 - Real worker-turtle art on the workshop floor
 
 ### Changed Files

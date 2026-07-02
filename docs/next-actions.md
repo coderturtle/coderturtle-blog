@@ -6,9 +6,10 @@
 - [ ] Configure GitHub OIDC role and repository variables for `.github/workflows/deploy-aws-static-site.yml`.
 - [ ] Run the AWS deploy workflow in dry-run mode from `main`.
 - [ ] Review `astro.config.mjs` site/base settings against the intended `coderturtle.io` production domain.
-- [ ] Remove tracked `.DS_Store` and `.github/.DS_Store` in a dedicated hygiene commit.
+- [x] Remove tracked `.DS_Store` and `.github/.DS_Store` in a dedicated hygiene commit — untracked in `09ff31f` (2026-07-02); already covered by `.gitignore`, files kept locally.
 - [ ] Decide when to retire the current GitHub Pages workflow after AWS deployment is verified.
-- [ ] Review npm audit output and plan dependency updates in a dedicated maintenance branch.
+- [x] Review npm audit output and plan dependency updates in a dedicated maintenance branch — non-breaking `npm audit fix` resolved 21/26 findings (26 -> 5, all remaining require a breaking astro@5->7 major bump); build verified green; done on `chore/npm-audit-fixes`, fast-forward merged into the product branch and deleted (2026-07-02).
+- [ ] Plan a dedicated astro@5->7 upgrade effort to close the remaining 5 npm audit findings (4 low, 1 high) once there's time to test for breaking changes across the site.
 - [ ] Review and optionally sync repo-local `mind-palace/` files into the live vault after backup.
 - [ ] Split real Labs and Workshops pages out of the homepage once source content exists.
 - [ ] Decide whether `/enter/` should remain the long-term content hub or become a temporary bridge until Labs and Workshops pages exist.
