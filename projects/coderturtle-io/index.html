@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Coderturtle.io is the practical, hands-on counterpart to Agentic Tekton's architecture voice: a static Astro + Tailwind site, rebuilt project by project instead of post by post. This project's build log is the honest record of building it — including the parts that were AI-assisted, the parts that weren't, and the parts that had to be redone.
+"><title>Coderturtle.io - Coderturtle</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><script>
+      (() => {
+        // Blocking, pre-paint: avoids a light-mode flash before the dark
+        // "gateway to the future" theme (the flagship experience) applies.
+        const stored = localStorage.getItem("coderturtle-theme");
+        const theme = stored ?? "dark";
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        // astro-mermaid reads this attribute (not our .dark class) to pick
+        // the diagram color scheme.
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script><link rel="stylesheet" href="/_astro/about.BfC8JeZa.css">
+<link rel="stylesheet" href="/_astro/about.KsGrxw4B.css"><script type="module" src="/_astro/page.TqyEN7bN.js"></script></head> <body> <header class="site-header"> <a href="/" class="brand-lockup" aria-label="Coderturtle home"> <img src="/logo.png" alt="" width="32" height="32"> <span>Coderturtle</span> </a> <div class="nav-cluster"> <nav class="site-nav" aria-label="Primary navigation"> <a href="/projects/"> Projects </a><a href="/enter/#workbench"> Workbench </a><a href="/ecosystem/"> Ecosystem </a><a href="/about/"> About </a> </nav> <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" aria-pressed="false"> <span class="theme-toggle-mark" aria-hidden="true"></span> <span class="theme-toggle-text">Theme</span> </button> <script>
+  (() => {
+    const root = document.documentElement;
+    const button = document.getElementById("theme-toggle");
+    const stored = localStorage.getItem("coderturtle-theme");
+    // Dark is the flagship "gateway to the future" experience now; default
+    // to it regardless of OS preference unless the visitor has explicitly
+    // chosen light via the toggle before.
+    const initial = stored ?? "dark";
+
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+      root.classList.toggle("dark", isDark);
+      // astro-mermaid's auto theme-switching watches this attribute (not
+      // our .dark class) to pick the diagram color scheme.
+      root.setAttribute("data-theme", theme);
+      if (button) {
+        button.setAttribute("aria-pressed", String(isDark));
+        button.dataset.theme = theme;
+      }
+    }
+
+    applyTheme(initial);
+
+    button?.addEventListener("click", () => {
+      const next = root.classList.contains("dark") ? "light" : "dark";
+      localStorage.setItem("coderturtle-theme", next);
+      applyTheme(next);
+    });
+  })();
+</script> </div> </header> <main class="site-main">  <section class="log-hero"> <img src="/logo.png" alt="" class="log-hero-image"> <div> <span class="status-pill status-building">building</span> <h1 class="mt-3">Coderturtle.io</h1> <p class="lede mt-3">The site you&#39;re standing on, built in public.</p> <div class="project-meta"> <span class="status-pill status-shipped">Astro</span><span class="status-pill status-shipped">Tailwind CSS</span><span class="status-pill status-shipped">MDX</span> </div> <div class="hero-actions"> <a class="button-primary" href="https://coderturtle.io/">Visit live</a> <a class="button-secondary" href="https://github.com/coderturtle/coderturtle-blog">View repo</a> </div> </div> </section> <section class="section-stack"> <div class="section-heading"> <p class="eyebrow">About this project</p> <div class="prose dark:prose-invert max-w-none"><p>This is the project behind the site itself: the gateway, the workshop
+homepage, the design system, and — starting here — the projects-and-build-logs
+model that replaced the old blog.</p>
+<p>Nothing in this build log is staged after the fact. It’s the actual sequence
+of decisions, dead ends, and fixes from building a site with an AI agent in
+the loop, in the order they happened.</p></div> </div> </section> <section class="section-stack" aria-labelledby="log-title"> <div class="section-heading"> <p class="eyebrow">Build log</p> <h2 id="log-title">The honest timeline.</h2> <p>Every entry below is real: what happened, in the order it happened.</p> </div> <ol class="log-timeline"> <li class="log-timeline-item"> <div class="log-timeline-meta"> <span>2 Jul 2026</span> <span>build</span> <span>closing out the plan</span> </div> <h3> <a href="/projects/coderturtle-io/log/cogs-tilt-and-a-terminal-that-talks-to-agents/">Cogs, tilt, and a terminal that talks back to agents</a> </h3> <p>The ecosystem got its own page shaped like actual gears, the workshop floor stopped being flat, and the site learned to describe itself in a format agents can parse instead of just humans.</p> </li><li class="log-timeline-item"> <div class="log-timeline-meta"> <span>2 Jul 2026</span> <span>decision</span> <span>gateway to the future</span> </div> <h3> <a href="/projects/coderturtle-io/log/the-dark-reset/">The dark reset: rejecting the schematic pass</a> </h3> <p>The retro-futurist blueprint pass got rejected outright: too subtle, wrong kind of futuristic, missed the point. Here&#39;s the honest log of the reset that followed.</p> </li><li class="log-timeline-item"> <div class="log-timeline-meta"> <span>5 Jul 2025</span> <span>build</span> <span>the first vibe-coded pass</span> </div> <h3> <a href="/projects/coderturtle-io/log/vibing-with-chatgpt/">Vibing with ChatGPT</a> </h3> <p>From concept to turtle-powered Astro site: an impatient engineer, a chatty AI, and the art of vibe-coding.</p> </li> </ol> </section>  </main> <footer class="site-footer"> <p>Built by Coderturtle. Powered by Astro, static files, and stubborn curiosity.</p> <p>Shipping slow, debugging fast.</p> </footer> </body></html>

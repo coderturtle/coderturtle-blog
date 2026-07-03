@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="The retro-futurist blueprint pass got rejected outright: too subtle, wrong kind of futuristic, missed the point. Here's the honest log of the reset that followed."><title>The dark reset: rejecting the schematic pass — Coderturtle.io - Coderturtle</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><script>
+      (() => {
+        // Blocking, pre-paint: avoids a light-mode flash before the dark
+        // "gateway to the future" theme (the flagship experience) applies.
+        const stored = localStorage.getItem("coderturtle-theme");
+        const theme = stored ?? "dark";
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        // astro-mermaid reads this attribute (not our .dark class) to pick
+        // the diagram color scheme.
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script><link rel="stylesheet" href="/_astro/about.BfC8JeZa.css">
+<link rel="stylesheet" href="/_astro/about.KsGrxw4B.css"><script type="module" src="/_astro/page.TqyEN7bN.js"></script></head> <body> <header class="site-header"> <a href="/" class="brand-lockup" aria-label="Coderturtle home"> <img src="/logo.png" alt="" width="32" height="32"> <span>Coderturtle</span> </a> <div class="nav-cluster"> <nav class="site-nav" aria-label="Primary navigation"> <a href="/projects/"> Projects </a><a href="/enter/#workbench"> Workbench </a><a href="/ecosystem/"> Ecosystem </a><a href="/about/"> About </a> </nav> <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" aria-pressed="false"> <span class="theme-toggle-mark" aria-hidden="true"></span> <span class="theme-toggle-text">Theme</span> </button> <script>
+  (() => {
+    const root = document.documentElement;
+    const button = document.getElementById("theme-toggle");
+    const stored = localStorage.getItem("coderturtle-theme");
+    // Dark is the flagship "gateway to the future" experience now; default
+    // to it regardless of OS preference unless the visitor has explicitly
+    // chosen light via the toggle before.
+    const initial = stored ?? "dark";
+
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+      root.classList.toggle("dark", isDark);
+      // astro-mermaid's auto theme-switching watches this attribute (not
+      // our .dark class) to pick the diagram color scheme.
+      root.setAttribute("data-theme", theme);
+      if (button) {
+        button.setAttribute("aria-pressed", String(isDark));
+        button.dataset.theme = theme;
+      }
+    }
+
+    applyTheme(initial);
+
+    button?.addEventListener("click", () => {
+      const next = root.classList.contains("dark") ? "light" : "dark";
+      localStorage.setItem("coderturtle-theme", next);
+      applyTheme(next);
+    });
+  })();
+</script> </div> </header> <main class="site-main">  <article> <p class="eyebrow"> <a href="/projects/coderturtle-io/" class="text-link">Coderturtle.io</a> · build log
+</p> <h1 class="max-w-3xl text-4xl font-bold leading-tight md:text-6xl">The dark reset: rejecting the schematic pass</h1> <div class="log-timeline-meta mt-4"> <span>2 Jul 2026</span> <span>decision</span> <span>gateway to the future</span>  </div> <ul class="tag-list" aria-label="Tags for The dark reset: rejecting the schematic pass"> <li>design</li><li>dark-mode</li><li>astro</li><li>interaction</li> </ul> <div class="log-entry-prose"> <p>A warm, light-first, illustration-led pass shipped first. Then a
+retro-futurist/schematic layer went on top of it — blueprint grid,
+corner brackets, bracketed telemetry labels. It didn’t land.</p>
+<blockquote>
+<p>“I don’t really like it. Let’s start over.”</p>
+</blockquote>
+<p>Direct feedback, taken at face value. Three things were wrong with the
+schematic pass, all confirmed on the record: it read as retro engineering
+blueprint rather than <em>futuristic</em>, it was too subtle a change to actually
+feel like a new direction, and it never introduced the real idea — a
+workshop where a human-built turtle and its agent collaborators build
+things together. Chrome got added; the concept didn’t show up.</p>
+<h2 id="what-changed-instead">What changed instead</h2>
+<p>Dark became the site’s default theme, not just a toggle option: a <code>void</code>
+background, a <code>glow</code> accent, real bloom on interactive elements. The
+gateway became a portal — concentric glow rings, a star field, the
+turtle framed like a threshold instead of a card.</p>
+<div class="before-after not-prose" id="ba-35mq3vj"> <div class="before-after-frame"> <img src="/_astro/gateway-dark.BCg_Xdxw_1ShVEB.webp" srcset="/_astro/gateway-dark.BCg_Xdxw_29TDvP.webp 480w, /_astro/gateway-dark.BCg_Xdxw_1wrfb7.webp 800w, /_astro/gateway-dark.BCg_Xdxw_Z1W9zte.webp 1200w" alt="dark mode" sizes="(min-width: 60rem) 40rem, 90vw" loading="lazy" decoding="async" fetchpriority="auto" width="1280" height="860" class="before-after-img"> <div class="before-after-clip"> <img src="/_astro/gateway-light.Bg3FzPYA_bRoSA.webp" srcset="/_astro/gateway-light.Bg3FzPYA_ZiT9Fu.webp 480w, /_astro/gateway-light.Bg3FzPYA_ZvzAxE.webp 800w, /_astro/gateway-light.Bg3FzPYA_13vu1Q.webp 1200w" alt="light mode" sizes="(min-width: 60rem) 40rem, 90vw" loading="lazy" decoding="async" fetchpriority="auto" width="1280" height="860" class="before-after-img"> </div> <span class="before-after-tag before-after-tag-before">light mode</span> <span class="before-after-tag before-after-tag-after">dark mode</span> </div> <input type="range" class="before-after-range" min="0" max="100" value="50" aria-label="Slide to compare light mode and dark mode"> </div> <script type="module">document.querySelectorAll(".before-after").forEach(r=>{const e=r.querySelector(".before-after-range"),t=r.querySelector(".before-after-clip");if(!e||!t)return;const c=()=>{t.style.clipPath=`inset(0 ${100-Number(e.value)}% 0 0)`};e.addEventListener("input",c),c()});</script>
+<p>Both are real toggle states of the current gateway, not a mockup.</p>
+<h2 id="building-the-workshop-floor">Building the workshop floor</h2>
+<p>The concept that the schematic pass skipped — turtle and agent
+turtles building together — needed to show up structurally, not just
+in copy. <code>/enter/</code> got a master station (Coderturtle) supervising three
+worker stations (Projects, Labs, Workshops), connected by a real bus-and
+drop-line diagram that lights up wherever you’re hovering:</p>
+<figure class="log-figure not-prose"> <button class="log-figure-trigger" type="button" data-dialog-open="shot-ohjiqpe" aria-label="Zoom in: The workshop floor on /enter/: a master turtle station connected by a glowing diagram to three worker turtle stations labelled Projects, Labs, and Workshops."> <img src="/_astro/workshop-floor.B1pJ-IPc_ZuR0OE.webp" srcset="/_astro/workshop-floor.B1pJ-IPc_1U5c2p.webp 480w, /_astro/workshop-floor.B1pJ-IPc_2v69Kx.webp 800w, /_astro/workshop-floor.B1pJ-IPc_Z1kx7yP.webp 1200w" alt="The workshop floor on /enter/: a master turtle station connected by a glowing diagram to three worker turtle stations labelled Projects, Labs, and Workshops." sizes="(min-width: 60rem) 40rem, 90vw" loading="lazy" decoding="async" fetchpriority="auto" width="1280" height="900" class="log-figure-img"> </button> <figcaption class="log-figure-caption">The workshop floor, mid-session. Click to zoom.</figcaption> <dialog id="shot-ohjiqpe" class="log-figure-dialog"> <button class="log-figure-close" type="button" data-dialog-close aria-label="Close">&times;</button> <img src="/_astro/workshop-floor.B1pJ-IPc_ZuR0OE.webp" srcset="/_astro/workshop-floor.B1pJ-IPc_1U5c2p.webp 480w, /_astro/workshop-floor.B1pJ-IPc_2v69Kx.webp 800w, /_astro/workshop-floor.B1pJ-IPc_Z1kx7yP.webp 1200w, /_astro/workshop-floor.B1pJ-IPc_ZuR0OE.webp 1280w" alt="The workshop floor on /enter/: a master turtle station connected by a glowing diagram to three worker turtle stations labelled Projects, Labs, and Workshops." sizes="90vw" loading="lazy" decoding="async" fetchpriority="auto" width="1280" height="900" class="log-figure-dialog-img"> </dialog> </figure> <script type="module">document.querySelectorAll("[data-dialog-open]").forEach(e=>{const l=e.dataset.dialogOpen,o=l?document.getElementById(l):null;e.addEventListener("click",()=>o?.showModal())});document.querySelectorAll("[data-dialog-close]").forEach(e=>{e.addEventListener("click",()=>e.closest("dialog")?.close())});document.querySelectorAll(".log-figure-dialog").forEach(e=>{e.addEventListener("click",l=>{l.target===e&&e.close()})});</script>
+<p>No new character art existed for the “agent turtles,” and the user
+confirmed they’d supply that separately rather than have it invented. So
+the Labs and Workshops stations reuse Coderturtle’s own portrait with a
+category badge, and are honest about their state: buttons with a
+“still being built” readout, not links to pages that don’t exist yet.</p>
+<h2 id="two-bugs-caught-by-actually-running-it">Two bugs, caught by actually running it</h2>
+<p>Verifying this pass (not just eyeballing screenshots) surfaced two real
+bugs that a visual review alone would have missed.</p>
+<p>First, a script scope collision. Both the new pre-paint theme script and
+<code>ThemeToggle</code>’s own script declared <code>const stored</code> in the same global
+scope:</p>
+<div class="terminal-block not-prose"> <div class="terminal-block-bar"> <span class="terminal-dot terminal-dot-red"></span> <span class="terminal-dot terminal-dot-amber"></span> <span class="terminal-dot terminal-dot-green"></span> <span class="terminal-block-title">browser console</span> </div> <pre class="terminal-block-body"><code>pageerror: Identifier &#39;stored&#39; has already been declared</code></pre> </div>
+<p>Fixed by wrapping each inline script in an IIFE so they don’t leak into
+shared scope.</p>
+<p>Second, a config detail that had been silently wrong since the previous
+session: <code>astro-mermaid</code>’s theme auto-switching watches a <code>data-theme</code>
+<em>attribute</em>, but the site’s theme scripts only ever set a <code>.dark</code> class.
+Mermaid diagrams were quietly ignoring the site’s actual theme. Fixed by
+setting <code>data-theme</code> everywhere the class gets toggled, and by switching
+<code>syntaxHighlight</code> from a bare string to its object form so <code>excludeLangs</code>
+actually takes effect:</p>
+<div class="diff-block not-prose"> <p class="diff-block-title">astro.config.mjs</p> <pre class="diff-block-body"><code><span class="diff-line diff-line-ctx">   markdown: {</span><span class="diff-line diff-line-del">-    syntaxHighlight: &quot;shiki&quot;,</span><span class="diff-line diff-line-del">-    shikiConfig: {</span><span class="diff-line diff-line-del">-      theme: &quot;github-dark-dimmed&quot;</span><span class="diff-line diff-line-add">+    syntaxHighlight: {</span><span class="diff-line diff-line-add">+      type: &quot;shiki&quot;,</span><span class="diff-line diff-line-add">+      excludeLangs: [&quot;mermaid&quot;],</span><span class="diff-line diff-line-add">+    },</span><span class="diff-line diff-line-add">+    shikiConfig: {</span><span class="diff-line diff-line-add">+      theme: &quot;github-dark-dimmed&quot;</span><span class="diff-line diff-line-ctx">   }</span><span class="diff-line diff-line-ctx"> }</span></code></pre> </div>
+<h2 id="a-third-scoping-bug-and-the-pattern-behind-it">A third scoping bug, and the pattern behind it</h2>
+<p>While building the workshop floor and the <code>/ecosystem/</code> cog diagram, the
+same class of bug showed up twice more: a <code>class</code> passed to an imported
+mark component (<code>&lt;Gear class=&quot;...&quot; /&gt;</code>) never receives the parent page’s
+scoped-style attribute, because Astro’s per-file CSS scoping only reaches
+elements written directly in that file — not a child component’s own
+root element. <code>.worker-badge</code> and <code>.cog-icon</code> both had to move out of
+their page’s local <code>&lt;style&gt;</code> block and into the shared stylesheet before
+they actually applied. Confirmed with a real negative test before trusting
+the fix:</p>
+<div class="terminal-block not-prose"> <div class="terminal-block-bar"> <span class="terminal-dot terminal-dot-red"></span> <span class="terminal-dot terminal-dot-amber"></span> <span class="terminal-dot terminal-dot-green"></span> <span class="terminal-block-title">shell</span> </div> <pre class="terminal-block-body"><code>$ sed -i &#39;&#39; &#39;s/project: coderturtle-io/project: coderturtle-io-TYPO/&#39; \
+  src/content/logs/coderturtle-io/0001-vibing-with-chatgpt.mdx
+$ npm run build
+...
+▶ src/pages/projects/[slug]/log/[entry]/index.astro
+ └─ /projects/coderturtle-io-TYPO/log/vibing-with-chatgpt/index.htmlEntry projects → coderturtle-io-TYPO was not found.
+Cannot read properties of undefined (reading &#39;data&#39;)
+Stack trace:
+  at file:///.../dist/pages/projects/_slug_/log/_entry_.astro.mjs
+[build] exit code 1</code></pre> </div>
+<p>Reverted the typo immediately after confirming the build failed loudly, as
+intended. That’s the whole point of a validated reference: a bad link
+should break the build, not the live site.</p>
+<h2 id="whats-still-open">What’s still open</h2>
+<p>The palette question was asked directly and never answered — this
+direction shipped on the recommended default, not a confirmed one. The
+Labs and Workshops turtle stations are placeholders for pages that don’t
+exist yet. And the real agent-turtle artwork is still the user’s to
+supply. All flagged in <code>next-actions.md</code>, not quietly assumed closed.</p> </div> <footer class="mt-16 border-t border-kraft/20 pt-6 text-center text-sm text-night/60 dark:border-ivory/15 dark:text-ivory/60">
+Filed under <a href="/projects/coderturtle-io/" class="text-link">Coderturtle.io</a>, watched over by Coderturtle 🐢
+</footer> </article>  </main> <footer class="site-footer"> <p>Built by Coderturtle. Powered by Astro, static files, and stubborn curiosity.</p> <p>Shipping slow, debugging fast.</p> </footer> </body></html>

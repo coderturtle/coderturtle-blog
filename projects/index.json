@@ -1,0 +1,25 @@
+[
+  {
+    "slug": "coderturtle-io",
+    "title": "Coderturtle.io",
+    "tagline": "The site you're standing on, built in public.",
+    "summary": "Coderturtle.io is the practical, hands-on counterpart to Agentic Tekton's architecture voice: a static Astro + Tailwind site, rebuilt project by project instead of post by post. This project's build log is the honest record of building it — including the parts that were AI-assisted, the parts that weren't, and the parts that had to be redone.\n",
+    "status": "building",
+    "startDate": "2025-07-05",
+    "updatedDate": null,
+    "stack": [
+      "Astro",
+      "Tailwind CSS",
+      "MDX"
+    ],
+    "tags": [
+      "meta",
+      "astro",
+      "content-architecture"
+    ],
+    "repo": "https://github.com/coderturtle/coderturtle-blog",
+    "liveUrl": "https://coderturtle.io/",
+    "url": "https://coderturtle.io/projects/coderturtle-io/",
+    "detailUrl": "https://coderturtle.io/projects/coderturtle-io.json"
+  }
+]

@@ -1,0 +1,73 @@
+{
+  "slug": "coderturtle-io",
+  "title": "Coderturtle.io",
+  "tagline": "The site you're standing on, built in public.",
+  "summary": "Coderturtle.io is the practical, hands-on counterpart to Agentic Tekton's architecture voice: a static Astro + Tailwind site, rebuilt project by project instead of post by post. This project's build log is the honest record of building it — including the parts that were AI-assisted, the parts that weren't, and the parts that had to be redone.\n",
+  "status": "building",
+  "startDate": "2025-07-05",
+  "updatedDate": null,
+  "stack": [
+    "Astro",
+    "Tailwind CSS",
+    "MDX"
+  ],
+  "tags": [
+    "meta",
+    "astro",
+    "content-architecture"
+  ],
+  "repo": "https://github.com/coderturtle/coderturtle-blog",
+  "liveUrl": "https://coderturtle.io/",
+  "url": "https://coderturtle.io/projects/coderturtle-io/",
+  "log": [
+    {
+      "slug": "cogs-tilt-and-a-terminal-that-talks-to-agents",
+      "title": "Cogs, tilt, and a terminal that talks back to agents",
+      "date": "2026-07-02",
+      "kind": "build",
+      "phase": "closing out the plan",
+      "summary": "The ecosystem got its own page shaped like actual gears, the workshop floor stopped being flat, and the site learned to describe itself in a format agents can parse instead of just humans.",
+      "changeRefs": [],
+      "tags": [
+        "design",
+        "interaction",
+        "llms-txt",
+        "astro"
+      ],
+      "url": "https://coderturtle.io/projects/coderturtle-io/log/cogs-tilt-and-a-terminal-that-talks-to-agents/"
+    },
+    {
+      "slug": "the-dark-reset",
+      "title": "The dark reset: rejecting the schematic pass",
+      "date": "2026-07-02",
+      "kind": "decision",
+      "phase": "gateway to the future",
+      "summary": "The retro-futurist blueprint pass got rejected outright: too subtle, wrong kind of futuristic, missed the point. Here's the honest log of the reset that followed.",
+      "changeRefs": [],
+      "tags": [
+        "design",
+        "dark-mode",
+        "astro",
+        "interaction"
+      ],
+      "url": "https://coderturtle.io/projects/coderturtle-io/log/the-dark-reset/"
+    },
+    {
+      "slug": "vibing-with-chatgpt",
+      "title": "Vibing with ChatGPT",
+      "date": "2025-07-05",
+      "kind": "build",
+      "phase": "the first vibe-coded pass",
+      "summary": "From concept to turtle-powered Astro site: an impatient engineer, a chatty AI, and the art of vibe-coding.",
+      "changeRefs": [],
+      "tags": [
+        "astro",
+        "tailwind",
+        "mermaid",
+        "prompt-engineering",
+        "vibe-coding"
+      ],
+      "url": "https://coderturtle.io/projects/coderturtle-io/log/vibing-with-chatgpt/"
+    }
+  ]
+}
