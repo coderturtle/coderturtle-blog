@@ -35,12 +35,14 @@ deployment:
 guardrails:
   no_public_buckets: true
   apply_authority: human-only
-  no_terraform_managed_iam: true
+  no_terraform_managed_iam: false # exception recorded 2026-07-03: deploy role converges on agentic-tekton's terraform-managed pattern (github-oidc.tf); see docs/decisions.md
   cost_awareness: true
 
 outputs_to_record_after_apply:
-  s3_bucket: ""
-  cloudfront_distribution_id: ""
-  cloudfront_domain_name: ""
-  acm_certificate_arn: ""
-  site_url: ""
+  s3_bucket: "coderturtle-io-static-prod-600059206606"
+  cloudfront_distribution_id: "EVFZ1SPLK9PZ1"
+  cloudfront_domain_name: "d2fiu60kto5yd0.cloudfront.net"
+  acm_certificate_arn: "arn:aws:acm:us-east-1:600059206606:certificate/288d208f-aeed-46a7-86c1-0b6b8f632ba7"
+  site_url: "https://coderturtle.io"
+  deploy_role_arn: "arn:aws:iam::600059206606:role/coderturtle-io-deploy" # human-applied 2026-07-03
+  applied_date: "2026-07-03" # human-run terraform apply, verified DNS + distribution live
