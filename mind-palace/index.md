@@ -8,9 +8,14 @@ Coderturtle.io is a public Astro/Tailwind website and blog adopted into the Hekt
 
 - Local repo: `/Users/hekton/Development/hekton/factory-output/coderturtle.io`
 - Source repo: `https://github.com/coderturtle/coderturtle-blog`
+- Live site: `https://coderturtle.io` — production, verified serving the current build
 - Privacy boundary: public
 - Vault mutation: not approved; this is a repo-local mirror draft
 
 ## Current Focus
 
-Finish AWS static-site provisioning for coderturtle.io: confirm Route 53 and bucket values, plan the Terraform stack through the Infrastructure Gremlin workflow, configure OIDC deployment, retire the legacy GitHub Pages path after verification, remove tracked macOS metadata in a dedicated follow-up commit, and review npm audit findings separately.
+Production is live and stable. The site now runs on the Hekton AWS static-site pattern: private S3 + CloudFront + ACM + Route 53, with a GitHub OIDC deploy role and an auto-deploy-on-merge GitHub Action, verified working end-to-end (first real deploy confirmed 2026-07-03). The legacy GitHub Pages workflow has been turned off. A pre-existing, unrelated 2020 CloudFront distribution and S3 bucket that had been quietly serving the domain's DNS the whole time were identified during cutover, backed up locally, and decommissioned.
+
+Content-wise, the site was rebuilt around a `projects`/`logs` model (real projects with honest build-log entries) instead of a generic blog, with a dark-first "gateway to the future" gateway design and an agent-facing interface (`/llms.txt`, JSON endpoints). See `docs/roadmap.md` in the main repo for the fuller target-state plan and open decisions.
+
+Next up: verify the design/voice/interaction review items still open in `docs/next-actions.md`, and decide when (if ever) to decommission the old legacy `.github/workflows/deploy.yml` file itself now that GitHub Pages deploys are off.

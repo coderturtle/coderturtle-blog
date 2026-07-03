@@ -1,11 +1,11 @@
 # Coderturtle.io Next Actions
 
-- [ ] Fill local Terraform tfvars for `infra/aws-static-site/terraform/` after confirming Route 53 hosted zone ID and bucket name.
-- [ ] Run Infrastructure Gremlin preflight and Terraform plan for the AWS static-site stack.
-- [ ] Human-review and apply the AWS static-site Terraform plan.
-- [ ] Configure GitHub OIDC role and repository variables for `.github/workflows/deploy-aws-static-site.yml`.
-- [ ] Run the AWS deploy workflow in dry-run mode from `main`.
-- [ ] Decide when to retire the current GitHub Pages workflow after AWS deployment is verified.
-- [ ] Remove tracked `.DS_Store` files in a separate hygiene commit.
-- [ ] Review npm audit output and plan dependency updates separately from adoption.
-- [ ] Sync this mirror to the live vault only after explicit approval and backup.
+Production/infra work is done: AWS static-site stack live and verified, legacy 2020 CloudFront/S3 decommissioned (backed up first), GitHub Pages turned off, reusable deploy-workflow template hardened in `blog-factory-lab`. Remaining open items, condensed from the full list in the main repo's `docs/next-actions.md`:
+
+- [ ] Review `astro.config.mjs` site/base settings against the production domain.
+- [ ] Delete the now-disabled legacy `.github/workflows/deploy.yml` file itself (small cleanup, not urgent).
+- [ ] Plan a dedicated astro@5->7 upgrade to close the 5 remaining npm audit findings.
+- [ ] A handful of open design/content review items on `/enter/` and the gateway (palette/mood confirmation, turtle-art contrast, voice/tone review) — see the full list for detail.
+- [ ] Split real Labs and Workshops pages out of the homepage once source content exists.
+- [ ] Add real project entries beyond the single migrated "Coderturtle.io" project once other real projects have material worth logging.
+- [ ] Review and optionally sync repo-local `mind-palace/` files into the live vault after backup (still requires separate explicit authorization).

@@ -46,11 +46,11 @@ architecture:
   domain: output
   capability_area: public-website
   component_type: factory-output
-  maturity_level: 2
-  maturity_label: working
+  maturity_level: 3
+  maturity_label: validated
   maturity_set_by: agent
-  maturity_basis: "Existing public Astro site with deploy workflow and recent commit history."
-  maturity_date: 2026-06-28
+  maturity_basis: "AWS static-site production stack applied and verified live (curl 200, correct content); content rebuilt around a projects/build-logs model with an agent-facing interface; auto-deploy-on-merge confirmed working end to end."
+  maturity_date: 2026-07-03
   target_state_relevance: useful
   depends_on:
     - hekton
@@ -61,19 +61,19 @@ architecture:
   consumes: []
   promotion_candidate: false
   promotion_target: none
-  next_architecture_step: "Plan and human-apply the AWS static-site Terraform stack, then cut deployment over from GitHub Pages to coderturtle.io on CloudFront."
-  last_validated: 2026-06-28
+  next_architecture_step: "Content and design maturity pass: close out remaining /enter/ and gateway review items in docs/next-actions.md, add real project entries beyond the single migrated one, and plan the astro@5->7 upgrade to close the remaining npm audit findings."
+  last_validated: 2026-07-03
   evidence_links:
     - README.md
     - package.json
-    - .github/workflows/deploy.yml
     - .github/workflows/deploy-aws-static-site.yml
     - infra/aws-static-site/deploy-manifest.yaml
     - infra/aws-static-site/terraform
-    - docs/adoption-audit.md
+    - docs/roadmap.md
+    - docs/decisions.md
   risks:
-    - "Tracked .DS_Store files should be removed in a follow-up hygiene commit."
-    - "Legacy GitHub Pages workflow remains until the AWS static-site cutover is complete."
+    - "Legacy .github/workflows/deploy.yml is disabled (GitHub Pages turned off 2026-07-03) but the file itself hasn't been deleted yet."
+    - "5 npm audit findings remain, all requiring a breaking astro@5->7 major version bump; deferred to a dedicated upgrade effort."
   owner: hekton
 
 notes:
