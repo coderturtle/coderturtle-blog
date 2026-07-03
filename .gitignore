@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local-only backup of the decommissioned 2020 S3 bucket, not project content
+.old-site-backup-2020/
