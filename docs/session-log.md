@@ -96,6 +96,56 @@ None.
 
 No. Live vault mutation is not approved; repo-local docs only.
 
+## 2026-07-03 - Merge infra branch, push, PR, and wire up auto-deploy-on-merge
+
+### Changed Files
+
+- Merged `infra/aws-static-site-cutover` into `agent/codex/coderturtle-homepage-mvp` (`6f4a5a2`); resolved append-only conflicts in `docs/decisions.md`/`docs/session-log.md` by combining both branches' entries in chronological order.
+- `.github/workflows/deploy-aws-static-site.yml`: enabled the `push: branches: [main]` trigger (previously commented out) and fixed the `deploy` job's `if` condition, which relied on a `workflow_dispatch`-only input that is `null` (not `false`) on `push` events and so would never have fired.
+- `docs/decisions.md`, `docs/next-actions.md`: recorded both changes above.
+- `blog-factory-lab/infra/aws-static-site/github-actions/deploy-static-site.yml` and its `README.md` (separate repo, own commit `1180310` on a new `chore/harden-deploy-static-site-workflow` branch): hardened the canonical reusable deploy-workflow template using lessons from three real consumers of the pattern.
+
+### What Changed
+
+User asked what's outstanding on the project (unpushed commits, open PRs) and asked for the infra/deploy setup to be finished, including turning the third copy-pasted instance of the S3+CloudFront GitHub Action into a proper reusable artifact. Found: 9 commits sitting unpushed on this branch, an unmerged `infra/aws-static-site-cutover` branch with a reviewed Terraform plan, and a stale draft PR (#1, `agent/codex/adopt-coderturtle-io`) whose only commit was already in this branch's history.
+
+Merged the infra branch in, pushed this branch (the SSH-identity blocker noted at the end of the previous session had resolved itself — `ssh -T git@github.com-coderturtle` now correctly authenticates as `coderturtle`), and opened a PR to `main`. Fixed the AWS deploy workflow so it's genuinely live (see `docs/decisions.md` for the condition-logic bug this caught). For the reusable-workflow ask, traced the pattern to its actual canonical home (`blog-factory-lab`, not `agentic-infra-lab` — see `docs/decisions.md`) and updated it there instead of creating a duplicate.
+
+### Why It Changed
+
+User: "lets see what's outstanding on this project and what PRs are open or commits not pushed. lets also get the infrastructure setup to deploy this and the github actions to auto deploy on merge to main. This github action is the third time we're using it so belongs as a script or workflow to add to the new site infra setup."
+
+### Decisions Made
+
+See `docs/decisions.md`: "Enable push-to-main on the AWS deploy workflow now, gated to no-op until infra exists" and "Correct 'extract as reusable workflow' to blog-factory-lab, not agentic-infra-lab".
+
+### Assumptions Made
+
+- Chronological ordering for the merged append-only doc conflicts: the Infrastructure Gremlin plan entry (mid-session) before the "Ratify Gremlins coming-soon" entry, both before the "session end, parked" wrap-up entry — matches the actual order of work described within the session-end entry itself.
+- `blog-factory-lab`'s pre-existing uncommitted changes (`docs/decisions.md`, `docs/session-log.md`, `examples/tekton-chronicle/*`) belong to unrelated prior work on that branch and were deliberately left untouched and uncommitted, per this ecosystem's session-scoped-commit rule.
+
+### Risks
+
+- The `blog-factory-lab` commit is local-only (new branch, not pushed) — flagged to the user rather than pushed/PR'd unprompted, since it's a different repo under a different nominal owner (`Derm`) than this session's scope.
+- Terraform still hasn't been applied; the AWS deploy workflow will keep skipping cleanly on every push to `main` until the human runs `terraform apply` and sets the four repo variables.
+- The legacy GitHub Pages workflow (`deploy.yml`) is untouched and still deploys on every push to `main` — intentional, per the existing decision to keep it as the live path until AWS is verified.
+
+### Next Actions
+
+- Human: run `terraform apply "tfplan"` on the (now-merged) infra work, then create the GitHub OIDC deploy role and set the four `AWS_*` repo variables — the deploy workflow will then start deploying automatically on every merge to `main`.
+- Human: confirm whether to push/PR the `blog-factory-lab` template hardening, since that repo has other unrelated in-progress work on its default working branch.
+- Human: decide the stale draft PR #1 (`agent/codex/adopt-coderturtle-io`) — closing it as superseded, per this session's discussion.
+
+### Validation Status
+
+- `git log origin/main..HEAD`: confirms the merge carries all prior unpushed commits plus the infra-cutover commit.
+- `git push origin agent/codex/coderturtle-homepage-mvp`: succeeded.
+- Workflow YAML reviewed for GitHub Actions syntax (no `${{ }}` expressions in `on.push.paths`, which GitHub Actions doesn't evaluate) in both the coderturtle.io copy and the `blog-factory-lab` template — caught and fixed one such bug in the template during this session.
+
+### Mind-Palace Updated
+
+No. Live vault mutation is not approved; repo-local docs only.
+
 ## 2026-07-02 - Phase A housekeeping: .DS_Store, npm audit
 
 ### Changed Files

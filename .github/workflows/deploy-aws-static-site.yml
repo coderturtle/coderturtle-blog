@@ -1,22 +1,21 @@
 name: Deploy AWS Static Site
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-aws-static-site.yml"
+      - "astro.config.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - "public/**"
+      - "src/**"
   workflow_dispatch:
     inputs:
       dry_run:
         description: "Build and upload artifact only. Set false after AWS infra and OIDC are ready."
         type: boolean
         default: true
-  # Enable after the first successful manual production deploy.
-  # push:
-  #   branches: [main]
-  #   paths:
-  #     - ".github/workflows/deploy-aws-static-site.yml"
-  #     - "astro.config.mjs"
-  #     - "package.json"
-  #     - "package-lock.json"
-  #     - "public/**"
-  #     - "src/**"
 
 permissions:
   contents: read
@@ -63,7 +62,9 @@ jobs:
     name: Sync S3 and invalidate CloudFront
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' && inputs.dry_run == false }}
+    # Skips cleanly (not a failure) until the AWS vars below are configured post-terraform-apply.
+    # A workflow_dispatch run can still opt into a dry run (build only, no deploy) via the input.
+    if: ${{ github.ref == 'refs/heads/main' && vars.AWS_DEPLOY_ROLE_ARN != '' && (github.event_name == 'push' || inputs.dry_run == false) }}
     environment:
       name: production
     env:
