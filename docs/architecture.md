@@ -69,12 +69,14 @@ infra/aws-static-site/deploy-manifest.yaml
 
 | Item | Status |
 |---|---|
-| S3 bucket name | Placeholder in manifest/tfvars example; final value pending |
-| Route 53 hosted zone | Required; ID pending |
+| S3 bucket name | `coderturtle-io-static-prod-600059206606` — chosen 2026-07-02 (account-id suffix), confirmed available via read-only `head-bucket`; not yet created, pending human `terraform apply` |
+| Route 53 hosted zone | `Z3DLQAZ6G5LV63` — confirmed 2026-07-02 via read-only `list-hosted-zones-by-name` |
 | CloudFront distribution ID | Terraform output after human apply |
 | ACM certificate ARN | Terraform output after human apply |
 | GitHub OIDC deploy role ARN | Must be created/configured separately |
 | GitHub repository variables | Pending Terraform apply and OIDC role setup |
+
+A `terraform plan` against these values was run and reviewed 2026-07-02 on the `infra/aws-static-site-cutover` branch: 17 resources to add, 0 to change, 0 to destroy, all expected types for this pattern, no managed IAM resources — classifies GREEN. See `docs/decisions.md` for the full plan summary and Well-Architected advisory notes. Not yet applied; awaiting human review and `terraform apply`.
 
 ## Routing And Caching Notes
 

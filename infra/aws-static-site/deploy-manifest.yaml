@@ -18,7 +18,7 @@ deployment:
       - www.coderturtle.io
   dns:
     managed_in_route53: true
-    hosted_zone_id: "REPLACE_WITH_ROUTE53_HOSTED_ZONE_ID"
+    hosted_zone_id: "Z3DLQAZ6G5LV63" # confirmed 2026-07-02 via `aws route53 list-hosted-zones-by-name` (read-only)
     create_records: true
   tls:
     create_acm_certificate: true
@@ -30,7 +30,7 @@ deployment:
     directory_index_rewrite: true
   origin:
     type: private_s3
-    bucket_name: "coderturtle-io-static-prod-REPLACE_WITH_ACCOUNT_OR_SUFFIX"
+    bucket_name: "coderturtle-io-static-prod-600059206606" # account-id suffix; availability confirmed 2026-07-02 via `aws s3api head-bucket` (404 = free)
 
 guardrails:
   no_public_buckets: true

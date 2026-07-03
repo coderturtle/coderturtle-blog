@@ -2,6 +2,56 @@
 
 Append-only session history for Coderturtle.io.
 
+## 2026-07-02 - Infrastructure Gremlin preflight + plan for the AWS cutover
+
+### Changed Files
+
+- New branch `infra/aws-static-site-cutover`, off the product branch, dedicated to infra-lane work.
+- `infra/aws-static-site/deploy-manifest.yaml`: filled in the Route 53 hosted zone ID and S3 bucket name (previously placeholders).
+- `infra/aws-static-site/terraform/terraform.tfvars` (local only, gitignored, not committed): generated from the manifest.
+- `docs/architecture.md`: "Values To Fill" table updated with the resolved values and the plan outcome.
+- `docs/decisions.md`, `docs/next-actions.md`: full plan summary, blast-radius classification, and Well-Architected advisory recorded.
+
+### What Changed
+
+Per user request ("For phase B we should have a branch with this setup in place - if not we can leverage the infra lab..."), gave the AWS cutover its own branch (the Terraform module and deploy manifest already existed in the tree from an earlier session but had never been split off infra-specifically). Then acted as the Infrastructure Gremlin (`agentic-infra-lab/agent-teams/infrastructure-gremlin/`), following its documented workflow: preflight, generate tfvars, `terraform plan`, summarise, classify blast radius, stop for human review.
+
+Two manifest fields were still placeholders (Route 53 hosted zone ID, S3 bucket name). Rather than blocking on the user for values that read-only AWS calls could resolve, ran `aws route53 list-hosted-zones-by-name` (found the zone already exists: `Z3DLQAZ6G5LV63`) and `aws s3api head-bucket` against a candidate name using the account-ID-suffix convention the manifest's own placeholder implied (404 confirmed it's available). Generated `terraform.tfvars` and ran `terraform init` + `terraform plan -out=tfplan` — both read-only against AWS.
+
+### Why It Changed
+
+User: "For phase B we should have a branch with this setup in place - if not we can leverage the infra lab to create all this and get my permission to run the terraform."
+
+### Decisions Made
+
+See `docs/decisions.md` 2026-07-02 "Give the AWS cutover its own branch; run the Infrastructure Gremlin preflight + plan" for the full plan summary and Well-Architected advisory table.
+
+### Assumptions Made
+
+- Resolving the hosted-zone-ID and bucket-name blockers via read-only AWS lookups, rather than asking the user, was treated as in-bounds because both are mechanically determinable facts (the zone already exists; bucket-name availability is a yes/no check), not subjective decisions — unlike the genuinely subjective items still left for the user in `docs/roadmap.md` §5.
+- The account-ID-suffix bucket-naming convention (`coderturtle-io-static-prod-600059206606`) follows the placeholder pattern already present in the manifest/tfvars example rather than inventing a new scheme.
+
+### Risks
+
+- `terraform apply` has not been run — no AWS resources actually exist yet. Everything in this entry describes a reviewed plan, not live infrastructure.
+- The saved `tfplan`/`tfplan.json`/`terraform.tfvars` are local-only (gitignored) on this machine; they are not portable to another machine or session without regenerating (`terraform plan` again, which is safe and idempotent against real AWS as long as nothing else has changed the account in the meantime).
+- No agent ran or will run `terraform apply` — this is a hard rule (`guardrails.apply_authority: human-only`), not a preference, regardless of any go-ahead given in conversation.
+
+### Next Actions
+
+- Human: review the plan summary and Well-Architected advisory in `docs/decisions.md`, then run `terraform apply "tfplan"` from `infra/aws-static-site/terraform/` on the `infra/aws-static-site-cutover` branch.
+- After a confirmed apply: record Terraform outputs (bucket name confirmation, CloudFront distribution ID, ACM ARN, CloudFront domain) back into the deploy manifest and `docs/architecture.md`; create the GitHub OIDC deploy role (human/IAM-gated); set the four GitHub repo variables; dry-run then real-run the deploy workflow; retire GitHub Pages once verified.
+
+### Validation Status
+
+- `terraform version`: 1.15.5, satisfies module's `>=1.7.0` requirement.
+- `aws sts get-caller-identity`: succeeded, account `600059206606`.
+- `aws route53 list-hosted-zones-by-name --dns-name coderturtle.io`: succeeded, zone `Z3DLQAZ6G5LV63` found.
+- `aws s3api head-bucket --bucket coderturtle-io-static-prod-600059206606`: 404 (available).
+- `terraform init` / `terraform plan -out=tfplan`: succeeded, 17 to add / 0 to change / 0 to destroy, no errors.
+- Blast-radius classification: GREEN (all creates, expected types, no IAM, no destroys).
+- No `apply`/`destroy`/`import`/state-mutating command was run.
+
 ## 2026-07-02 - Session end: PR push and terraform apply both blocked, parked
 
 ### Changed Files
