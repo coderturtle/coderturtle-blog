@@ -1,0 +1,188 @@
+---
+import Layout from "../layouts/BaseLayout.astro";
+import Gear from "../components/marks/Gear.astro";
+
+const base = import.meta.env.BASE_URL;
+const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
+
+// Agentic Tekton and Hekton are confirmed live and get real outbound links.
+// Gremlins doesn't have a confirmed public URL yet (the local `veilgremlin`
+// project has no site at all and is marked internal-only) so it's shown as
+// coming soon rather than risking a wrong or dead link.
+const cogs = [
+  {
+    name: "Agentic Tekton",
+    role: "The architecture layer",
+    text: "The more formal thinking space for enterprise architecture, operating models, and AI delivery patterns.",
+    href: "https://theagentictekton.com",
+    status: "live",
+  },
+  {
+    name: "Hekton",
+    role: "The factory",
+    text: "The personal operating system behind the work: scaffolding, validation, project memory, and agent handoffs.",
+    href: "https://hekton.theagentictekton.com",
+    status: "live",
+  },
+  {
+    name: "Gremlins",
+    role: "The product/lab direction",
+    text: "Reusable agentic SDLC helpers that may graduate from experiments into real tools.",
+    href: null,
+    status: "soon",
+  },
+];
+---
+
+<Layout
+  title="Ecosystem"
+  description="Coderturtle's workshop is one cog in a wider machine: Hekton, Agentic Tekton, and Gremlins."
+>
+  <section class="flex flex-col items-center gap-4 pb-4 pt-8 text-center">
+    <p class="eyebrow">Where Coderturtle fits</p>
+    <h1 class="max-w-3xl text-4xl font-bold leading-tight md:text-6xl">One machine, several cogs.</h1>
+    <p class="lede max-w-2xl">
+      The workshop floor doesn't run alone. It's one cog turning inside a
+      wider ecosystem &mdash; click through to see the others.
+    </p>
+  </section>
+
+  <section class="section-stack" aria-labelledby="cogs-title">
+    <h2 id="cogs-title" class="sr-only">The ecosystem, as interlocking cogs</h2>
+    <div class="cog-machine">
+      <div class="cog-hub">
+        <Gear class="cog-icon cog-icon-hub" />
+        <p class="cog-label telemetry-label">coderturtle · the floor</p>
+      </div>
+      <div class="cog-ring">
+        {cogs.map((cog) => {
+          const Tag = cog.href ? "a" : "div";
+          return (
+            <Tag
+              class="cog-node"
+              href={cog.href ?? undefined}
+              target={cog.href ? "_blank" : undefined}
+              rel={cog.href ? "noopener noreferrer" : undefined}
+              aria-label={cog.href ? `${cog.name}: opens theagentictekton.com in a new tab` : `${cog.name}: coming soon`}
+            >
+              <Gear class="cog-icon" />
+              <span class="cog-node-label">
+                <span class="cog-node-name">{cog.name}</span>
+                <span class={`status-pill ${cog.status === "live" ? "status-shipped" : "status-paused"}`}>
+                  {cog.status === "live" ? "visit site" : "coming soon"}
+                </span>
+              </span>
+            </Tag>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="ecosystem-section" aria-labelledby="ecosystem-title">
+    <div class="section-heading">
+      <p class="eyebrow">One ecosystem, different voices</p>
+      <h2 id="ecosystem-title">What each cog actually does.</h2>
+    </div>
+    <div class="ecosystem-grid">
+      <article class="ecosystem-card">
+        <p>The workshop voice</p>
+        <h3>Coderturtle</h3>
+        <span>The hands-on narrator: what got built, what broke, what was learned, and what is worth trying next.</span>
+      </article>
+      {cogs.map((cog) => (
+        <article class="ecosystem-card">
+          <p>{cog.role}</p>
+          <h3>{cog.name}</h3>
+          <span>{cog.text}</span>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .cog-machine {
+    position: relative;
+    max-width: 46rem;
+    margin: 2rem auto 0;
+    padding: 2rem 1rem 1rem;
+  }
+
+  .cog-hub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 auto 3rem;
+    width: fit-content;
+  }
+
+  .cog-label {
+    text-align: center;
+  }
+
+  .cog-ring {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .cog-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid theme("colors.kraft / 25%");
+    border-radius: 14px;
+    background: theme("colors.parchment");
+    padding: 1.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :global(.dark) .cog-node {
+    border-color: theme("colors.glow / 20%");
+    background: theme("colors.night / 50%");
+  }
+
+  a.cog-node:hover,
+  a.cog-node:focus-visible {
+    border-color: theme("colors.shell");
+    transform: translateY(-2px);
+  }
+
+  :global(.dark) a.cog-node:hover,
+  :global(.dark) a.cog-node:focus-visible {
+    border-color: theme("colors.glow");
+    box-shadow: 0 0 26px rgb(111 221 160 / 0.25);
+  }
+
+  div.cog-node {
+    opacity: 0.75;
+  }
+
+  .cog-node-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cog-node-name {
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .cog-ring {
+      grid-template-columns: 1fr;
+      max-width: 16rem;
+      margin: 0 auto;
+    }
+  }
+</style>

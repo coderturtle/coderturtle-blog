@@ -1,0 +1,21 @@
+change_log_version: 1
+project_name: coderturtle.io
+created_date: 2026-06-28
+
+changes:
+  - id: CHG-0001
+    date: 2026-06-28
+    title: "Adopt coderturtle.io into Hekton control plane"
+    intent: "Preserve the existing public website repository while adding Hekton classification, traceability, reproducibility, and governance artifacts."
+    changed_by: "codex"
+    change_type: adoption
+    risk_level: low
+    validation:
+      - "Temporary intake clone inspected"
+      - "Hekton metadata and docs added"
+    approvals:
+      required: false
+      status: user_requested
+    links:
+      - "docs/session-log.md"
+      - "docs/adoption-audit.md"

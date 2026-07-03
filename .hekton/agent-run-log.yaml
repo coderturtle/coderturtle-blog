@@ -1,0 +1,40 @@
+agent_run_log_version: 1
+project_name: coderturtle.io
+created_date: 2026-06-28
+
+agent_runs:
+  - id: RUN-0001
+    date: 2026-06-28
+    agent: "codex"
+    role: "Existing Project Adoption Agent"
+    intent: "Switch to the coderturtle GitHub account, inspect the existing website repository, classify it, place it under the canonical Hekton factory-output tree, and add adoption traceability."
+    autonomy_level: 3
+    approvals:
+      required: true
+      status: user_requested
+    files_touched:
+      - ".hekton/project.yaml"
+      - ".hekton/governance.yaml"
+      - ".hekton/risk-register.yaml"
+      - ".hekton/change-log.yaml"
+      - ".hekton/review-log.yaml"
+      - ".hekton/agent-run-log.yaml"
+      - "AGENTS.md"
+      - "CLAUDE.md"
+      - "CODEX.md"
+      - "docs/"
+      - "scripts/"
+      - "mind-palace/"
+      - ".env.example"
+    validation:
+      - "./scripts/check-prereqs.sh --dry-run passed."
+      - "./scripts/verify-project.sh --dry-run passed."
+      - "just validate-reproducibility /Users/hekton/Development/hekton/factory-output/coderturtle.io passed."
+      - "just governance-check /Users/hekton/Development/hekton/factory-output/coderturtle.io passed with one expected uncommitted-changes warning."
+      - "just validate-taxonomy passed globally with existing warnings; coderturtle.io is not yet included because live vault files were not written."
+      - "npm ci completed with audit findings."
+      - "npm run build passed."
+    risks:
+      - "Live vault mutation is not approved; repo-local mind-palace mirror only."
+    next_actions:
+      - "Run Hekton taxonomy, reproducibility, and governance validation."

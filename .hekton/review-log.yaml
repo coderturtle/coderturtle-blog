@@ -1,0 +1,28 @@
+review_log_version: 1
+project_name: coderturtle.io
+created_date: 2026-06-28
+
+reviews:
+  - id: REV-0001
+    date: 2026-06-28
+    reviewer: "codex"
+    review_type: adoption-audit
+    scope:
+      - "README.md"
+      - "LICENSE"
+      - "package.json"
+      - ".github/workflows/deploy.yml"
+      - ".gitignore"
+      - "git remotes and recent history"
+      - "secret-pattern scan"
+    result: passed_with_followups
+    findings:
+      - "Public MIT-licensed Astro/Tailwind site with npm scripts for dev, build, and preview."
+      - "No tracked .env-style files or obvious committed private keys found."
+      - "Tracked .DS_Store files should be removed after adoption."
+      - "Deployment configuration should be reviewed against the coderturtle.io domain."
+      - "npm ci completed but reported 26 audit vulnerabilities in the current dependency set."
+    follow_ups:
+      - "Review npm audit output in a dedicated dependency-maintenance session."
+      - "Review deployment URL/base configuration before publication changes."
+      - "Remove tracked .DS_Store files in a dedicated hygiene commit."

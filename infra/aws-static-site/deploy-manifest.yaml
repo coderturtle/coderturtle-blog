@@ -1,0 +1,46 @@
+# Infrastructure Gremlin input for coderturtle.io.
+# The gremlin may preflight, generate tfvars, run terraform plan, summarise,
+# and classify. The human applies. Do not commit tfvars, state, plans, or secrets.
+
+project: coderturtle.io
+classification: factory-output
+intent: "Host coderturtle.io as a static Astro site on private S3 and CloudFront."
+
+pattern: hekton/aws-static-site
+
+deployment:
+  provider: aws
+  region: eu-west-2
+  acm_region: us-east-1
+  domains:
+    primary: coderturtle.io
+    aliases:
+      - www.coderturtle.io
+  dns:
+    managed_in_route53: true
+    hosted_zone_id: "Z3DLQAZ6G5LV63" # confirmed 2026-07-02 via `aws route53 list-hosted-zones-by-name` (read-only)
+    create_records: true
+  tls:
+    create_acm_certificate: true
+    validation: dns
+  cdn:
+    price_class: PriceClass_100
+    default_root_object: index.html
+    spa_fallback: false
+    directory_index_rewrite: true
+  origin:
+    type: private_s3
+    bucket_name: "coderturtle-io-static-prod-600059206606" # account-id suffix; availability confirmed 2026-07-02 via `aws s3api head-bucket` (404 = free)
+
+guardrails:
+  no_public_buckets: true
+  apply_authority: human-only
+  no_terraform_managed_iam: true
+  cost_awareness: true
+
+outputs_to_record_after_apply:
+  s3_bucket: ""
+  cloudfront_distribution_id: ""
+  cloudfront_domain_name: ""
+  acm_certificate_arn: ""
+  site_url: ""

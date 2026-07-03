@@ -1,12 +1,42 @@
----
-let isDark = false;
-function toggle() {
-  isDark = !isDark;
-  document.documentElement.classList.toggle('dark', isDark);
-}
----
-<button on:click={toggle}
-  class="p-2 rounded border border-night/20 dark:border-ivory/30 
-         hover:bg-shell/10 dark:hover:bg-ivory/10 transition">
-  {isDark ? "🌞" : "🌚"}
+<button
+  id="theme-toggle"
+  class="theme-toggle"
+  type="button"
+  aria-label="Toggle color theme"
+  aria-pressed="false"
+>
+  <span class="theme-toggle-mark" aria-hidden="true"></span>
+  <span class="theme-toggle-text">Theme</span>
 </button>
+
+<script is:inline>
+  (() => {
+    const root = document.documentElement;
+    const button = document.getElementById("theme-toggle");
+    const stored = localStorage.getItem("coderturtle-theme");
+    // Dark is the flagship "gateway to the future" experience now; default
+    // to it regardless of OS preference unless the visitor has explicitly
+    // chosen light via the toggle before.
+    const initial = stored ?? "dark";
+
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+      root.classList.toggle("dark", isDark);
+      // astro-mermaid's auto theme-switching watches this attribute (not
+      // our .dark class) to pick the diagram color scheme.
+      root.setAttribute("data-theme", theme);
+      if (button) {
+        button.setAttribute("aria-pressed", String(isDark));
+        button.dataset.theme = theme;
+      }
+    }
+
+    applyTheme(initial);
+
+    button?.addEventListener("click", () => {
+      const next = root.classList.contains("dark") ? "light" : "dark";
+      localStorage.setItem("coderturtle-theme", next);
+      applyTheme(next);
+    });
+  })();
+</script>

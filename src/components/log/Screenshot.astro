@@ -1,0 +1,40 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+}
+const { src, alt, caption } = Astro.props;
+const dialogId = `shot-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<figure class="log-figure not-prose">
+  <button class="log-figure-trigger" type="button" data-dialog-open={dialogId} aria-label={`Zoom in: ${alt}`}>
+    <Image src={src} alt={alt} class="log-figure-img" widths={[480, 800, 1200]} sizes="(min-width: 60rem) 40rem, 90vw" />
+  </button>
+  {caption && <figcaption class="log-figure-caption">{caption}</figcaption>}
+  <dialog id={dialogId} class="log-figure-dialog">
+    <button class="log-figure-close" type="button" data-dialog-close aria-label="Close">&times;</button>
+    <Image src={src} alt={alt} class="log-figure-dialog-img" widths={[480, 800, 1200, 1600]} sizes="90vw" />
+  </dialog>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-dialog-open]").forEach((trigger) => {
+    const id = trigger.dataset.dialogOpen;
+    const dialog = id ? document.getElementById(id) as HTMLDialogElement | null : null;
+    trigger.addEventListener("click", () => dialog?.showModal());
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-dialog-close]").forEach((btn) => {
+    btn.addEventListener("click", () => (btn.closest("dialog") as HTMLDialogElement | null)?.close());
+  });
+
+  document.querySelectorAll<HTMLDialogElement>(".log-figure-dialog").forEach((dialog) => {
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  });
+</script>

@@ -1,0 +1,14 @@
+---
+interface Props {
+  class?: string;
+  inset?: string;
+}
+const { class: className = "", inset = "0.5rem" } = Astro.props;
+---
+
+<span class={`corner-brackets ${className}`} style={`--bracket-inset: ${inset}`} aria-hidden="true">
+  <span class="corner-bracket corner-tl"></span>
+  <span class="corner-bracket corner-tr"></span>
+  <span class="corner-bracket corner-bl"></span>
+  <span class="corner-bracket corner-br"></span>
+</span>

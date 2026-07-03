@@ -1,44 +1,76 @@
 ---
 import "../styles/global.css";
 import ThemeToggle from "../components/ThemeToggle.astro";
-const { title = "Coderturtle" } = Astro.props;
+
+const {
+  title = "Coderturtle",
+  description = "Practical field notes, lab scars, and workshop patterns from a cranky, hands-on engineering shell.",
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
 const nav = [
-  { href: "/blog/", label: "Blog" },
-  { href: "/library/", label: "Library" },
-  { href: "/about/", label: "About" },
+  { href: url("projects/"), label: "Projects" },
+  { href: `${url("enter/")}#workbench`, label: "Workbench" },
+  { href: url("ecosystem/"), label: "Ecosystem" },
+  { href: url("about/"), label: "About" },
 ];
+const pageTitle = title === "Coderturtle" ? "Coderturtle" : `${title} - Coderturtle`;
 ---
+
 <!DOCTYPE html>
-<html lang="en" class="light">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} – Coderturtle</title>
-  <link rel="icon" type="image/x-icon" href={import.meta.env.BASE_URL + "favicon.ico"} />
-</head>
-<body class="min-h-screen flex flex-col">
-  <header class="flex items-center justify-between p-4 border-b dark:border-ivory/20">
-    <a href="/" class="flex items-center gap-2">
-      <img src={import.meta.env.BASE_URL + "logo.png"} alt="logo" class="w-8 h-8" />
-      <span class="font-mono font-semibold tracking-tight">Coderturtle</span>
-    </a>
-    <nav class="flex gap-6 text-sm font-mono">
-      {nav.map(n => (
-        <a href={n.href} class="hover:text-shell"
-           class:list={[Astro.url.pathname.startsWith(n.href) && "text-shell font-semibold"]}>
-          {n.label}
-        </a>
-      ))}
-    </nav>
-    <ThemeToggle />
-  </header>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+    <link rel="icon" type="image/x-icon" href={url("favicon.ico")} />
+    <script is:inline>
+      (() => {
+        // Blocking, pre-paint: avoids a light-mode flash before the dark
+        // "gateway to the future" theme (the flagship experience) applies.
+        const stored = localStorage.getItem("coderturtle-theme");
+        const theme = stored ?? "dark";
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        // astro-mermaid reads this attribute (not our .dark class) to pick
+        // the diagram color scheme.
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href={url("")} class="brand-lockup" aria-label="Coderturtle home">
+        <img src={url("logo.png")} alt="" width="32" height="32" />
+        <span>Coderturtle</span>
+      </a>
+      <div class="nav-cluster">
+        <nav class="site-nav" aria-label="Primary navigation">
+          {nav.map((n) => (
+            <a
+              href={n.href}
+              class:list={[
+                !n.href.includes("#") &&
+                  Astro.url.pathname === new URL(n.href, Astro.site ?? Astro.url).pathname &&
+                  "active",
+              ]}
+            >
+              {n.label}
+            </a>
+          ))}
+        </nav>
+        <ThemeToggle />
+      </div>
+    </header>
 
-  <main class="flex-1 w-full max-w-4xl mx-auto px-4 py-10">
-    <slot />
-  </main>
+    <main class="site-main">
+      <slot />
+    </main>
 
-  <footer class="text-xs text-center py-6 border-t dark:border-ivory/20">
-    Built with 🧠 + ☕ by Coderturtle · <span class="font-mono">Shipping slow, debugging fast.</span>
-  </footer>
-</body>
+    <footer class="site-footer">
+      <p>Built by Coderturtle. Powered by Astro, static files, and stubborn curiosity.</p>
+      <p>Shipping slow, debugging fast.</p>
+    </footer>
+  </body>
 </html>

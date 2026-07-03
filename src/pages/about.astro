@@ -1,63 +1,136 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import Layout from "../layouts/BaseLayout.astro";
+import Gear from "../components/marks/Gear.astro";
+import Lightbulb from "../components/marks/Lightbulb.astro";
+import Compass from "../components/marks/Compass.astro";
+import CornerBrackets from "../components/CornerBrackets.astro";
+
+const base = import.meta.env.BASE_URL;
+const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
+
+const principles = [
+  {
+    title: "Ship the boring path first",
+    text: "The clever version can wait until the boring version has survived a Tuesday in production.",
+    Mark: Gear,
+  },
+  {
+    title: "The rollback plan is not decorative",
+    text: "If there's no way back out, it isn't a plan yet, it's a bet.",
+    Mark: Compass,
+  },
+  {
+    title: "Diagrams need a failure path",
+    text: "A diagram with no failure path is fan fiction. Draw the part where it breaks.",
+    Mark: Lightbulb,
+  },
+];
 ---
 
 <Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
+  title="The builder"
+  description="Meet Coderturtle: the cranky, practical voice behind the field notes, workshop patterns, and lab scars on this site."
 >
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+  <section class="hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Who's typing</p>
+      <h1>A slow shell with strong opinions about rollback plans.</h1>
+      <p class="lede">
+        Coderturtle is the builder's voice behind this site: the one who
+        actually ran the migration, watched it page someone at 2am, and wrote
+        the note so the next person (probably also Coderturtle) doesn't repeat
+        it. No thought-leadership, no keynote slides &mdash; just what got
+        built, what broke, and what was worth keeping.
+      </p>
+      <div class="hero-actions" aria-label="Primary actions">
+        <a class="button-primary" href={url("projects/")}>Read the log</a>
+        <a class="button-secondary" href={url("enter/")}>See the workbench</a>
+      </div>
+    </div>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+    <aside class="workbench-panel" aria-label="About Coderturtle">
+      <CornerBrackets inset="0.65rem" />
+      <div class="panel-bar">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <img src={url("logo.png")} alt="A hand-drawn cranky old turtle inventor, arms crossed, wearing round glasses, with a shell tattooed with a lightbulb, a blueprint castle, and a gear." class="panel-logo" loading="eager" />
+      <p class="panel-kicker">field notes</p>
+      <div class="panel-line">
+        <span class="prompt">shell</span>
+        <span>scarred, load-bearing, still standing</span>
+      </div>
+      <div class="panel-line">
+        <span class="prompt">temper</span>
+        <span>dry, patient with tools, short with hype</span>
+      </div>
+      <div class="panel-line active">
+        <span class="prompt">status</span>
+        <span>building, narrating, occasionally right</span>
+      </div>
+    </aside>
+  </section>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+  <section class="section-stack" aria-labelledby="principles-title">
+    <div class="section-heading">
+      <p class="eyebrow">How the shell works</p>
+      <h2 id="principles-title">A few rules that earned their scars.</h2>
+      <p>
+        Nothing here is a manifesto. It's just what kept surviving contact
+        with real repos, real deadlines, and real on-call rotations.
+      </p>
+    </div>
+    <div class="lane-grid">
+      {principles.map((principle) => {
+        const Mark = principle.Mark;
+        return (
+          <article class="lane-card">
+            <Mark class="lane-card-icon" />
+            <h3>{principle.title}</h3>
+            <p>{principle.text}</p>
+          </article>
+        );
+      })}
+    </div>
+  </section>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+  <section class="section-stack" aria-labelledby="how-title">
+    <div class="section-heading">
+      <p class="eyebrow">How this actually gets built</p>
+      <h2 id="how-title">An agent does some of the typing. The turtle still owns it.</h2>
+      <p>
+        Most of what's on this site got built with an AI agent doing a
+        meaningful share of the actual typing &mdash; this page included.
+        That's not a confession, it's just what happened, and it's the
+        whole reason the build logs under Projects exist: an honest record
+        of what the agent got right the first time, what it confidently
+        got wrong, and what took three tries because neither of us read
+        the docs closely enough the first pass.
+      </p>
+      <p>
+        Nothing in the log gets staged after the fact to look better. If
+        an entry describes a bug, that bug shipped, briefly, on this exact
+        site, before someone caught it &mdash; usually the agent checking
+        its own work, sometimes the turtle, occasionally a piece of
+        feedback blunt enough to start with "I don't really like it."
+        The workshop floor draws this literally: one master turtle, three
+        turtle-shaped desks, and a diagram that's really just an org chart
+        for who's allowed to approve what.
+      </p>
+    </div>
+  </section>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
+  <section class="closing-band" aria-labelledby="closing-title">
+    <div>
+      <p class="eyebrow">Where the mess lives</p>
+      <h2 id="closing-title">Projects, build logs, and the occasional rant.</h2>
+      <p>
+        Real builds and their build logs live under Projects. Half-finished
+        experiments and reusable patterns live on the workbench. Both are
+        static, both are honest about what still needs work.
+      </p>
+    </div>
+    <a class="button-primary" href={url("projects/")}>Read the log</a>
+  </section>
 </Layout>

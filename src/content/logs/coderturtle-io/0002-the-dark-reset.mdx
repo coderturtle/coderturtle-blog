@@ -1,0 +1,144 @@
+---
+project: coderturtle-io
+title: "The dark reset: rejecting the schematic pass"
+date: 2026-07-02
+order: 2
+phase: "gateway to the future"
+summary: "The retro-futurist blueprint pass got rejected outright: too subtle, wrong kind of futuristic, missed the point. Here's the honest log of the reset that followed."
+kind: decision
+changeRefs: []
+tags: ["design", "dark-mode", "astro", "interaction"]
+---
+
+import TerminalBlock from "@/components/log/TerminalBlock.astro";
+import DiffBlock from "@/components/log/DiffBlock.astro";
+import Screenshot from "@/components/log/Screenshot.astro";
+import BeforeAfter from "@/components/log/BeforeAfter.astro";
+import workshopFloor from "@/assets/logs/coderturtle-io/workshop-floor.png";
+import gatewayLight from "@/assets/logs/coderturtle-io/gateway-light.png";
+import gatewayDark from "@/assets/logs/coderturtle-io/gateway-dark.png";
+
+A warm, light-first, illustration-led pass shipped first. Then a
+retro-futurist/schematic layer went on top of it &mdash; blueprint grid,
+corner brackets, bracketed telemetry labels. It didn't land.
+
+> "I don't really like it. Let's start over."
+
+Direct feedback, taken at face value. Three things were wrong with the
+schematic pass, all confirmed on the record: it read as retro engineering
+blueprint rather than *futuristic*, it was too subtle a change to actually
+feel like a new direction, and it never introduced the real idea &mdash; a
+workshop where a human-built turtle and its agent collaborators build
+things together. Chrome got added; the concept didn't show up.
+
+## What changed instead
+
+Dark became the site's default theme, not just a toggle option: a `void`
+background, a `glow` accent, real bloom on interactive elements. The
+gateway became a portal &mdash; concentric glow rings, a star field, the
+turtle framed like a threshold instead of a card.
+
+<BeforeAfter
+  before={gatewayLight}
+  after={gatewayDark}
+  beforeLabel="light mode"
+  afterLabel="dark mode"
+/>
+
+Both are real toggle states of the current gateway, not a mockup.
+
+## Building the workshop floor
+
+The concept that the schematic pass skipped &mdash; turtle and agent
+turtles building together &mdash; needed to show up structurally, not just
+in copy. `/enter/` got a master station (Coderturtle) supervising three
+worker stations (Projects, Labs, Workshops), connected by a real bus-and
+drop-line diagram that lights up wherever you're hovering:
+
+<Screenshot
+  src={workshopFloor}
+  alt="The workshop floor on /enter/: a master turtle station connected by a glowing diagram to three worker turtle stations labelled Projects, Labs, and Workshops."
+  caption="The workshop floor, mid-session. Click to zoom."
+/>
+
+No new character art existed for the "agent turtles," and the user
+confirmed they'd supply that separately rather than have it invented. So
+the Labs and Workshops stations reuse Coderturtle's own portrait with a
+category badge, and are honest about their state: buttons with a
+"still being built" readout, not links to pages that don't exist yet.
+
+## Two bugs, caught by actually running it
+
+Verifying this pass (not just eyeballing screenshots) surfaced two real
+bugs that a visual review alone would have missed.
+
+First, a script scope collision. Both the new pre-paint theme script and
+`ThemeToggle`'s own script declared `const stored` in the same global
+scope:
+
+<TerminalBlock title="browser console" code={`pageerror: Identifier 'stored' has already been declared`} />
+
+Fixed by wrapping each inline script in an IIFE so they don't leak into
+shared scope.
+
+Second, a config detail that had been silently wrong since the previous
+session: `astro-mermaid`'s theme auto-switching watches a `data-theme`
+*attribute*, but the site's theme scripts only ever set a `.dark` class.
+Mermaid diagrams were quietly ignoring the site's actual theme. Fixed by
+setting `data-theme` everywhere the class gets toggled, and by switching
+`syntaxHighlight` from a bare string to its object form so `excludeLangs`
+actually takes effect:
+
+<DiffBlock
+  title="astro.config.mjs"
+  diff={`   markdown: {
+-    syntaxHighlight: "shiki",
+-    shikiConfig: {
+-      theme: "github-dark-dimmed"
++    syntaxHighlight: {
++      type: "shiki",
++      excludeLangs: ["mermaid"],
++    },
++    shikiConfig: {
++      theme: "github-dark-dimmed"
+     }
+   }`}
+/>
+
+## A third scoping bug, and the pattern behind it
+
+While building the workshop floor and the `/ecosystem/` cog diagram, the
+same class of bug showed up twice more: a `class` passed to an imported
+mark component (`<Gear class="..." />`) never receives the parent page's
+scoped-style attribute, because Astro's per-file CSS scoping only reaches
+elements written directly in that file &mdash; not a child component's own
+root element. `.worker-badge` and `.cog-icon` both had to move out of
+their page's local `<style>` block and into the shared stylesheet before
+they actually applied. Confirmed with a real negative test before trusting
+the fix:
+
+<TerminalBlock
+  title="shell"
+  code={`$ sed -i '' 's/project: coderturtle-io/project: coderturtle-io-TYPO/' \\
+    src/content/logs/coderturtle-io/0001-vibing-with-chatgpt.mdx
+$ npm run build
+...
+ ▶ src/pages/projects/[slug]/log/[entry]/index.astro
+   └─ /projects/coderturtle-io-TYPO/log/vibing-with-chatgpt/index.htmlEntry projects → coderturtle-io-TYPO was not found.
+Cannot read properties of undefined (reading 'data')
+  Stack trace:
+    at file:///.../dist/pages/projects/_slug_/log/_entry_.astro.mjs
+[build] exit code 1`}
+/>
+
+Reverted the typo immediately after confirming the build failed loudly, as
+intended. That's the whole point of a validated reference: a bad link
+should break the build, not the live site.
+
+## What's still open
+
+The palette question was asked directly and never answered &mdash; this
+direction shipped on the recommended default, not a confirmed one. The
+Labs and Workshops turtle stations are placeholders for pages that don't
+exist yet. And the real agent-turtle artwork is still the user's to
+supply. All flagged in `next-actions.md`, not quietly assumed closed.
