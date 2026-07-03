@@ -78,6 +78,11 @@ resource "aws_route53_record" "cert_validation" {
   type    = each.value.type
   records = [each.value.record]
   ttl     = 60
+
+  # These CNAME validation records already exist from the earlier apply attempt that
+  # partially completed (the cert is already ISSUED against them) but aren't tracked in
+  # this state. Same conflict/fix as alias_a/alias_aaaa below: overwrite instead of erroring.
+  allow_overwrite = true
 }
 
 resource "aws_acm_certificate_validation" "site" {
@@ -204,6 +209,14 @@ resource "aws_route53_record" "alias_a" {
   name    = each.value
   type    = "A"
 
+  # coderturtle.io and www.coderturtle.io both already have live "A" alias records
+  # pointing at a pre-existing 2020 CloudFront distribution (E1L5J5X47UHN2S, fronting a
+  # public S3-website-hosting bucket) that isn't tracked in this Terraform state. Without
+  # this, apply would fail trying to CREATE a record that already exists at these names;
+  # allow_overwrite repoints the existing record at this stack's new distribution instead
+  # of erroring. See docs/decisions.md (2026-07-03) for the cutover note.
+  allow_overwrite = true
+
   alias {
     name                   = aws_cloudfront_distribution.site.domain_name
     zone_id                = aws_cloudfront_distribution.site.hosted_zone_id
@@ -217,6 +230,10 @@ resource "aws_route53_record" "alias_aaaa" {
   zone_id = var.hosted_zone_id
   name    = each.value
   type    = "AAAA"
+
+  # No pre-existing AAAA record today, but set for symmetry with alias_a/consistency
+  # if that changes before apply.
+  allow_overwrite = true
 
   alias {
     name                   = aws_cloudfront_distribution.site.domain_name

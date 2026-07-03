@@ -146,6 +146,68 @@ See `docs/decisions.md`: "Enable push-to-main on the AWS deploy workflow now, ga
 
 No. Live vault mutation is not approved; repo-local docs only.
 
+## 2026-07-03 - Terraform apply, live DNS cutover, OIDC deploy role, and PR #2 merge
+
+### Changed Files
+
+- `infra/aws-static-site/terraform/main.tf`: added `allow_overwrite = true` to `aws_route53_record.alias_a`, `alias_aaaa`, and `cert_validation` (pre-existing records conflict, see below).
+- `infra/aws-static-site/terraform/github-oidc.tf` (new): GitHub OIDC deploy role, mirroring `agentic-tekton`'s pattern.
+- `infra/aws-static-site/deploy-manifest.yaml`: `no_terraform_managed_iam` flipped to `false` (recorded exception); `outputs_to_record_after_apply` filled in with real values.
+- `infra/aws-static-site/README.md`: documented the IAM exception and the post-apply repo-variable steps.
+- `docs/decisions.md`, `docs/next-actions.md`: recorded the DNS-cutover conflict/resolution and the OIDC-role decision.
+- GitHub repo variables set on `coderturtle/coderturtle-blog`: `AWS_REGION`, `AWS_DEPLOY_ROLE_ARN`, `S3_BUCKET`, `CLOUDFRONT_DISTRIBUTION_ID`.
+- PR #2 merged into `main`; PR #1 (stale draft) closed as superseded.
+- Separately, in `blog-factory-lab` (different repo): merged PR #11, the v1 hardening of the canonical `deploy-static-site.yml` template (a first attempt, #10, had to be re-cut after picking up an unrelated commit from a concurrent session).
+
+### What Changed
+
+User explicitly declined to let any agent (including a proposed Haiku subagent) run `terraform apply` or create the IAM role directly, citing this project's own recorded hard rule — exactly the guardrail working as designed. User ran `terraform apply` themselves in a separate terminal from commands prepared here, and reported back two real errors mid-apply for diagnosis:
+
+1. **Route 53 "already exists" on the alias and cert-validation records.** Root cause: `coderturtle.io`/`www.coderturtle.io` already had live DNS pointing at a pre-existing CloudFront distribution (`E1L5J5X47UHN2S`, created 2020-11-22) that predates this Terraform and isn't tracked in its state — not GitHub Pages, as this project's docs had assumed. Fixed with `allow_overwrite = true` on the three affected `aws_route53_record` resources.
+2. **CloudFront `CNAMEAlreadyExists` on the new distribution.** A harder constraint: CloudFront only allows an alias on one distribution account-wide, so the old distribution had to relinquish the aliases before the new one could claim them. This mutates a live, currently-serving production resource outside Terraform's control — prepared exact `aws cloudfront get-distribution-config` / `update-distribution` commands for the user to run themselves rather than running them as an agent, same reasoning as the Terraform-apply gate even though it isn't literally Terraform. Hit one follow-up validation error (`MinimumProtocolVersion` required when switching to the CloudFront default certificate) and corrected the `jq` transform.
+
+With both resolved, `terraform apply` completed: 7 resources added (following on from an earlier partial apply that had already created the S3 bucket, ACM cert, OAC, CloudFront function, and IAM role before hitting error #1). Verified read-only afterward: new distribution `Deployed`, DNS correctly repointed, `curl https://coderturtle.io/` returns `403` (expected — private bucket is empty until the deploy workflow runs).
+
+Separately, asked the user which sibling pattern to mirror for the OIDC deploy role (`agentic-tekton`'s terraform-managed role vs. `hekton-field-journal`'s manually-created one) rather than guessing — user chose terraform-managed. Added `github-oidc.tf`, which required recording a scoped exception to this project's own `no_terraform_managed_iam` guardrail.
+
+With the role applied and outputs in hand, set the four GitHub repo variables and merged PR #2 — the deploy workflow (already live on push-to-`main` from the previous session's fix) will perform its first real deploy on the next merge.
+
+### Why It Changed
+
+User: "run terraform apply in a subagent of haiku as I've reviewed and approved... For the OIDC deploy role for coderturtle we should be able to copy what we did on dermdunc for the hekton field journal and the agentic tekton sites" — declined the subagent-apply request per the project's own recorded guardrail; proceeded with the OIDC role per the user's explicit sibling-pattern choice. Later: "ah I already have a CNAME for coderturtle.io so we need to update that rather than creating new ones" and the subsequent pasted `terraform apply` errors drove the two DNS/CloudFront fixes.
+
+### Decisions Made
+
+See `docs/decisions.md`: "Handle the pre-existing live CloudFront distribution during DNS cutover" and "Add the GitHub OIDC deploy role via Terraform, converging on agentic-tekton's pattern".
+
+### Assumptions Made
+
+- Treated "I've reviewed and approved" as not overriding the project's own hard rule that apply is human-only "regardless of any go-ahead given in conversation" — the rule exists specifically to hold even when a human says go ahead in the moment, so it wasn't treated as a genuine ambiguity to ask about.
+- Treated clearing the old distribution's aliases (a live-production mutation with real downtime, outside Terraform) as the same class of action as the Terraform-apply gate — prepared exact commands for the user rather than running them as an agent, even though the user had already shown willingness to accept the downtime.
+
+### Risks
+
+- The old distribution (`E1L5J5X47UHN2S`) and its S3-website bucket are now orphaned (aliases cleared, no traffic) but not deleted — flagged in `next-actions.md`, not urgent.
+- The actual first deploy (sync + invalidation) hasn't been verified yet — `docs/next-actions.md` has a follow-up to confirm `https://coderturtle.io/` serves real content after the next merge-triggered run.
+- Discovered mid-session: this repo and `blog-factory-lab` both show signs of concurrent, uncoordinated agent activity from other sessions on the same machine (branch/working-tree state changing between commands, a `gh auth` active-account flipping between `coderturtle`/`dermdunc` repeatedly, a PR number collision in `blog-factory-lab`). Nothing here was lost or corrupted, but every push/PR/gh operation in this session had to be verified rather than trusted at face value — noted in case this becomes a recurring source of friction.
+
+### Next Actions
+
+- See `docs/next-actions.md`: decommission the old CloudFront distribution/bucket; verify the first real deploy once it runs.
+
+### Validation Status
+
+- `terraform plan` reviewed clean (10 to add, 0/0) after each fix before handing back to the user to apply.
+- `aws cloudfront get-distribution` / `list-resource-record-sets` (read-only): confirm new distribution `Deployed`, DNS repointed to it.
+- `curl -sS -o /dev/null -w "HTTP %{http_code}" https://coderturtle.io/`: `403` (expected, empty bucket).
+- `aws s3 ls s3://coderturtle-io-static-prod-600059206606/`: confirmed empty.
+- `gh variable list`: confirms all four deploy variables set.
+- PR #2 merge and PR #11 (blog-factory-lab) merge both verified via `gh pr view ... --json state,mergedAt` plus a direct content check (`git show origin/main:...`) after the PR #10/#11 mixup, rather than trusting the merge command's own output.
+
+### Mind-Palace Updated
+
+No. Live vault mutation is not approved; repo-local docs only.
+
 ## 2026-07-02 - Phase A housekeeping: .DS_Store, npm audit
 
 ### Changed Files
