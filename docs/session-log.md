@@ -2,6 +2,53 @@
 
 Append-only session history for Coderturtle.io.
 
+## 2026-07-04 - Investigate reported "/projects/ shows old coming-soon page"; add old-site quote to sitewide footer
+
+### Changed Files
+
+- `src/layouts/BaseLayout.astro`: footer restructured into `.site-footer-shell` (quote line + existing two-line row).
+- `src/styles/global.css`: added `.site-footer-shell`/`.site-footer-quote`, split the old `.site-footer` styles across the new wrapper and the inner row.
+- `docs/decisions.md`, `docs/next-actions.md`: recorded the investigation finding and the footer change.
+
+### What Changed
+
+User reported the live `/projects/` page points at the old site's coming-soon page, and separately said they liked that old page's footer quote ("Innovation is seeing what everybody has seen and thinking what nobody has thought") enough to want it in the Coderturtle brand.
+
+Investigated the reported bug first rather than assuming: cache-busted `curl` against both apex and `www`, plus `dig`, show only the new CloudFront distribution serving the current, correctly-built `/projects/` page — no stale content found anywhere. This matches a browser-cache root cause already closed out in `docs/next-actions.md` on 2026-07-03 for an earlier, identically-worded report. No code/infra change made for this half of the request.
+
+Added the quote to the sitewide footer (`BaseLayout.astro`), matching its exact placement on the old 2020 site, rather than into the homepage's existing cranky `turtleQuotes` rotation, whose dry/snarky register would clash with this quote's earnest tone.
+
+### Why It Changed
+
+Direct user request: fix the projects link, and fold the liked quote into the brand.
+
+### Decisions Made
+
+See `docs/decisions.md` 2026-07-04 for the full reasoning on both halves.
+
+### Assumptions Made
+
+- Treated the bug report as needing verification, not just a code fix, since the identical report was already investigated and closed as a client-cache issue the day before.
+- Chose the footer over the homepage quote-bubble rotation as the right home for this quote, based on tonal fit with the existing voice guide.
+
+### Risks
+
+- None identified; footer-only CSS/markup change, no build errors, no runtime script changes.
+
+### Next Actions
+
+- If the user still sees the old page after a hard refresh, get an exact URL, browser, and screenshot — nothing server-side reproduces it.
+
+### Validation Status
+
+- `npm run build`: passed, no errors.
+- `curl` against the Astro dev server (`npm run dev`): confirmed compiled `.site-footer-shell`/`.site-footer-quote` CSS present and the literal quote text rendered in the footer markup on `/about/`.
+- No browser/screenshot check possible this session (`chromium-cli` not available in this environment).
+
+### Mind-Palace Updated
+
+No. Live vault mutation is not approved; repo-local docs only.
+
 ## 2026-07-02 - Infrastructure Gremlin preflight + plan for the AWS cutover
 
 ### Changed Files

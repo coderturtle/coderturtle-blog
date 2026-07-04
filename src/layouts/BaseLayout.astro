@@ -68,9 +68,14 @@ const pageTitle = title === "Coderturtle" ? "Coderturtle" : `${title} - Codertur
       <slot />
     </main>
 
-    <footer class="site-footer">
-      <p>Built by Coderturtle. Powered by Astro, static files, and stubborn curiosity.</p>
-      <p>Shipping slow, debugging fast.</p>
+    <footer class="site-footer-shell">
+      <p class="site-footer-quote">
+        &ldquo;Innovation is seeing what everybody has seen and thinking what nobody has thought.&rdquo;
+      </p>
+      <div class="site-footer">
+        <p>Built by Coderturtle. Powered by Astro, static files, and stubborn curiosity.</p>
+        <p>Shipping slow, debugging fast.</p>
+      </div>
     </footer>
   </body>
 </html>

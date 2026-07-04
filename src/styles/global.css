@@ -93,8 +93,16 @@
     @apply mx-auto w-full max-w-6xl px-4 py-8 md:px-8 md:py-12;
   }
 
+  .site-footer-shell {
+    @apply mx-auto flex w-full max-w-6xl flex-col px-4 md:px-8;
+  }
+
+  .site-footer-quote {
+    @apply border-t border-night/10 pt-6 text-center font-serif text-sm italic text-night/50 dark:border-glow/10 dark:text-ivory/40;
+  }
+
   .site-footer {
-    @apply mx-auto flex w-full max-w-6xl flex-col gap-2 border-t border-night/10 px-4 py-8 text-sm text-night/65 dark:border-glow/10 dark:text-ivory/55 md:flex-row md:items-center md:justify-between md:px-8;
+    @apply flex w-full flex-col gap-2 py-8 text-sm text-night/65 dark:text-ivory/55 md:flex-row md:items-center md:justify-between;
   }
 
   .hero-grid {
