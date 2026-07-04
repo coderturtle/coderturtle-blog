@@ -25,3 +25,7 @@ Applying surfaced a real surprise: `coderturtle.io`'s DNS had been pointing at a
 Separately, extracted the S3+CloudFront deploy GitHub Action — previously hand-copied across three sites — into its actual canonical reusable template in the sibling `blog-factory-lab` repo (not `agentic-infra-lab`, the initially-assumed but incorrect destination), hardened with the fixes all three real consumers had independently reinvented.
 
 Noted for future sessions: both this repo and `blog-factory-lab` showed signs of concurrent, uncoordinated agent activity from other sessions sharing this machine during this session (branch/working-tree state shifting between commands, `gh auth`'s active account flipping repeatedly, a PR-number collision). Nothing was lost, but every push/PR/merge had to be independently verified rather than trusted at face value.
+
+## 2026-07-04 - Re-confirm `/projects/` is not broken; add old-site quote to the brand
+
+A second, identically-worded report of `/projects/` showing the old coming-soon page was re-investigated (cache-busted `curl`, `dig`) and again found nothing wrong server-side — same browser-cache root cause already closed out 2026-07-03. No code/infra fix needed. Separately, added the old 2020 site's footer quote ("Innovation is seeing what everybody has seen and thinking what nobody has thought") to the current site's sitewide footer, matching its original placement, at the user's request to fold it into the brand.
