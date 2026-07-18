@@ -1304,3 +1304,57 @@ was available this session — build + generated-HTML verified, not actual rende
 ### Mind-Palace Updated
 
 No. Live vault mutation is not approved; repo-local docs only.
+
+---
+
+## 2026-07-18 (cont'd) - Fixed the browser-caught info-toggle bug; ran the Editor Gremlin on the workshop copy
+
+**Agent:** Claude
+
+### What changed
+
+- User did the browser check this session's tooling couldn't do, and caught two real bugs on
+  `/workshops/`: every card's summary rendered expanded by default, and the "i" toggle button did
+  nothing. Root cause: the bare `hidden` HTML attribute was losing a CSS specificity fight against
+  `global.css`'s `.note-card p { display: block }` rule, so it never actually hid anything —
+  toggling it in JS was a real no-op. Fixed by switching to an explicit `.is-expanded` class
+  instead of the `hidden` attribute.
+- User asked to run the summary copy through "our editorial gremlin." Checked rather than assumed:
+  the thing literally named "Editorial Gremlin" (`blog-factory-lab/agent-teams/editorial-gremlin/`)
+  is a pipeline dispatcher, not a prose reviewer — does no editing itself. The real match is the
+  **Editor Gremlin** role inside Blogger Gremlin's roster
+  (`blog-factory-lab/agent-teams/blogger-gremlin/prompts/03-editor-gremlin.md`), a critique-only
+  contract enforcing that team's `quality-bar.md`.
+- Applied that quality bar to all four workshops' `title`/`tagline`/`summary`: one hard-fail
+  finding (an em dash in `terminal-velocity.md`), fixed. Everything else (substance, voice, safety)
+  passed on inspection.
+
+### Decisions Made
+
+See `docs/decisions.md`'s 2026-07-18 (cont'd) entry for full reasoning and the naming-confusion
+detail on which "Editorial Gremlin" actually applies.
+
+### Assumptions
+
+None new.
+
+### Risks
+
+No new RISK entry.
+
+### Next Actions
+
+Push these fixes to the open PR (`agent/claude/workshops-page`). The outstanding "human-review
+`/workshops/` live in a real browser" next-action is now partially addressed (the user already did
+one real pass and caught the two bugs above) but worth a final look post-fix.
+
+### Validation
+
+- `grep` re-run for em dashes and AI-tell vocabulary across all four workshop content files after
+  the fix: zero matches.
+- `npm run build`: clean; generated HTML confirms `class="workshop-summary"` (no `is-expanded`) by
+  default on every card, matching the intended collapsed-by-default state.
+
+### Mind-Palace Updated
+
+No. Live vault mutation is not approved; repo-local docs only.

@@ -6,7 +6,7 @@ summary: >
   taught as one evolving practice instead of four unrelated topics. Every exercise runs
   through your own coding-agent harness; Coachgremlin frames the task and grades the
   attempt, never hands you the solution. Built for practitioners already using Claude
-  Code, Codex, or Cursor daily — the only vocabulary assumed unfamiliar is "context
+  Code, Codex, or Cursor daily: the only vocabulary assumed unfamiliar is "context
   engineering" and "loop engineering" themselves.
 status: shipped
 moduleProgress: "5 of 5 core exercises real, reviewed, and evidenced"

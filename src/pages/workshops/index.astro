@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import Info from "../../components/marks/Info.astro";
 
 const workshops = (await getCollection("workshops")).sort((a, b) => {
   if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
@@ -44,7 +45,18 @@ const allTags = [...new Set(workshops.flatMap((w) => w.data.tags))].sort();
   <div class="note-grid log-grid" id="workshop-grid">
     {workshops.length > 0 ? workshops.map((workshop) => (
       <article class="note-card" data-tags={workshop.data.tags.join(",")}>
-        <span class={`status-pill status-${workshop.data.status}`}>{workshop.data.status}</span>
+        <div class="card-top-row">
+          <span class={`status-pill status-${workshop.data.status}`}>{workshop.data.status}</span>
+          <button
+            type="button"
+            class="info-toggle"
+            aria-expanded="false"
+            aria-controls={`workshop-summary-${workshop.id}`}
+            aria-label={`More about ${workshop.data.title}`}
+          >
+            <Info class="info-icon" />
+          </button>
+        </div>
         <h3 class="mt-3">
           <a href={workshop.data.liveUrl} target="_blank" rel="noopener noreferrer">
             {workshop.data.title}
@@ -57,6 +69,9 @@ const allTags = [...new Set(workshops.flatMap((w) => w.data.tags))].sort();
             {workshop.data.tags.map((tag) => <li>{tag}</li>)}
           </ul>
         )}
+        <p class="workshop-summary" id={`workshop-summary-${workshop.id}`}>
+          {workshop.data.summary}
+        </p>
       </article>
     )) : (
       <article class="note-card">
@@ -97,6 +112,18 @@ const allTags = [...new Set(workshops.flatMap((w) => w.data.tags))].sort();
       button.classList.add("is-active");
       button.setAttribute("aria-pressed", "true");
       applyFilter(button.dataset.tag || "all");
+    });
+  });
+
+  const infoToggles = document.querySelectorAll<HTMLButtonElement>(".info-toggle");
+  infoToggles.forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      const targetId = toggle.getAttribute("aria-controls");
+      const target = targetId ? document.getElementById(targetId) : null;
+      if (!target) return;
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!expanded));
+      target.classList.toggle("is-expanded", !expanded);
     });
   });
 </script>
@@ -165,6 +192,87 @@ const allTags = [...new Set(workshops.flatMap((w) => w.data.tags))].sort();
 
   :global(.dark) .module-progress {
     color: theme("colors.ivory / 55%");
+  }
+
+  .card-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .info-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    border: 1px solid theme("colors.kraft / 30%");
+    background: theme("colors.parchment");
+    color: theme("colors.night / 60%");
+    padding: 0;
+    cursor: pointer;
+    transition:
+      border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :global(.dark) .info-toggle {
+    border-color: theme("colors.glow / 25%");
+    background: theme("colors.night / 50%");
+    color: theme("colors.ivory / 60%");
+  }
+
+  .info-toggle:hover,
+  .info-toggle:focus-visible {
+    border-color: theme("colors.shell");
+    color: theme("colors.night");
+  }
+
+  :global(.dark) .info-toggle:hover,
+  :global(.dark) .info-toggle:focus-visible {
+    border-color: theme("colors.glow");
+    color: theme("colors.ivory");
+  }
+
+  .info-toggle[aria-expanded="true"] {
+    border-color: theme("colors.shell");
+    background: theme("colors.shell / 12%");
+    color: theme("colors.night");
+  }
+
+  :global(.dark) .info-toggle[aria-expanded="true"] {
+    border-color: theme("colors.glow");
+    background: theme("colors.glow / 12%");
+    color: theme("colors.ivory");
+  }
+
+  .info-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Overrides global.css's ".note-card p { display: block }" — a bare [hidden]
+     attribute loses that specificity fight, so this toggles visibility via a
+     class instead of the hidden attribute. */
+  .workshop-summary {
+    display: none;
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid theme("colors.kraft / 20%");
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: theme("colors.night / 70%");
+  }
+
+  .workshop-summary.is-expanded {
+    display: block;
+  }
+
+  :global(.dark) .workshop-summary {
+    border-top-color: theme("colors.glow / 18%");
+    color: theme("colors.ivory / 70%");
   }
 
   .filter-empty {
