@@ -49,4 +49,28 @@ const logs = defineCollection({
 	}),
 });
 
-export const collections = { projects, logs };
+// Self-paced workshops, each its own repo/site on a coderturtle.io subdomain
+// (via agentic-infra-lab's github-pages-dns pattern). Distinct from `projects`:
+// a workshop teaches something to a learner, a project is a build with a log.
+// `status` mirrors real content-completion state (module count), not intent -
+// keep this honest against each workshop's own README "Current status" line,
+// not aspirational.
+const workshops = defineCollection({
+	loader: glob({ base: './src/content/workshops', pattern: '**/*.{md,mdx}' }),
+	schema: () => z.object({
+		title: z.string(),
+		tagline: z.string(),
+		summary: z.string(),
+		status: z.enum(['shipped', 'building']),
+		moduleProgress: z.string(),
+		liveUrl: z.string().url(),
+		repo: z.string().url().optional(),
+		startDate: z.coerce.date(),
+		updatedDate: z.coerce.date().optional(),
+		order: z.number().default(0),
+		featured: z.boolean().default(false),
+		tags: z.array(z.string()).default([]),
+	}),
+});
+
+export const collections = { projects, logs, workshops };

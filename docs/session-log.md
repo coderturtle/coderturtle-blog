@@ -1251,3 +1251,110 @@ The user asked to stop using the `/coderturtle-blog` path and to make the gatewa
 ### Mind-Palace Updated
 
 No. Live vault mutation is not approved; repo-local docs only.
+
+---
+
+## 2026-07-18 - Built a real `/workshops/` page; fixed two other repos' broken custom domains as a precondition
+
+**Agent:** Claude
+
+### What changed
+
+- Added a `workshops` content collection (`src/content.config.ts`) and 4 real entries
+  (`src/content/workshops/*.md`) for `terminal-velocity`, `borrow-native`, `half-life`,
+  `closed-book` — honest `status`/`moduleProgress` per workshop, checked against each one's own
+  README rather than assumed uniform.
+- Built `src/pages/workshops/index.astro`: card grid (reusing `projects/index.astro`'s existing
+  `.note-card`/`.status-pill`/`.tag-list` styles) plus a new client-side tag-filter button bar.
+- Wired navigation: `/enter/`'s workshops-turtle station (previously a non-linking "still being
+  built" stub) now links to `/workshops/`; `Workshops` added to `BaseLayout.astro`'s sitewide nav.
+- **Precondition fixed in two other repos, not this one:** `borrow-native.coderturtle.io` and
+  `half-life.coderturtle.io` were both fully 404 (confirmed live via `curl`, not assumed) — DNS/
+  Pages config was live but the site-side cutover was never done. Fixed both, triggered and
+  confirmed their first real deploys, before linking to them here.
+
+### Decisions Made
+
+See `docs/decisions.md`'s 2026-07-18 entry for full reasoning.
+
+### Assumptions
+
+None new — `moduleProgress`/`status` values traced to each workshop's own README, not estimated.
+
+### Risks
+
+No new RISK entry.
+
+### Next Actions
+
+See `docs/next-actions.md`: a real browser check is still outstanding (no browser-automation tool
+was available this session — build + generated-HTML verified, not actual rendering/interaction);
+`/labs/` remains unbuilt; consider wiring a "update the Workshops page" step into
+`agentic-infra-lab`'s workshop onboarding docs so this page doesn't go stale again.
+
+### Validation Status
+
+- `npm run build`: passed, `/workshops/index.html` generated.
+- Generated HTML inspected directly: all 4 cards present, correct `liveUrl`s per workshop, correct
+  `status-shipped`/`status-building` pills (2 of each, matching each workshop's real state).
+- `npm run preview` + `curl`: `/workshops/` returns HTTP 200 with the expected title.
+- **Not done:** an actual browser render/interaction check (this project's own established
+  practice) — no browser-automation tool was available this session. Flagged, not silently skipped.
+
+### Mind-Palace Updated
+
+No. Live vault mutation is not approved; repo-local docs only.
+
+---
+
+## 2026-07-18 (cont'd) - Fixed the browser-caught info-toggle bug; ran the Editor Gremlin on the workshop copy
+
+**Agent:** Claude
+
+### What changed
+
+- User did the browser check this session's tooling couldn't do, and caught two real bugs on
+  `/workshops/`: every card's summary rendered expanded by default, and the "i" toggle button did
+  nothing. Root cause: the bare `hidden` HTML attribute was losing a CSS specificity fight against
+  `global.css`'s `.note-card p { display: block }` rule, so it never actually hid anything —
+  toggling it in JS was a real no-op. Fixed by switching to an explicit `.is-expanded` class
+  instead of the `hidden` attribute.
+- User asked to run the summary copy through "our editorial gremlin." Checked rather than assumed:
+  the thing literally named "Editorial Gremlin" (`blog-factory-lab/agent-teams/editorial-gremlin/`)
+  is a pipeline dispatcher, not a prose reviewer — does no editing itself. The real match is the
+  **Editor Gremlin** role inside Blogger Gremlin's roster
+  (`blog-factory-lab/agent-teams/blogger-gremlin/prompts/03-editor-gremlin.md`), a critique-only
+  contract enforcing that team's `quality-bar.md`.
+- Applied that quality bar to all four workshops' `title`/`tagline`/`summary`: one hard-fail
+  finding (an em dash in `terminal-velocity.md`), fixed. Everything else (substance, voice, safety)
+  passed on inspection.
+
+### Decisions Made
+
+See `docs/decisions.md`'s 2026-07-18 (cont'd) entry for full reasoning and the naming-confusion
+detail on which "Editorial Gremlin" actually applies.
+
+### Assumptions
+
+None new.
+
+### Risks
+
+No new RISK entry.
+
+### Next Actions
+
+Push these fixes to the open PR (`agent/claude/workshops-page`). The outstanding "human-review
+`/workshops/` live in a real browser" next-action is now partially addressed (the user already did
+one real pass and caught the two bugs above) but worth a final look post-fix.
+
+### Validation
+
+- `grep` re-run for em dashes and AI-tell vocabulary across all four workshop content files after
+  the fix: zero matches.
+- `npm run build`: clean; generated HTML confirms `class="workshop-summary"` (no `is-expanded`) by
+  default on every card, matching the intended collapsed-by-default state.
+
+### Mind-Palace Updated
+
+No. Live vault mutation is not approved; repo-local docs only.

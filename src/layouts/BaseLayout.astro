@@ -11,6 +11,7 @@ const base = import.meta.env.BASE_URL;
 const url = (path: string) => `${base}${path.replace(/^\//, "")}`;
 const nav = [
   { href: url("projects/"), label: "Projects" },
+  { href: url("workshops/"), label: "Workshops" },
   { href: `${url("enter/")}#workbench`, label: "Workbench" },
   { href: url("ecosystem/"), label: "Ecosystem" },
   { href: url("about/"), label: "About" },
