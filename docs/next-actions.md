@@ -41,3 +41,7 @@
 - [ ] **Human-review `/workshops/` live, in a real browser** (2026-07-18 build) — no browser-automation tool was available this session, so the new page/tag-filter/nav wiring were only verified via `npm run build` + generated-HTML inspection, not an actual rendered/interactive check (dark+light theme, mobile width, tag-filter click behavior, focus states). This project's own established practice is a real browser check before calling a UI change done; that step is still outstanding here.
 - [ ] Build a real `/labs/` page — `/enter/`'s labs-turtle station still reads "still being built" (only the workshops-turtle half of this long-open item was closed 2026-07-18).
 - [ ] Add a 5th `workshops` entry whenever the next workshop launches — same pattern as `src/content/workshops/*.md`, and consider whether the onboarding checklist for a new workshop (in `agentic-infra-lab`'s `github-pages-dns` pattern docs) should gain a step pointing here, so this page doesn't silently fall behind the real workshop roster the way `/workshops/` itself did for months.
+
+## Session Update: 2026-07-18 — Built the real Workshops page; fixed two other repos' broken custom domains as a precondition
+
+- [ ] Build a real /labs/ page (that station still reads 'still being built'); add a 5th workshops entry whenever the next workshop launches
