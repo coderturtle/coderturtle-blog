@@ -38,3 +38,26 @@ agent_runs:
       - "Live vault mutation is not approved; repo-local mind-palace mirror only."
     next_actions:
       - "Run Hekton taxonomy, reproducibility, and governance validation."
+
+  - id: RUN-9149fd2d
+    date: 2026-07-18
+    agent: "Claude Sonnet 5"
+    role: "Build Agent"
+    intent: "Built the real Workshops page; fixed two other repos' broken custom domains as a precondition — Closed a long-open next-action: built /workshops/ (content collection, 4 real entries, tag filter, expandable summaries) and wired /enter/ + sitewide nav to it. Found and fixed a browser-caught bug (CSS specificity defeating the hidden attribute) and ran all four workshops' copy through the real Editor Gremlin plus this project's own voice guide. Precondition: fixed two live, fully-broken custom domains (borrow-native, half-life) in their own repos before linking to them"
+    autonomy_level: 3
+    approvals:
+      required: false
+      status: not_required
+    files_touched:
+      - "docs/next-actions.md"
+      - "docs/session-log.md"
+      - "docs/blog-signals.md"
+      - "docs/gremlin-radar.md"
+      - "docs/next-actions.md.bak.20260718210017"
+      - "mind-palace/20-projects/"
+    validation:
+      - "not recorded"
+    risks:
+      - "None new"
+    next_actions:
+      - "Build a real /labs/ page (that station still reads 'still being built'); add a 5th workshops entry whenever the next workshop launches"

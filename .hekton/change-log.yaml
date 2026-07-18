@@ -19,3 +19,18 @@ changes:
     links:
       - "docs/session-log.md"
       - "docs/adoption-audit.md"
+
+  - id: CHG-94ffec4b
+    date: 2026-07-18
+    title: "Workshops page launch"
+    intent: "Closed a long-open next-action: built /workshops/ (content collection, 4 real entries, tag filter, expandable summaries) and wired /enter/ + sitewide nav to it. Found and fixed a browser-caught bug (CSS specificity defeating the hidden attribute) and ran all four workshops' copy through the real Editor Gremlin plus this project's own voice guide. Precondition: fixed two live, fully-broken custom domains (borrow-native, half-life) in their own repos before linking to them"
+    changed_by: "Claude Sonnet 5"
+    change_type: build
+    risk_level: low
+    validation:
+      - "not recorded"
+    approvals:
+      required: false
+      status: not_required
+    links:
+      - "docs/session-log.md"
