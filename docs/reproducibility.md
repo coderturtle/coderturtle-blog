@@ -5,8 +5,8 @@ This project should be rebuildable on a future blank Hekton machine using docume
 ## Blank-Machine Flow
 
 ```bash
-git clone git@github.com-coderturtle:coderturtle/coderturtle-blog.git ~/Development/hekton/factory-output/coderturtle.io
-cd ~/Development/hekton/factory-output/coderturtle.io
+git clone git@github.com-coderturtle:coderturtle/coderturtle-blog.git <hekton>/factory-output/coderturtle.io
+cd <hekton>/factory-output/coderturtle.io
 ./scripts/check-prereqs.sh
 ./scripts/bootstrap-project.sh --dry-run
 ./scripts/bootstrap-project.sh
