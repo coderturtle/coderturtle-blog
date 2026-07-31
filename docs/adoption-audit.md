@@ -8,7 +8,7 @@ Date: 2026-06-28
 - GitHub resolution: `coderturtle/coderturtle-blog`
 - Source URL: `https://github.com/coderturtle/coderturtle-blog`
 - Temporary intake path: `/private/tmp/hekton-adoption/coderturtle.io`
-- Permanent local path: `/Users/hekton/Development/hekton/factory-output/coderturtle.io`
+- Permanent local path: `<hekton>/factory-output/coderturtle.io`
 - Owner/account: `coderturtle`
 - Privacy boundary: public
 - Git history: preserve
