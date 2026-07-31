@@ -8,8 +8,8 @@ Coderturtle is the hands-on builder voice in the Hekton ecosystem, the practical
 - [Coderturtle.io](https://coderturtle.io/projects/coderturtle-io/): The site you're standing on, built in public.
 
 ## Recent build-log entries
-- [Cogs, tilt, and a terminal that talks back to agents](https://coderturtle.io/projects/coderturtle-io/log/cogs-tilt-and-a-terminal-that-talks-to-agents/) (2026-07-02, build): The ecosystem got its own page shaped like actual gears, the workshop floor stopped being flat, and the site learned to describe itself in a format agents can parse instead of just humans.
 - [The dark reset: rejecting the schematic pass](https://coderturtle.io/projects/coderturtle-io/log/the-dark-reset/) (2026-07-02, decision): The retro-futurist blueprint pass got rejected outright: too subtle, wrong kind of futuristic, missed the point. Here's the honest log of the reset that followed.
+- [Cogs, tilt, and a terminal that talks back to agents](https://coderturtle.io/projects/coderturtle-io/log/cogs-tilt-and-a-terminal-that-talks-to-agents/) (2026-07-02, build): The ecosystem got its own page shaped like actual gears, the workshop floor stopped being flat, and the site learned to describe itself in a format agents can parse instead of just humans.
 - [Vibing with ChatGPT](https://coderturtle.io/projects/coderturtle-io/log/vibing-with-chatgpt/) (2025-07-05, build): From concept to turtle-powered Astro site: an impatient engineer, a chatty AI, and the art of vibe-coding.
 
 ## Machine-readable
