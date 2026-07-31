@@ -21,7 +21,7 @@ documented -> scripted -> idempotent-ish -> logged -> reproducible on a blank ma
 2. Clone the repo using the coderturtle SSH host alias:
 
 ```bash
-git clone git@github.com-coderturtle:coderturtle/coderturtle-blog.git ~/Development/hekton/factory-output/coderturtle.io
+git clone git@github.com-coderturtle:coderturtle/coderturtle-blog.git <hekton>/factory-output/coderturtle.io
 ```
 
 3. Install dependencies:
